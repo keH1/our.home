@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\JsonRpcController;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        Route::macro('rpc', fn(string $uri, array $procedures = [], ?string $delimiter = null) => Route::post($uri,
+            [JsonRpcController::class, '__invoke'])->setDefaults([
+            'procedures' => $procedures, 'delimiter' => $delimiter,
+        ]));
     }
 
     /**
