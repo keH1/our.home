@@ -12,7 +12,7 @@ DOCKER_COMPOSE := docker compose \
 	--project-name="$(PROJECT_NAME)" \
 	--project-directory="$(shell pwd)" \
 	--env-file="$(shell pwd)/.docker/local/.env" \
-	--progress=tty
+	#--progress=tty
 
 PHP := ${DOCKER_COMPOSE} run --rm -e XDEBUG_MODE=off php
 
@@ -87,8 +87,8 @@ ps: ## Shows containers status
 
 .PHONY: init
 init: ## Initialize project
-	make login
-	make pull
+	##make login
+	##make pull
 	make up
 	make composer-install
 	#make npm-install
