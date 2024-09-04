@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum RpcApiMapper: string
 {
-    case ANOTHER_METHOD = 'tennis@anotherMethod';
 
     case LOGIN = 'user_procedure@login';
 

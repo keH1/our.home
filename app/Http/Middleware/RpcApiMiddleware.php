@@ -4,13 +4,11 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Pipeline\Pipeline;
-use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Response;
 use \Illuminate\Auth\Middleware\Authenticate;
 
 
-class CustomSanctumMiddleware
+class RpcApiMiddleware
 {
     protected $routesWithoutSanctum = [
         'login',
@@ -27,17 +25,14 @@ class CustomSanctumMiddleware
     {
         $content = $request->getContent();
         $json = json_decode($content, true);
-        if (isset($json['jsonrpc'], $json['method'])) {
+        if (is_array($json) && isset($json['jsonrpc'], $json['method'])) {
             $method = $json['method'];
-            foreach ($this->routesWithoutSanctum as $routName) {
-                if ($method == $routName) {
-                    return $next($request);
-                }
+            if(in_array($method,$this->routesWithoutSanctum)){
+                return $next($request);
             }
         }
         $sanctum = new Authenticate(auth());
+
         return $sanctum->handle($request, $next, 'sanctum');
     }
-
-
 }
