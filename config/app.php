@@ -123,4 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'one_c_token' => env('ONE_C_TOKEN', false),
 ];
