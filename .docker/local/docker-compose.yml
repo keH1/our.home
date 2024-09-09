@@ -37,6 +37,25 @@ services:
       - "./:/var/www/html"
       - "./.data/composer:/root/.composer"
 
+#  queue:
+#    build:
+#      context: .
+#      dockerfile: .docker/local/php/Dockerfile
+#    depends_on:
+#      - php
+#    environment:
+#      PHP_IDE_CONFIG: serverName=${PHP_IDE_CONFIG_SERVER_NAME}
+#      POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
+#      POSTGRES_PORT: ${POSTGRES_PORT}
+#      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+#      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/local/scheduler
+#    command: ["php", "artisan", "queue:work"]
+#    volumes:
+#      - "./:/var/www/html"
+#      - "./.data/composer:/root/.composer"
+
   nginx:
     build:
       context: .
