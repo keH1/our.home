@@ -67,7 +67,7 @@ class ProcessCustomerData implements ShouldQueue
         }
         $client->debt = $debt;
         $client->save();
-        $this->isApartmentAlreadyAttached($client) ?: $client->apartments()->sync($apartment, false);
+        $this->isApartmentAlreadyAttached($client,$apartment) ?: $client->apartments()->sync($apartment, false);
     }
 
 
@@ -183,9 +183,9 @@ class ProcessCustomerData implements ShouldQueue
         return $client;
     }
 
-    public function isApartmentAlreadyAttached($client)
+    public function isApartmentAlreadyAttached($client,$apartment)
     {
-        if ($client->apartments()->count() > 0) {
+        if ($client->apartments()->where('apartments.id','=',$apartment->id)->count() > 0) {
             return true;
         } else {
             return false;
