@@ -2,18 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Models\AccountPersonalNumber;
 use App\Models\Apartment;
-use App\Models\CounterData;
-use App\Models\CounterHistory;
 use App\Models\House;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Carbon;
 use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
 use LaravelIdea\Helper\App\Models\_IH_Apartment_QB;
@@ -38,12 +34,7 @@ class ProcessCustomerData implements ShouldQueue
         $customer = $this->customer;
 
         $customer['Задолженность'] == null ? $debt = 0 : $debt = $this->parseFloat($customer['Задолженность']);
-        /* todo пользователь может быть помечен на удаление
-         * докинуть таблицу с account_id
-         *
-         *
-         * Хранить данные по счетчикам, отдавать просто фильром за последний месяц
-        */
+
         $email = $customer['АдресЭлектроннойПочты'] ?? str()->random(5) . sha1(time()) . '@asdasdasd.rrrr';
         $phone = $customer['Телефон'] ?? '+7123' . rand(1, 99999999);
 
@@ -52,6 +43,7 @@ class ProcessCustomerData implements ShouldQueue
         } else {
             $house = $this->createHouse($customer);
         }
+
         $apartment = $this->findApartment($house, $customer['Помещение']) ?? new Apartment();
         $apartment->house_id = $house->id;
         $this->setApartmentData($apartment, $customer);
@@ -67,7 +59,14 @@ class ProcessCustomerData implements ShouldQueue
         }
         $client->debt = $debt;
         $client->save();
-        $this->isApartmentAlreadyAttached($client,$apartment) ?: $client->apartments()->sync($apartment, false);
+
+
+        if(($account = $this->checkAccount($customer['Идентификатор'])) == null){
+            $account = $this->createPersonalAccount($customer);
+        }
+        $this->attachApartmentToAccount($apartment,$account);
+        $this->syncClientWithAccountWithoutDetaching($client,$account);
+        $this->isApartmentAlreadyAttachedToClient($client,$apartment) ?: $client->apartments()->sync($apartment, false);
     }
 
 
@@ -142,7 +141,6 @@ class ProcessCustomerData implements ShouldQueue
     private function setApartmentData($apartment, $customer): void
     {
         $apartment->number = $customer['Помещение'];
-        $apartment->account_id = $customer['Идентификатор'];
         $apartment->gku_id = $customer['ИдентификаторЖКУ'];
         $apartment->account_number = $customer['ЕдиныйЛицевойСчет'];
         $apartment->account_owner = $customer['ОтветственныйВладелец'];
@@ -183,12 +181,57 @@ class ProcessCustomerData implements ShouldQueue
         return $client;
     }
 
-    public function isApartmentAlreadyAttached($client,$apartment)
+    public function isApartmentAlreadyAttachedToClient($client,$apartment)
     {
         if ($client->apartments()->where('apartments.id','=',$apartment->id)->count() > 0) {
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param $customer
+     * @param $apartment
+     * @return AccountPersonalNumber
+     */
+    private function createPersonalAccount($customer): AccountPersonalNumber
+    {
+        $account = new AccountPersonalNumber();
+        $account->number = $customer['Идентификатор'];
+        $account->save();
+        return $account;
+    }
+
+    /**
+     * @param $accountNumber
+     * @return mixed
+     */
+    private function checkAccount($accountNumber): mixed
+    {
+        return AccountPersonalNumber::where('number', $accountNumber)->first();
+    }
+
+    /**
+     * @param $apartment
+     * @param $account
+     * @return void
+     */
+    private function attachApartmentToAccount($apartment, $account): void
+    {
+        $account->apartment_id = $apartment->id;
+        $apartment->personal_number = $account->id;
+        $account->save();
+        $apartment->save();
+    }
+
+    /**
+     * @param Client|null $client
+     * @param AccountPersonalNumber|null $account
+     * @return void
+     */
+    private function syncClientWithAccountWithoutDetaching(?Client $client , ?AccountPersonalNumber $account): void
+    {
+        $client->accounts()->sync($account,false);
     }
 }

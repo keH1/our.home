@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::table('counter_data', function (Blueprint $table) {
             $table->string('shutdown_reason')->after('factory_number')->nullable();
-            $table->string('account_id')->after('factory_number')->nullable();
             $table->integer('calibration_interval')->after('factory_number')->nullable();
+            $table->foreignId('personal_number')->nullable()->constrained('account_personal_numbers');
             $table->timestamp('commissioning_date')->after('factory_number')->nullable();
             $table->timestamp('first_calibration_date')->after('factory_number')->nullable();
         });

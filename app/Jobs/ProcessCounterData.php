@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\AccountPersonalNumber;
 use App\Models\Apartment;
 use App\Models\CounterData;
 use App\Models\CounterHistory;
@@ -16,9 +17,12 @@ use Illuminate\Support\Carbon;
 class ProcessCounterData implements ShouldQueue
 {
     use Queueable;
+
     public array $counterTypeMap = [
         'Холодное водоснабжение' => 'COLD_WATER',
         'Горячее водоснабжение' => 'WARM_WATER',
+        'Электроэнергия ' => 'ELECTRICITY', // пробел приходит из 1с если что
+        //'Газ' => 'GAS',
     ];
 
     /**
@@ -34,16 +38,22 @@ class ProcessCounterData implements ShouldQueue
     public function handle(): void
     {
         $counter = $this->counter;
+        $apartmentID = false;
         if (($counterData = $this->checkCounterExistence($counter)) !== null) {
 
         } else {
             $counterData = new CounterData();
         }
-        if (($apartment = $this->findApartmentByAccountID($counter['ИдентификаторЛС'])) !== null) {
-            $this->setCounterParams($counterData, $counter, $apartment->id);
-            $counterData->save();
-            $this->createCounterHistory($counterData, $counter);
+        if (($account = $this->checkAccount($counter['ИдентификаторЛС'])) !== null) {
+            if (($apartment = $this->findApartmentByAccountID($account->id)) !== null) {
+                $apartmentID = $apartment->id;
+                $this->attachCounterToAccount($counterData, $account);
+            }
         }
+
+        $this->setCounterParams($counterData, $counter, $apartmentID);
+        $counterData->save();
+        $this->createCounterHistory($counterData, $counter);
     }
 
 
@@ -54,7 +64,6 @@ class ProcessCounterData implements ShouldQueue
     private function checkCounterExistence(mixed $counter): CounterData|null
     {
         return CounterData::where([
-            ['account_id', '=', $counter['ИдентификаторЛС']],
             ['number', '=', $counter['Идентификатор']],
             ['counter_type', '=', constant('\App\Enums\CounterType::' . $this->counterTypeMap[$counter['ВидУслуги']])],
         ])->first();
@@ -66,7 +75,7 @@ class ProcessCounterData implements ShouldQueue
      */
     public function findApartmentByAccountID($accountID): Apartment|null
     {
-        return Apartment::where('account_id', $accountID)->first();
+        return Apartment::where('personal_number', $accountID)->first();
     }
 
     /**
@@ -75,11 +84,10 @@ class ProcessCounterData implements ShouldQueue
      * @param $apartmentID
      * @return void
      */
-    private function setCounterParams(CounterData $counterData, $counter, $apartmentID): void
+    private function setCounterParams(CounterData $counterData, $counter, $apartmentID = false): void
     {
-        $counterData->account_id = $counter['ИдентификаторЛС'];
-        $counterData->name = 'test';
-        $counterData->apartment_id = $apartmentID;
+        $counterData->name = constant('\App\Enums\CounterType::' . $this->counterTypeMap[$counter['ВидУслуги']]);
+        $apartmentID == false ?: $counterData->apartment_id = $apartmentID;
         $counterData->number = $counter['Идентификатор'];
         $counterData->shutdown_reason = $counter['ПричинаОтключения'];
         $counterData->counter_seal = $counter['НомерПломбы'];
@@ -107,6 +115,20 @@ class ProcessCounterData implements ShouldQueue
         $counterHistory->from_1c = true;
         $counterHistory->last_checked_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПоказаний']);
         $counterHistory->save();
+    }
+
+    /**
+     * @param $accountNumber
+     * @return mixed
+     */
+    private function checkAccount($accountNumber): mixed
+    {
+        return AccountPersonalNumber::where('number', $accountNumber)->first();
+    }
+
+    private function attachCounterToAccount(mixed $counter, mixed $account)
+    {
+        $account->counters()->save($counter);
     }
 
 }

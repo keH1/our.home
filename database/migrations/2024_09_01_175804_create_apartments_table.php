@@ -12,7 +12,6 @@ return new class extends Migration {
             $table->string('number');
             $table->foreignId('house_id')->constrained('houses');
             $table->string('account_number')->nullable();
-            $table->string('account_id')->nullable();
             $table->string('gku_id')->nullable();
             $table->timestamps();
             $table->unique(['house_id', 'number'], '_apartment_number_uc');

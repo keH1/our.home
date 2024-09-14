@@ -4,17 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ProcessCounterData;
 use App\Jobs\ProcessCustomerData;
+use App\Models\AccountPersonalNumber;
 use App\Models\Apartment;
-use App\Models\Client;
 use App\Models\CounterData;
 use App\Models\CounterHistory;
-use App\Models\House;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
-use \App\Enums\CounterType;
 
 class OneC extends Controller
 {
@@ -22,6 +18,7 @@ class OneC extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+    // todo пользователь может быть помечен на удаление
     public function customers(Request $request)
     {
         $customers = $request->json()->all();
@@ -39,7 +36,7 @@ class OneC extends Controller
     {
         $counters = $request->json()->all();
         foreach ($counters as $counter) {
-            ProcessCounterData::dispatch($counter);
+             ProcessCounterData::dispatch($counter);
         }
     }
 }
