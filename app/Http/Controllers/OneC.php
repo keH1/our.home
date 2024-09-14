@@ -4,13 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ProcessCounterData;
 use App\Jobs\ProcessCustomerData;
-use App\Models\AccountPersonalNumber;
-use App\Models\Apartment;
-use App\Models\CounterData;
-use App\Models\CounterHistory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 
 class OneC extends Controller
 {
