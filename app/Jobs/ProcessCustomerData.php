@@ -6,6 +6,8 @@ use App\Models\AccountPersonalNumber;
 use App\Models\Apartment;
 use App\Models\House;
 use App\Models\User;
+use App\Repositories\AccountRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,12 +20,16 @@ use LaravelIdea\Helper\App\Models\_IH_Apartment_QB;
 class ProcessCustomerData implements ShouldQueue
 {
     use Queueable;
+    private $accountRepository;
+    private $userRepository;
 
     /**
      * Create a new job instance.
      */
     public function __construct(protected array $customer)
     {
+        $this->userRepository = new UserRepository();
+        $this->accountRepository = new AccountRepository();
     }
 
     /**
@@ -47,7 +53,7 @@ class ProcessCustomerData implements ShouldQueue
         $apartment = $this->findApartment($house, $customer['Помещение']) ?? new Apartment();
         $apartment->house_id = $house->id;
         $this->setApartmentData($apartment, $customer);
-        $user = $this->checkUser($customer['Телефон']) ?? $this->checkUserByBIO($customer['ОтветственныйВладелец']);
+        $user = $this->userRepository->checkUserByPhone($customer['Телефон']) ?? $this->userRepository->checkUserByBIO($customer['ОтветственныйВладелец']);
         if ($user == null) {
             $user = $this->createNewUser($email, $phone, $customer);
             $client = $this->createNewClientObj($user, $phone, $customer);
@@ -61,7 +67,7 @@ class ProcessCustomerData implements ShouldQueue
         $client->save();
 
 
-        if(($account = $this->checkAccount($customer['Идентификатор'])) == null){
+        if(($account = $this->accountRepository->checkAccountByNumber($customer['Идентификатор'])) == null){
             $account = $this->createPersonalAccount($customer);
         }
         $this->attachApartmentToAccount($apartment,$account);
@@ -70,7 +76,11 @@ class ProcessCustomerData implements ShouldQueue
     }
 
 
-    public function houseExistence($customer): House|null
+    /**
+     * @param array $customer
+     * @return House|null
+     */
+    public function houseExistence(array $customer): House|null
     {
         return House::where([
             ['city', '=', $customer['Город']],
@@ -88,24 +98,6 @@ class ProcessCustomerData implements ShouldQueue
     public function findApartment(House $house, $apartmentNumber)
     {
         return $house->apartments()->where('number', $apartmentNumber)->first();
-    }
-
-    /**
-     * @param $customerPhone
-     * @return User
-     */
-    private function checkUser($customerPhone)
-    {
-        return User::where('phone', $customerPhone)->first();
-    }
-
-    /**
-     * @param $BIO
-     * @return User
-     */
-    private function checkUserByBIO($BIO)
-    {
-        return User::where('name', $BIO)->first();
     }
 
     /**
@@ -201,15 +193,6 @@ class ProcessCustomerData implements ShouldQueue
         $account->number = $customer['Идентификатор'];
         $account->save();
         return $account;
-    }
-
-    /**
-     * @param $accountNumber
-     * @return mixed
-     */
-    private function checkAccount($accountNumber): mixed
-    {
-        return AccountPersonalNumber::where('number', $accountNumber)->first();
     }
 
     /**

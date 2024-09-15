@@ -9,9 +9,8 @@ return new class extends Migration {
     {
         Schema::create('counter_data', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('number')->unique();
-            $table->foreignId('apartment_id')->constrained('apartments');
+            $table->foreignId('apartment_id')->nullable()->constrained('apartments');
             $table->timestamp('verification_to');
             $table->string('counter_type');
             $table->string('counter_seal')->nullable();

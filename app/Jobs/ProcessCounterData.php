@@ -2,34 +2,37 @@
 
 namespace App\Jobs;
 
+use App\Enums\CounterType;
 use App\Models\AccountPersonalNumber;
 use App\Models\Apartment;
 use App\Models\CounterData;
 use App\Models\CounterHistory;
+use App\Repositories\ApartmentRepository;
+use App\Repositories\CounterRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
+use App\Repositories\AccountRepository;
 
 
 class ProcessCounterData implements ShouldQueue
 {
     use Queueable;
-
-    public array $counterTypeMap = [
-        'Холодное водоснабжение' => 'COLD_WATER',
-        'Горячее водоснабжение' => 'WARM_WATER',
-        'Электроэнергия ' => 'ELECTRICITY', // пробел приходит из 1с если что
-        //'Газ' => 'GAS',
-    ];
+    private AccountRepository $accountRepository;
+    private ApartmentRepository $apartmentRepository;
+    private CounterRepository $counterRepository;
 
     /**
      * Create a new job instance.
      */
     public function __construct(protected array $counter)
     {
+        $this->accountRepository = new AccountRepository();
+        $this->apartmentRepository = new ApartmentRepository();
+        $this->counterRepository = new CounterRepository();
     }
 
     /**
@@ -38,44 +41,36 @@ class ProcessCounterData implements ShouldQueue
     public function handle(): void
     {
         $counter = $this->counter;
-        $apartmentID = false;
+        if(!$this->counterRepository->checkCounterType($counter['ВидУслуги'])){
+            throw new \Exception('Данный вид счетчика не найден');
+        }
         if (($counterData = $this->checkCounterExistence($counter)) !== null) {
 
         } else {
             $counterData = new CounterData();
         }
-        if (($account = $this->checkAccount($counter['ИдентификаторЛС'])) !== null) {
-            if (($apartment = $this->findApartmentByAccountID($account->id)) !== null) {
-                $apartmentID = $apartment->id;
-                $this->attachCounterToAccount($counterData, $account);
-            }
-        }
-
-        $this->setCounterParams($counterData, $counter, $apartmentID);
+        $this->setCounterParams($counterData, $counter);
         $counterData->save();
         $this->createCounterHistory($counterData, $counter);
+        if (($account = $this->accountRepository->checkAccountByNumber($counter['ИдентификаторЛС'])) !== null) {
+            $this->attachCounterToAccount($counterData, $account);
+            if (($apartment = $this->apartmentRepository->findApartmentByAccountID($account->id)) !== null) {
+                $this->attachCounterToApartment($counterData, $apartment);
+            }
+        }
     }
 
 
     /**
-     * @param mixed $counter
+     * @param array $counter
      * @return CounterData|null
      */
-    private function checkCounterExistence(mixed $counter): CounterData|null
+    private function checkCounterExistence(array $counter): CounterData|null
     {
         return CounterData::where([
             ['number', '=', $counter['Идентификатор']],
-            ['counter_type', '=', constant('\App\Enums\CounterType::' . $this->counterTypeMap[$counter['ВидУслуги']])],
+            ['counter_type', '=', $counter['ВидУслуги']],
         ])->first();
-    }
-
-    /**
-     * @param $accountID
-     * @return Apartment|null
-     */
-    public function findApartmentByAccountID($accountID): Apartment|null
-    {
-        return Apartment::where('personal_number', $accountID)->first();
     }
 
     /**
@@ -84,16 +79,14 @@ class ProcessCounterData implements ShouldQueue
      * @param $apartmentID
      * @return void
      */
-    private function setCounterParams(CounterData $counterData, $counter, $apartmentID = false): void
+    private function setCounterParams(CounterData &$counterData, $counter): void
     {
-        $counterData->name = constant('\App\Enums\CounterType::' . $this->counterTypeMap[$counter['ВидУслуги']]);
-        $apartmentID == false ?: $counterData->apartment_id = $apartmentID;
         $counterData->number = $counter['Идентификатор'];
         $counterData->shutdown_reason = $counter['ПричинаОтключения'];
         $counterData->counter_seal = $counter['НомерПломбы'];
         $counterData->created_at = $counter['ДатаНачала'];
         $counterData->verification_to = $counter['ДатаПоверки'];
-        $counterData->counter_type = constant('\App\Enums\CounterType::' . $this->counterTypeMap[$counter['ВидУслуги']]);
+        $counterData->counter_type = $counter['ВидУслуги'];
         $counterData->factory_number = $counter['ЗаводскойНомер'];
         $counterData->calibration_interval = $counter['МежпроверочныйИнтервал'];
         $counterData->commissioning_date = $counter['ДатаВводаВЭксплуатацию'];
@@ -113,22 +106,32 @@ class ProcessCounterData implements ShouldQueue
         $counterHistory->night_consumption = $counter['НочноеПоказание'];
         $counterHistory->peak_consumption = $counter['ПиковоеПоказание'];
         $counterHistory->from_1c = true;
-        $counterHistory->last_checked_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПоказаний']);
+        try {
+            $counterHistory->last_checked_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПоказаний']);
+        }catch (\Exception $exception){
+            $counterHistory->last_checked_date = null;
+        }
+
         $counterHistory->save();
     }
 
     /**
-     * @param $accountNumber
-     * @return mixed
+     * @param CounterData $counter
+     * @param AccountPersonalNumber $account
+     * @return void
      */
-    private function checkAccount($accountNumber): mixed
-    {
-        return AccountPersonalNumber::where('number', $accountNumber)->first();
-    }
-
-    private function attachCounterToAccount(mixed $counter, mixed $account)
+    private function attachCounterToAccount(CounterData $counter, AccountPersonalNumber $account): void
     {
         $account->counters()->save($counter);
     }
 
+    /**
+     * @param CounterData $counterData
+     * @param Apartment $apartment
+     * @return void
+     */
+    private function attachCounterToApartment(CounterData $counterData, Apartment $apartment): void
+    {
+        $apartment->counterData()->save($counterData);
+    }
 }

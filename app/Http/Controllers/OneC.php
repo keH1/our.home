@@ -7,13 +7,14 @@ use App\Jobs\ProcessCustomerData;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+
 class OneC extends Controller
 {
     /**
+     * todo пользователь может быть помечен на удаление
      * @param Request $request
      * @return JsonResponse
      */
-    // todo пользователь может быть помечен на удаление
     public function customers(Request $request)
     {
         $customers = $request->json()->all();
