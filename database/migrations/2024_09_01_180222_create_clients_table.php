@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('phone')->unique();
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->decimal('debt', 10, 2)->nullable();
+            $table->float('debt', 10, 2)->nullable();
             $table->timestamps();
         });
     }

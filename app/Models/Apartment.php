@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Apartment extends Model
 {
-    protected $fillable = ['number', 'house_id', 'account_number', 'account_id', 'gku_id'];
+    protected $fillable = ['number', 'house_id', 'account_number', 'personal_number', 'gku_id'];
 
     public function house(): BelongsTo
     {
@@ -24,5 +25,10 @@ class Apartment extends Model
     public function counterData(): HasMany
     {
         return $this->hasMany(CounterData::class);
+    }
+
+    public function account(): HasOne
+    {
+        return $this->hasOne(AccountPersonalNumber::class);
     }
 }
