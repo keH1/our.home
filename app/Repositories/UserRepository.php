@@ -4,7 +4,8 @@ namespace App\Repositories;
 
 use App\Models\User;
 
-class UserRepository {
+class UserRepository
+{
 
     /**
      * @param $customerPhone
@@ -23,5 +24,23 @@ class UserRepository {
     {
         return User::where('name', $BIO)->first();
     }
+    /**
+     * @param $BIO
+     * @return User
+     */
+    public function checkUserByAccountNumber($accountNumber)
+    {
+        return User::where('name', $BIO)->first();
+    }
+
+    /**
+     * @param $email
+     * @return User
+     */
+    public function checkUserByEmail($email): User|null
+    {
+        return User::where('name', $email)->first();
+    }
+
 
 }
