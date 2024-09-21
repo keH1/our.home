@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OneC;
+use App\Http\Procedures\HouseProcedure;
 use App\Http\Procedures\UserProcedure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +13,7 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('v1')->as('v1:')->group(function () {
     Route::middleware(['rpc.api'])->group(function () {
-        Route::rpc('/jsonrpc', [UserProcedure::class]);
+        Route::rpc('/jsonrpc', [UserProcedure::class, HouseProcedure::class]);
     });
 
     //1C routes

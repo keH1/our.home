@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Sajya\Server\Procedure;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Sajya\Server\Procedure;
 
 
 class UserProcedure extends Procedure
@@ -35,11 +34,6 @@ class UserProcedure extends Procedure
             'password' => ['required', 'string', 'min:8'],
             'phone' => ['required', 'string']
         ];
-        foreach ($params as $key => $param){
-            if(!in_array($key,$validatorRules)){
-                return ['error' => 'Contain incorrect fields'];
-            }
-        }
         $validator = Validator::make($params, $validatorRules);
 
         if ($validator->fails()) {
