@@ -37,24 +37,24 @@ services:
       - "./:/var/www/html"
       - "./.data/composer:/root/.composer"
 
-#  queue:
-#    build:
-#      context: .
-#      dockerfile: .docker/local/php/Dockerfile
-#    depends_on:
-#      - php
-#    environment:
-#      PHP_IDE_CONFIG: serverName=${PHP_IDE_CONFIG_SERVER_NAME}
-#      POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
-#      POSTGRES_PORT: ${POSTGRES_PORT}
-#      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
-#      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
-#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-#    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/local/scheduler
-#    command: ["php", "artisan", "queue:work"]
-#    volumes:
-#      - "./:/var/www/html"
-#      - "./.data/composer:/root/.composer"
+  queue:
+    build:
+      context: .
+      dockerfile: .docker/local/php/Dockerfile
+    depends_on:
+      - php
+    environment:
+      PHP_IDE_CONFIG: serverName=${PHP_IDE_CONFIG_SERVER_NAME}
+      POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/local/scheduler
+    command: ["php", "artisan", "queue:work"]
+    volumes:
+      - "./:/var/www/html"
+      - "./.data/composer:/root/.composer"
 
   nginx:
     build:
@@ -65,9 +65,11 @@ services:
     image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/local/nginx
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - "./:/var/www/html"
       - "./.docker/local/nginx/etc/default.conf:/etc/nginx/conf.d/default.conf"
+      - "./.docker/local/nginx/ssl:/etc/nginx/ssl"
 
   postgres:
     image: postgres:latest
@@ -80,17 +82,3 @@ services:
       - "5432:5432"
     volumes:
       - "./.data/postgres:/var/lib/postgresql/data"
-
-  node:
-    build:
-      context: .
-      dockerfile: .docker/local/node/Dockerfile
-    environment:
-      VITE_PORT: ${VITE_PORT:-5173}
-    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/local/node
-    command: ["npm", "run", "dev", "--host"]
-    ports:
-      - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
-    volumes:
-      - "./:/app"
-      - "./.data/node:/root/.npm"
