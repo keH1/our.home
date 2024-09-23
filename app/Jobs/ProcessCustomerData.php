@@ -20,6 +20,7 @@ use LaravelIdea\Helper\App\Models\_IH_Apartment_QB;
 class ProcessCustomerData implements ShouldQueue
 {
     use Queueable;
+
     private $accountRepository;
     private $userRepository;
 
@@ -38,9 +39,7 @@ class ProcessCustomerData implements ShouldQueue
     public function handle(): void
     {
         $customer = $this->customer;
-
         $customer['Задолженность'] == null ? $debt = 0 : $debt = $this->parseFloat($customer['Задолженность']);
-
         $email = $customer['АдресЭлектроннойПочты'] ?? str()->random(5) . sha1(time()) . '@asdasdasd.rrrr';
         $phone = $customer['Телефон'] ?? '+7123' . rand(1, 99999999);
 
@@ -66,13 +65,13 @@ class ProcessCustomerData implements ShouldQueue
         $client->debt = $debt;
         $client->save();
 
-
-        if(($account = $this->accountRepository->checkAccountByNumber($customer['Идентификатор'])) == null){
+        if (($account = $this->accountRepository->checkAccountByNumber($customer['Идентификатор'])) == null) {
             $account = $this->createPersonalAccount($customer);
         }
-        $this->attachApartmentToAccount($apartment,$account);
-        $this->syncClientWithAccountWithoutDetaching($client,$account);
-        $this->isApartmentAlreadyAttachedToClient($client,$apartment) ?: $client->apartments()->sync($apartment, false);
+        $this->attachApartmentToAccount($apartment, $account);
+        $this->syncClientWithAccountWithoutDetaching($client, $account);
+        $this->isApartmentAlreadyAttachedToClient($client, $apartment) ?: $client->apartments()->sync($apartment, false);
+
     }
 
 
@@ -106,6 +105,9 @@ class ProcessCustomerData implements ShouldQueue
      */
     public function parseFloat($string)
     {
+        if ($string == '') {
+            return null;
+        }
         $string = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', ($string));
         return str_replace(',', '.', $string);
     }
@@ -173,9 +175,9 @@ class ProcessCustomerData implements ShouldQueue
         return $client;
     }
 
-    public function isApartmentAlreadyAttachedToClient($client,$apartment)
+    public function isApartmentAlreadyAttachedToClient($client, $apartment)
     {
-        if ($client->apartments()->where('apartments.id','=',$apartment->id)->count() > 0) {
+        if ($client->apartments()->where('apartments.id', '=', $apartment->id)->count() > 0) {
             return true;
         } else {
             return false;
@@ -213,8 +215,8 @@ class ProcessCustomerData implements ShouldQueue
      * @param AccountPersonalNumber|null $account
      * @return void
      */
-    private function syncClientWithAccountWithoutDetaching(?Client $client , ?AccountPersonalNumber $account): void
+    private function syncClientWithAccountWithoutDetaching(?Client $client, ?AccountPersonalNumber $account): void
     {
-        $client->accounts()->sync($account,false);
+        $client->accounts()->sync($account, false);
     }
 }
