@@ -87,8 +87,8 @@ ps: ## Shows containers status
 
 .PHONY: init
 init: ## Initialize project
-	make login
-	make pull
+	#make login
+	#make pull
 	make up
 	make composer-install
 	#make npm-install
@@ -123,7 +123,7 @@ composer-install: ## Runs `composer install`
 composer-dumpautoload: ## Runs `composer dumpautoload`
 	${COMPOSER} dumpautoload
 
-.PHONY: unit-test
+.PHONY: test
 test: ## Runs project tests
 	${PHP} ./vendor/bin/phpunit tests
 
