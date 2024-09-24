@@ -16,7 +16,7 @@ class HouseFactory extends Factory
             'city' => $this->faker->city(),
             'street' => $this->faker->streetName(),
             'number' => $this->faker->buildingNumber(),
-            'building' => $this->faker->word(),
+            'building' => $this->faker->randomNumber(),
         ];
     }
 }

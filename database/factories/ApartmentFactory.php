@@ -20,7 +20,6 @@ class ApartmentFactory extends Factory
             'gku_id' => $this->faker->unique()->numerify('GKU####'),
             'account_owner' => $this->faker->name(),
             'house_id' => House::factory(),
-            // Поле 'personal_number' будет установлено через связь 'for' в тестах
         ];
     }
 }
