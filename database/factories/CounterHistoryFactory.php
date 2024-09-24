@@ -16,6 +16,7 @@ class CounterHistoryFactory extends Factory
         return [
             'counter_name_id' => CounterData::factory(),
             'approved' => $this->faker->boolean(),
+            'from_1c' => $this->faker->boolean(),
             'daily_consumption' => $this->faker->randomFloat(2, 0, 1000),
             'night_consumption' => $this->faker->randomFloat(2, 0, 1000),
             'peak_consumption' => $this->faker->randomFloat(2, 0, 1000),

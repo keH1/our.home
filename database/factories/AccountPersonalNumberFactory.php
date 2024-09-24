@@ -15,7 +15,7 @@ class AccountPersonalNumberFactory extends Factory
     {
         return [
             'number' => $this->faker->unique()->numerify('APN#####'),
-            'apartment_id' => null, // Мы установим это поле позже, если потребуется
+            'apartment_id' => null,
         ];
     }
 }
