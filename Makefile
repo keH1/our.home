@@ -125,7 +125,7 @@ composer-dumpautoload: ## Runs `composer dumpautoload`
 
 .PHONY: test
 test: ## Runs project tests
-	${PHP} ./vendor/bin/phpunit tests
+	${ARTISAN} test
 
 ########################################################################################################################
 ### PHP Artisan Commands
