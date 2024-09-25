@@ -14,7 +14,7 @@ DOCKER_COMPOSE := docker compose \
 	--env-file="$(shell pwd)/.docker/production/.env" \
 	--progress=tty
 
-PHP := ${DOCKER_COMPOSE} run --rm -e XDEBUG_MODE=off php
+PHP := ${DOCKER_COMPOSE} run --rm -e XDEBUG_MODE=off app
 
 ARTISAN := ${PHP} php artisan
 
@@ -90,11 +90,11 @@ init: ## Initialize project
 	#make login
 	#make pull
 	make up
-	make composer-install
+	#make composer-install
 	#make npm-install
 	make artisan-key-generate
 	make artisan-migrate
-	make artisan-seed
+	#make artisan-seed
 	make artisan-storage-link
 	make down
 
