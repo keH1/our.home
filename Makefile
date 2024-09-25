@@ -1,7 +1,7 @@
 #!/usr/bin/env make
 # SHELL = sh -xv
 
-DOCKER_COMPOSE_DIR := $(shell pwd)/.docker/local
+DOCKER_COMPOSE_DIR := $(shell pwd)/.docker/production
 
 ifneq ("$(wildcard ${DOCKER_COMPOSE_DIR}/.env)","")
 	include $(DOCKER_COMPOSE_DIR)/.env
@@ -11,7 +11,7 @@ DOCKER_COMPOSE := docker compose \
 	--file="$(DOCKER_COMPOSE_DIR)/docker-compose.yml" \
 	--project-name="$(PROJECT_NAME)" \
 	--project-directory="$(shell pwd)" \
-	--env-file="$(shell pwd)/.docker/local/.env" \
+	--env-file="$(shell pwd)/.docker/production/.env" \
 	--progress=tty
 
 PHP := ${DOCKER_COMPOSE} run --rm -e XDEBUG_MODE=off php
@@ -58,7 +58,7 @@ pull: ## Pull images for local development from GitLab registry
 
 .PHONY: copy-envs
 copy-envs:
-	cp .docker/local/.env.example .docker/local/.env
+	cp .docker/production/.env.example .docker/production/.env
 	cp .env.example .env
 
 .PHONY: shell

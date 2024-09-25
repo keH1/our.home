@@ -1,0 +1,134 @@
+services:
+  traefik:
+    build:
+      context: .
+      dockerfile: .docker/production/traefik/Dockerfile
+    container_name: traefik
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.${TRAEFIK_RESOLVER_NAME}.acme.tlschallenge=true"
+      - "--certificatesresolvers.${TRAEFIK_RESOLVER_NAME}.acme.email=${TRAEFIK_CERTIFICATE_RESOLVER_EMAIL}"
+      - "--certificatesresolvers.${TRAEFIK_RESOLVER_NAME}.acme.storage=/letsencrypt/acme.json"
+    depends_on:
+      - nginx
+    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/${ENVIRONMENT_NAME}/traefik
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    hostname: "postgres.${PROJECT_DOMAIN}"
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - "db:/var/lib/postgresql/data"
+
+  app:
+    build:
+      context: .
+      dockerfile: .docker/production/php/Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      APP_ENV: ${APP_ENV}
+      POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    hostname: "app.${PROJECT_DOMAIN}"
+    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/${ENVIRONMENT_NAME}/app
+    labels:
+        - "traefik.enable=false"
+    restart: always
+    volumes:
+        - "storage:/var/www/html/storage"
+
+  app-scheduler:
+    build:
+      context: .
+      dockerfile: .docker/production/php/Dockerfile
+    environment:
+      PHP_FPM_POOL_NAME: "app_scheduler"
+      APP_ENV: ${APP_ENV}
+      POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - app
+    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/${ENVIRONMENT_NAME}/app_scheduler
+    command: ["php", "artisan", "schedule:work"]
+    labels:
+      - "traefik.enable=false"
+    restart: always
+    volumes:
+      - "storage:/var/www/html/storage"
+
+  app-queue:
+    build:
+      context: .
+      dockerfile: .docker/production/php/Dockerfile
+    environment:
+      PHP_FPM_POOL_NAME: "app_queue"
+      APP_ENV: ${APP_ENV}
+      POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - app
+    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/${ENVIRONMENT_NAME}/app_queue
+    command: ["php", "artisan", "queue:work"]
+    labels:
+      - "traefik.enable=false"
+    restart: always
+    volumes:
+      - "storage:/var/www/html/storage"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: .docker/production/nginx/Dockerfile
+    container_name: "nginx.${PROJECT_DOMAIN}"
+    depends_on:
+      - app
+    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/${ENVIRONMENT_NAME}/nginx
+    # https://jensknipper.de/blog/traefik-http-to-https-redirect/
+    labels:
+      - "traefik.http.routers.${TRAEFIK_ROUTER_PREFIX}-http.entrypoints=web"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_PREFIX}-http.rule=Host(`${PROJECT_DOMAIN}`)||Host(`${DOMAIN_NAME_API}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_PREFIX}-http.middlewares=${TRAEFIK_ROUTER_PREFIX}-https"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_PREFIX}-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_PREFIX}.entrypoints=websecure"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_PREFIX}.rule=Host(`${PROJECT_DOMAIN}`)||Host(`${DOMAIN_NAME_API}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_PREFIX}.tls=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_PREFIX}.tls.certresolver=${TRAEFIK_RESOLVER_NAME}"
+    ports:
+      - "1080:80"
+    restart: always
+    volumes:
+        - "storage:/var/www/html/storage"
+
+volumes:
+  storage:
+    name: ${DOCKER_VOLUME_NAME_STORAGE}
+    external: true
+  db:
+    name: ${DOCKER_DB_VOLUME_NAME_STORAGE}
+    external: true
