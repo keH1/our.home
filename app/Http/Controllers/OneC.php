@@ -26,7 +26,7 @@ class OneC extends Controller
 
     /**
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function counters(Request $request)
     {
@@ -34,5 +34,6 @@ class OneC extends Controller
         foreach ($counters as $counter) {
              ProcessCounterData::dispatch($counter);
         }
+        return response()->json(['message' => 'Counters queued for processing']);
     }
 }
