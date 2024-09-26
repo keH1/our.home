@@ -61,16 +61,17 @@ shell: ## Runs sh within php container
 
 .PHONY: logs
 logs: ## Shows logs of a service
+	$(eval SERVICE := $(filter-out $@,$(MAKECMDGOALS)))
 	@if [ "${SERVICE}" = "" ]; then \
-		SERVICE=$(filter-out $@,$(MAKECMDGOALS)); \
-	fi; \
-	if [ "${SERVICE}" = "" ]; then \
 		echo "Please specify a service. Usage: make logs [service_name]"; \
 		echo "Available services are:"; \
 		${DOCKER_COMPOSE} config --services; \
 	else \
 		${DOCKER_COMPOSE} logs -f ${SERVICE}; \
 	fi
+
+%:
+	@:
 
 .PHONY: up
 up: ## Spins up containers
@@ -124,6 +125,3 @@ artisan-cache-clear:
 .PHONY: artisan-storage-link
 artisan-storage-link:
 	@if [ ! -L "./public/storage" ]; then ${ARTISAN} storage:link; fi
-
-%:
-	@:
