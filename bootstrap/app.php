@@ -28,6 +28,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'rpc.api'=>RpcApiMiddleware::class,
             'one.c.api'=> OneCMiddleware::class
         ]);
+        $middleware->trustProxies(at: [
+            '172.18.0/16',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
