@@ -29,7 +29,7 @@ class CounterData extends Model
 
     public function histories(): HasMany
     {
-        return $this->hasMany(CounterHistory::class);
+        return $this->hasMany(CounterHistory::class,'counter_name_id');
     }
 
     public function clients(): BelongsToMany

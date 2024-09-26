@@ -5,6 +5,7 @@ use App\Http\Procedures\HouseProcedure;
 use App\Http\Procedures\UserProcedure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Procedures\CounterProcedure;
 
 
 Route::get('/user', function (Request $request) {
@@ -13,7 +14,7 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('v1')->as('v1:')->group(function () {
     Route::middleware(['rpc.api'])->group(function () {
-        Route::rpc('/jsonrpc', [UserProcedure::class, HouseProcedure::class]);
+        Route::rpc('/jsonrpc', [UserProcedure::class, HouseProcedure::class, CounterProcedure::class]);
     });
 
     //1C routes
