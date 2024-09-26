@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::middleware('api')
                  ->domain('api.nash-dom-96.ru')
                  ->group(base_path('routes/api.php'));
+
+            Route::middleware('web')
+                 ->domain('nash-dom-96.ru')
+                 ->group(base_path('routes/web.php'));
         },
         commands: __DIR__ . '/../routes/console.php',
     )
