@@ -9,10 +9,8 @@ endif
 
 DOCKER_COMPOSE := docker compose \
 	--file="$(DOCKER_COMPOSE_DIR)/docker-compose.yml" \
-	--project-name="$(PROJECT_NAME)" \
 	--project-directory="$(shell pwd)" \
-	--env-file="$(shell pwd)/.docker/production/.env" \
-	--progress=tty
+	--env-file="$(shell pwd)/.docker/production/.env"
 
 PHP := ${DOCKER_COMPOSE} run --rm -e XDEBUG_MODE=off app
 
@@ -60,6 +58,10 @@ copy-envs:
 .PHONY: shell
 shell: ## Runs sh within php container
 	${DOCKER_COMPOSE} exec app sh
+
+.PHONY: logs
+logs: ## Runs sh within php container
+	${DOCKER_COMPOSE} logs -f $(service)
 
 .PHONY: up
 up: ## Spins up containers
