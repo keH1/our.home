@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'one.c.api'=> OneCMiddleware::class
         ]);
         $middleware->trustProxies(at: [
-            '172.18.0/16',
+            '172.18.0.0/8',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
