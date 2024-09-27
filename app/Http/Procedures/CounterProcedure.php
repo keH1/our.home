@@ -57,7 +57,7 @@ class CounterProcedure extends Procedure
      * @param mixed $counter
      * @return CounterHistory
      */
-    private function createCounterHistory(mixed $counter): CounterHistory
+    private function createCounterHistory(mixed $counter): CounterHistory|null
     {
         $approved = false;
         $counterHistory = new CounterHistory();
@@ -78,9 +78,10 @@ class CounterProcedure extends Procedure
             $counterHistory->last_checked_date = Carbon::now();
             $counterHistory->approved = $approved;
             $counter->histories()->save($counterHistory);
+            return $counterHistory;
         }else{
             $this->nullValueCounters[] = $counter->id;
         }
-        return $counterHistory;
+        return null;
     }
 }
