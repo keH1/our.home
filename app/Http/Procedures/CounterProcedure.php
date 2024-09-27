@@ -79,9 +79,8 @@ class CounterProcedure extends Procedure
             $counterHistory->approved = $approved;
             $counter->histories()->save($counterHistory);
             return $counterHistory;
-        }else{
-            $this->nullValueCounters[] = $counter->id;
         }
+        $this->nullValueCounters[] = $counter->id;
         return null;
     }
 }
