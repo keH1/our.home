@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Procedures;
 
 use App\Models\User;
+use App\Services\ApiResponseBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,9 +24,10 @@ class UserProcedure extends Procedure
 
     /**
      * @param Request $request
+     * @param ApiResponseBuilder $responseBuilder
      * @return array
      */
-    public function register(Request $request): array
+    public function register(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $params = json_decode($request->getContent(), true)['params'];
         $validatorRules = [
@@ -46,33 +48,36 @@ class UserProcedure extends Procedure
         $user->save();
         $token = $user->createToken($params['password'])->plainTextToken;
 
-        return ['token' => $token];
+        return $responseBuilder->setData(['token' => $token])->build();
     }
 
 
     /**
      * @param Request $request
+     * @param ApiResponseBuilder $responseBuilder
      * @return array|string[]
      */
-    public function login(Request $request): array
+    public function login(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $user = User::where('phone', $request['phone'])->first();
         if (!$user || !Hash::check($request['password'], $user->password)) {
             return ['error' => 'The provided credentials are incorrect.'];
         }
 
-        return ['token' => $user->createToken('AuthToken')->plainTextToken];
+        return $responseBuilder->setData(['token' => $user->createToken('AuthToken')->plainTextToken])->build();
     }
+
 
     /**
      * @param Request $request
-     * @return array
+     * @param ApiResponseBuilder $responseBuilder
+     * @return array|string[]
      */
-    public function getUserData(Request $request): array
+    public function getUserData(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $userData = auth()->user()->with('client')->first();
         $apartments = $userData->client?->apartments()->get();
-        if($apartments == null) return ['warning'=>"The client doesn't have an apartment yet"];
+        if ($apartments == null) return ['warning' => "The client doesn't have an apartment yet"];
         $response = [
             "name" => $userData->name,
             "email" => $userData->email,
@@ -80,14 +85,16 @@ class UserProcedure extends Procedure
         ];
         $response['apartments'] = $apartments->pluck('id');
 
-        return $response;
+        return $responseBuilder->setData($response)->build();
     }
+
 
     /**
      * @param Request $request
-     * @return array
+     * @param ApiResponseBuilder $responseBuilder
+     * @return string[]
      */
-    public function changePassword(Request $request): array
+    public function changePassword(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $user = auth()->user();
 
@@ -99,22 +106,25 @@ class UserProcedure extends Procedure
         }
         $user->password = $request['new_password'];
         $user->save();
-
-        return ['status' => 'Password was changed'];
+        return $responseBuilder->setData([])->setMessage('Password was changed')->build();
     }
 
 
     /**
      * @param Request $request
+     * @param ApiResponseBuilder $responseBuilder
      * @return string[]
      */
-    public function logout(Request $request): array
+    public function logout(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         auth()->user()->tokens()->delete();
-
-        return ['status' => 'You are logged out'];
+        return $responseBuilder->setData([])->setMessage('You are logged out')->build();
     }
 
+    /**
+     * @param Request $request
+     * @return true
+     */
     public function ping(Request $request): true
     {
         return true;
