@@ -13,4 +13,5 @@ enum RpcApiMapper: string
     case GET_ALL_STREETS = 'house_procedure@getAllStreets';
     case GET_HOUSE_BY_STREET = 'house_procedure@getHousesByStreet';
     case GET_APARTMENTS_WITH_COUNTERS = 'house_procedure@getApartmentsWithCounters';
+    case SEND_COUNTERS_DATA = 'counter_procedure@acceptHouseCounters';
 }
