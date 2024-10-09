@@ -125,6 +125,23 @@ services:
     volumes:
         - "storage:/var/www/html/storage"
 
+  web:
+    build:
+      context: .
+      dockerfile: .docker/production/web/Dockerfile
+    depends_on:
+      - traefik
+    environment:
+      - NODE_ENV=${APP_ENV}
+    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/${ENVIRONMENT_NAME}/web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`crm.${PROJECT_DOMAIN}`)"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.routers.web.tls=true"
+      - "traefik.http.routers.web.tls.certresolver=${TRAEFIK_RESOLVER_NAME}"
+    restart: always
+
 volumes:
   storage:
     name: ${DOCKER_VOLUME_NAME_STORAGE}
