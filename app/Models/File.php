@@ -10,6 +10,11 @@ class File extends Model
 {
     use HasFactory;
 
+    protected $hidden = [
+        'fileable_type',
+        'fileable_id',
+    ];
+
     protected $fillable = [
         'original_name',
         'encoded_name',

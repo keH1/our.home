@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::table('claims', function (Blueprint $table) {
             $table->string('type')->after('id');
-            $table->string('status')->after('is_active');
+            $table->string('status')->after('is_active')->default('pending');
             $table->unsignedBigInteger('paid_service_id')->nullable()->after('category_id');
 
             $table->foreign('paid_service_id')
