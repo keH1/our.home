@@ -44,13 +44,34 @@ class CounterData extends Model
 
     public function latestConfirmedHistory(): HasOne
     {
-        return $this->hasOne(CounterHistory::class, 'counter_name_id')
-                    ->where('from_1c', true)
-                    ->whereBetween('last_checked_date', [
-                        now()->subMonth()->startOfMonth(),
-                        now()->subMonth()->endOfMonth()
-                    ])
-                    ->latest('last_checked_date');
+        $currentMonthStart = now()->startOfMonth();
+        $currentMonthEnd = now()->endOfMonth();
+        $previousMonthStart = now()->subMonth()->startOfMonth();
+        $previousMonthEnd = now()->subMonth()->endOfMonth();
+
+        return $this->hasOne(CounterHistory::class, 'counter_name_id')->where(
+                function ($query) use ($currentMonthStart, $currentMonthEnd, $previousMonthStart, $previousMonthEnd) {
+                    $query->where(function ($subQuery) use ($currentMonthStart, $currentMonthEnd) {
+                        $subQuery->where('from_1c', false)->where('approved', true)->whereBetween(
+                                'last_checked_date',
+                                [$currentMonthStart, $currentMonthEnd]
+                            );
+                    })->orWhere(function ($subQuery) use ($previousMonthStart, $previousMonthEnd) {
+                            $subQuery->where('from_1c', true)->whereBetween(
+                                    'last_checked_date',
+                                    [$previousMonthStart, $previousMonthEnd]
+                                );
+                        });
+                }
+            )->orderByRaw(
+                "
+                    CASE
+                        WHEN from_1c = false AND approved = true THEN 0
+                        WHEN from_1c = true THEN 1
+                        ELSE 2
+                    END
+                "
+            )->latest('last_checked_date');
     }
 
     public function latestUnconfirmedHistory()
