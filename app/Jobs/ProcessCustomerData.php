@@ -41,7 +41,11 @@ class ProcessCustomerData implements ShouldQueue
         $customer = $this->customer;
         $customer['Задолженность'] == null ? $debt = 0 : $debt = $this->parseFloat($customer['Задолженность']);
         $email = $customer['АдресЭлектроннойПочты'] ?? str()->random(5) . sha1(time()) . '@asdasdasd.rrrr';
-        $phone = $customer['Телефон'] ?? '+7123' . rand(1, 99999999);
+        $phone = '+7123' . rand(1, 99999999);
+        if($customer['Телефон'] !== null){
+            preg_match('/9[0-9]{1,9}/',$customer['Телефон'],$matches);
+            $phone = $matches[0];
+        }
 
         if (($house = $this->houseExistence($customer)) !== null) {
 

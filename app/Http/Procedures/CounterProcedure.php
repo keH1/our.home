@@ -10,6 +10,7 @@ use App\Models\CounterHistory;
 use App\Services\ApiResponseBuilder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 
 
@@ -26,6 +27,11 @@ class CounterProcedure extends Procedure
     public static string $name = 'counter_procedure';
 
     /**
+     * @var bool
+     */
+    private bool $fromCRM;
+
+    /**
      * todo лог на $nullValueCounters
      * todo лог на $notFoundCounters
      * @param Request $request
@@ -34,13 +40,18 @@ class CounterProcedure extends Procedure
     public function acceptHouseCounters(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $params = collect(json_decode($request->getContent(), true)['params']);
-        $counterIDs = $params->map(function ($counter) {
+        $countersData = $params['counters_data'];
+        if (!isset($params['from_crm'])){
+            throw new InvalidParams(['message'=>"field 'from_crm' is empty"]);
+        }
+        count($params['from_crm']) > 0 && $params['from_crm'] === true ? $this->fromCRM = true:  $this->fromCRM = false;
+        $counterIDs = $countersData->map(function ($counter) {
             $this->mapArr[$counter['counter_id']] = $counter;
             return $counter['counter_id'];
         })->toArray();
         $toUpdateCounters = CounterData::with('histories')->whereIn('id', $counterIDs)->get();
         if ($toUpdateCounters->isEmpty()) {
-            return $responseBuilder->setData([])->setMessage("You are sending empty ids / this ids doe's not exist")->build();
+            throw new InvalidParams(['message'=>"You are sending empty ids / this ids doe's not exist"]);
         }
         $foundCounters = [];
         foreach ($toUpdateCounters as $counter) {
@@ -59,24 +70,24 @@ class CounterProcedure extends Procedure
      */
     private function createCounterHistory(mixed $counter): CounterHistory|null
     {
-        $approved = false;
+        $canCreate = false;
         $counterHistory = new CounterHistory();
         if ($this->mapArr[$counter->id]['daily_consumption'] != null) {
             $counterHistory->daily_consumption = $this->mapArr[$counter->id]['daily_consumption'];
-            $approved = true;
+            $canCreate = true;
         }
         if ($this->mapArr[$counter->id]['night_consumption'] != null) {
             $counterHistory->night_consumption = $this->mapArr[$counter->id]['night_consumption'];
-            $approved = true;
+            $canCreate = true;
         }
         if ($this->mapArr[$counter->id]['peak_consumption'] != null) {
             $counterHistory->peak_consumption = $this->mapArr[$counter->id]['peak_consumption'];
-            $approved = true;
+            $canCreate = true;
         }
-        if ($approved) {
+        if ($canCreate) {
+            $counterHistory->approved = $this->fromCRM;
             $counterHistory->from_1c = false;
             $counterHistory->last_checked_date = Carbon::now();
-            $counterHistory->approved = $approved;
             $counter->histories()->save($counterHistory);
             return $counterHistory;
         }
