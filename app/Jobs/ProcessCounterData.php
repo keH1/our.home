@@ -42,6 +42,7 @@ class ProcessCounterData implements ShouldQueue
     public function handle(): void
     {
         $counter = $this->counter;
+        $counter['ВидУслуги'] = trim($counter['ВидУслуги']);
         if (!$this->counterRepository->checkCounterType($counter['ВидУслуги'])) {
             throw new \Exception('Данный вид счетчика не найден');
         }

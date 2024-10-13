@@ -45,7 +45,7 @@ class CounterData extends Model
     public function latestConfirmedHistory(): HasOne
     {
         return $this->hasOne(CounterHistory::class, 'counter_name_id')
-                    ->where('approved', true)
+                    ->where('from_1c', true)
                     ->whereBetween('last_checked_date', [
                         now()->subMonth()->startOfMonth(),
                         now()->subMonth()->endOfMonth()
