@@ -43,7 +43,9 @@ class ProcessCustomerData implements ShouldQueue
         $email = $customer['АдресЭлектроннойПочты'] ?? str()->random(5) . sha1(time()) . '@asdasdasd.rrrr';
         $phone = '123' . rand(1, 99999999);
         if($customer['Телефон'] !== null){
-            preg_match('/9[0-9]{1,9}/',$customer['Телефон'],$matches);
+            $tel = trim($customer['Телефон']);
+            $tel = preg_replace('/[^0-9]/', '', $tel);
+            preg_match('/9[0-9]{1,9}/',$tel,$matches);
             $phone = $matches[0];
         }
 
