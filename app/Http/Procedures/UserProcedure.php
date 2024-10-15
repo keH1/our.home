@@ -75,7 +75,7 @@ class UserProcedure extends Procedure
      */
     public function getUserData(Request $request, ApiResponseBuilder $responseBuilder): array
     {
-        $userData = auth()->user()->with('client')->first();
+        $userData = auth('sanctum')->user();
         $apartments = $userData->client?->apartments()->get();
         if ($apartments == null) return ['warning' => "The client doesn't have an apartment yet"];
         $response = [
@@ -96,7 +96,7 @@ class UserProcedure extends Procedure
      */
     public function changePassword(Request $request, ApiResponseBuilder $responseBuilder): array
     {
-        $user = auth()->user();
+        $user = auth('sanctum')->user();
 
         if (Hash::check($request['new_password'], $user->password)) {
             return ['warning' => 'Same password'];
@@ -117,7 +117,7 @@ class UserProcedure extends Procedure
      */
     public function logout(Request $request, ApiResponseBuilder $responseBuilder): array
     {
-        auth()->user()->tokens()->delete();
+        auth('sanctum')->user()->tokens()->delete();
         return $responseBuilder->setData([])->setMessage('You are logged out')->build();
     }
 
