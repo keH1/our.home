@@ -130,6 +130,9 @@ class HouseProcedure extends Procedure
                     return [
                         'counter_id' => $counter->id, 'counter_number' => $counter->number,
                         'counter_type' => $counter->counter_type,
+                        'verification_to' => $counter->verification_to,
+                        'apartment_id' => $counter->apartment_id,
+                        'personal_number' => $counter->personal_number,
                         'confirmed_history' => $counter->latestConfirmedHistory ? [
                             'daily_consumption' => $counter->latestConfirmedHistory->daily_consumption,
                             'night_consumption' => $counter->latestConfirmedHistory->night_consumption,
