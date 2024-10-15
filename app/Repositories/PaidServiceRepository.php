@@ -36,7 +36,8 @@ class PaidServiceRepository
         $paidService->category_id = $data['category_id'];
 
         if ($this->checkPriceType($data['price_type'])) {
-            $paidService->price_type = PriceType::{strtoupper($data['price_type'])}?->value;
+            $paidService->price_type = PriceType::{
+                strtoupper($data['price_type'])}?->value;
         }
         return $paidService;
     }
@@ -49,22 +50,25 @@ class PaidServiceRepository
     public function updatePaidService(Collection $data, PaidService $service): false|PaidService|null
     {
         $paidService = $service;
-        Validator::make($data, [
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required',
-            'category_id' => 'required',
-        ])->validate();
-        $paidService->name = $data['name'];
-        $paidService->description = $data['description'];
-        $paidService->price = $data['price'];
-        if (PaidServiceCategory::query()->find($data['category_id']) == null) {
-            throw new InvalidParams(['message' => 'Category id was not found']);
+        if ($data['name'] !== '') {
+            $paidService->name = $data['name'];
         }
-        $paidService->category_id = $data['category_id'];
-
-        if ($this->checkPriceType($data['price_type'])) {
-            $paidService->price_type = PriceType::{strtoupper($data['price_type'])}?->value;
+        if ($data['description'] !== '') {
+            $paidService->description = $data['description'];
+        }
+        if ($data['price'] !== '') {
+            $paidService->price = $data['price'];
+        }
+        if ($data['category_id'] !== '') {
+            if (PaidServiceCategory::query()->find($data['category_id']) == null) {
+                throw new InvalidParams(['message' => 'Category id was not found']);
+            }
+            $paidService->category_id = $data['category_id'];
+        }
+        if ($data['price_type'] !== '') {
+            if ($this->checkPriceType($data['price_type'])) {
+                $paidService->price_type = PriceType::{strtoupper($data['price_type'])}?->value;
+            }
         }
         $paidService->save();
         return $paidService;
