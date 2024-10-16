@@ -26,7 +26,7 @@ class PaidServiceCategoryProcedure extends Procedure
 
         $categoryName = $data['name'];
         $paidCategory = $paidServiceRepository->createPaidCategory($categoryName);
-        if ($data['image'] !== null) {
+        if (strlen($data['image']) > 0) {
             $baseData = $data['image'];
             $fileName = $data['original_file_name'];
             $fileRepository->setUploadSubDir('paid_services/');
