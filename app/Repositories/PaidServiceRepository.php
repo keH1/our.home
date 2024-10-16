@@ -100,4 +100,12 @@ class PaidServiceRepository
 
         return $paidServiceCategory;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getAllPaidCategories(): Collection
+    {
+        return PaidServiceCategory::all(['id', 'name']);
+    }
 }
