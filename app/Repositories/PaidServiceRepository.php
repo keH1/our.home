@@ -21,7 +21,7 @@ class PaidServiceRepository
     public function createPaidServiceObj(Collection $data, PaidService $service = null): false|PaidService|null
     {
         $paidService = new PaidService();
-        Validator::make($data, [
+        Validator::make($data->toArray(), [
             'name' => 'required',
             'description' => 'required',
             'price' => 'required',
