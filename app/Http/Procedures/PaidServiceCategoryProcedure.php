@@ -36,4 +36,17 @@ class PaidServiceCategoryProcedure extends Procedure
 
         return $responseBuilder->setData(['paid_category_id' => $paidCategory->id])->setMessage("Paid service category was created successfully")->build();
     }
+
+    /**
+     * @param Request $request
+     * @param ApiResponseBuilder $responseBuilder
+     * @param PaidServiceRepository $paidServiceRepository
+     * @return array
+     */
+    public function getPaidServiceCategories(Request $request, ApiResponseBuilder $responseBuilder, PaidServiceRepository $paidServiceRepository): array
+    {
+        $categories = $paidServiceRepository->getAllPaidCategories();
+
+        return $responseBuilder->setData($categories)->setMessage("Paid service categories retrieved successfully")->build();
+    }
 }
