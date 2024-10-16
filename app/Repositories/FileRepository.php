@@ -71,7 +71,7 @@ class FileRepository
      */
     public function getFileTypeFromFileName(string $fileName): string
     {
-        preg_match('/[a-z]+$/', $fileName, $matches);
+        preg_match('/[a-z|A-Z]+$/', $fileName, $matches);
         return $matches[0];
     }
 
