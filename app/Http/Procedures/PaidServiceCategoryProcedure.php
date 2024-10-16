@@ -23,15 +23,17 @@ class PaidServiceCategoryProcedure extends Procedure
     public function createPaidServiceCategory(Request $request, ApiResponseBuilder $responseBuilder, FileRepository $fileRepository, PaidServiceRepository $paidServiceRepository): array
     {
         $data = collect(json_decode($request->getContent(), true)['params']);
+
         $categoryName = $data['name'];
-        $baseData = $data['image'];
-        $fileName = $data['original_file_name'];
-        $fileRepository->setUploadSubDir('paid_services/');
-        $fileObj = $fileRepository->uploadFileToStorage($fileName,$baseData);
         $paidCategory = $paidServiceRepository->createPaidCategory($categoryName);
-        $paidCategory->file()->save($fileObj);
+        if ($data['image'] !== null) {
+            $baseData = $data['image'];
+            $fileName = $data['original_file_name'];
+            $fileRepository->setUploadSubDir('paid_services/');
+            $fileObj = $fileRepository->uploadFileToStorage($fileName, $baseData);
+            $paidCategory->file()->save($fileObj);
+        }
 
         return $responseBuilder->setData(['paid_category_id' => $paidCategory->id])->setMessage("Paid service category was created successfully")->build();
-
     }
 }
