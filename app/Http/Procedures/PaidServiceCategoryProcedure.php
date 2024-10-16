@@ -46,15 +46,7 @@ class PaidServiceCategoryProcedure extends Procedure
     public function getPaidServiceCategories(Request $request, ApiResponseBuilder $responseBuilder, PaidServiceRepository $paidServiceRepository): array
     {
         $categories = $paidServiceRepository->getAllPaidCategories();
-        $formattedCategories = $categories->map(function ($category) {
-            return [
-                'id' => $category->id,
-                'name' => $category->name,
-                'original_file_name' => $category->file ? $category->file->original_name : null,
-                'image' => $category->file ? $category->file->path : null,
-            ];
-        });
 
-        return $responseBuilder->setData($formattedCategories)->setMessage("Paid service categories retrieved successfully")->build();
+        return $responseBuilder->setData($categories)->setMessage("Paid service categories retrieved successfully")->build();
     }
 }

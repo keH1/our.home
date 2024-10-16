@@ -106,6 +106,6 @@ class PaidServiceRepository
      */
     public function getAllPaidCategories(): Collection
     {
-        return PaidServiceCategory::all(['id', 'name']);
+        return PaidServiceCategory::with(['file:id,original_name,path,fileable_id,fileable_type'])->select('id', 'name')->get();
     }
 }
