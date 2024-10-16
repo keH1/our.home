@@ -1,0 +1,3730 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/jsonrpc": {
+      "post": {
+        "summary": "Entrypoint",
+        "operationId": "entrypoint_api_v1_jsonrpc_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response"
+                }
+              }
+            }
+          },
+          "210": {
+            "description": "[-32602] Invalid params\n\nInvalid method parameter(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_ErrorResponse[InvalidParams]"
+                }
+              }
+            }
+          },
+          "211": {
+            "description": "[-32601] Method not found\n\nThe method does not exist / is not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_ErrorResponse[MethodNotFound]"
+                }
+              }
+            }
+          },
+          "212": {
+            "description": "[-32700] Parse error\n\nInvalid JSON was received by the server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_ErrorResponse[ParseError]"
+                }
+              }
+            }
+          },
+          "213": {
+            "description": "[-32600] Invalid Request\n\nThe JSON sent is not a valid Request object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_ErrorResponse[InvalidRequest]"
+                }
+              }
+            }
+          },
+          "214": {
+            "description": "[-32603] Internal error\n\nInternal JSON-RPC error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_ErrorResponse[InternalError]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jsonrpc/login": {
+      "post": {
+        "tags": [
+          "Авторизация"
+        ],
+        "summary": "Авторизация",
+        "operationId": "login_api_v1_jsonrpc_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[login]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[login]"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jsonrpc/change_password": {
+      "post": {
+        "tags": [
+          "Авторизация"
+        ],
+        "summary": "Изменения пароля",
+        "operationId": "change_password_api_v1_jsonrpc_change_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[change_password]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[change_password]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/ping": {
+      "post": {
+        "tags": [
+          "Авторизация"
+        ],
+        "summary": "Проверка доступности сервиса и сессии пользователя",
+        "operationId": "ping_api_v1_jsonrpc_ping_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[ping]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[ping]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/get_user_data": {
+      "post": {
+        "tags": [
+          "Авторизация"
+        ],
+        "summary": "Получить Инфо о пользователе",
+        "operationId": "get_user_data_api_v1_jsonrpc_get_user_data_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[get_user_data]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[get_user_data]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/create_claim": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Создать заявку",
+        "operationId": "create_claim_api_v1_jsonrpc_create_claim_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[create_claim]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[create_claim]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/get_active_claims": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Активные заявки",
+        "operationId": "get_active_claims_api_v1_jsonrpc_get_active_claims_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[get_active_claims]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[get_active_claims]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/get_finished_claims": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Выполненные заявки",
+        "operationId": "get_finished_claims_api_v1_jsonrpc_get_finished_claims_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[get_finished_claims]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[get_finished_claims]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/get_claim_data": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Подробная информация о заявке",
+        "operationId": "get_claim_data_api_v1_jsonrpc_get_claim_data_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[get_claim_data]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[get_claim_data]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/send_claim_callback": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Отправить отзыв о заявке",
+        "operationId": "send_claim_callback_api_v1_jsonrpc_send_claim_callback_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[send_claim_callback]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[send_claim_callback]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/send_claim_chat_message": {
+      "post": {
+        "tags": [
+          "Заявки"
+        ],
+        "summary": "Отправить сообщение в чат заявки",
+        "operationId": "send_claim_chat_message_api_v1_jsonrpc_send_claim_chat_message_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[send_claim_chat_message]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[send_claim_chat_message]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/get_house_data": {
+      "post": {
+        "tags": [
+          "Приборы учета"
+        ],
+        "summary": "Получить инфо о доме",
+        "operationId": "get_house_data_api_v1_jsonrpc_get_house_data_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[get_house_data]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[get_house_data]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/get_counters": {
+      "post": {
+        "tags": [
+          "Приборы учета"
+        ],
+        "summary": "Получить приборы учёта",
+        "operationId": "get_counters_api_v1_jsonrpc_get_counters_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[get_counters]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[get_counters]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/get_counters_history": {
+      "post": {
+        "tags": [
+          "Приборы учета"
+        ],
+        "summary": "История показаний приборов учета",
+        "operationId": "get_counters_history_api_v1_jsonrpc_get_counters_history_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[get_counters_history]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[get_counters_history]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/send_counters_data": {
+      "post": {
+        "tags": [
+          "Приборы учета"
+        ],
+        "summary": "Отправить показания счетчиков",
+        "operationId": "send_counters_data_api_v1_jsonrpc_send_counters_data_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[send_counters_data]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[send_counters_data]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/get_notifications_list": {
+      "post": {
+        "tags": [
+          "Уведомления"
+        ],
+        "summary": "Список уведомлений",
+        "operationId": "get_notifications_list_api_v1_jsonrpc_get_notifications_list_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[get_notifications_list]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[get_notifications_list]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/set_notifications_is_read": {
+      "post": {
+        "tags": [
+          "Уведомления"
+        ],
+        "summary": "Отметить уведомления как прочитанные",
+        "operationId": "set_notifications_is_read_api_v1_jsonrpc_set_notifications_is_read_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[set_notifications_is_read]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[set_notifications_is_read]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/set_notification_is_read": {
+      "post": {
+        "tags": [
+          "Уведомления"
+        ],
+        "summary": "Отметить уведомление как прочитанное",
+        "operationId": "set_notification_is_read_api_v1_jsonrpc_set_notification_is_read_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[set_notification_is_read]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[set_notification_is_read]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/jsonrpc/get_new_notifications_counter": {
+      "post": {
+        "tags": [
+          "Уведомления"
+        ],
+        "summary": "Количество непрочитанных уведомлений",
+        "operationId": "get_new_notifications_counter_api_v1_jsonrpc_get_new_notifications_counter_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/_Request[get_new_notifications_counter]"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_Response[get_new_notifications_counter]"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/document/customers/": {
+      "post": {
+        "tags": [
+          "Интеграции"
+        ],
+        "summary": "Add Customers Info 1C",
+        "operationId": "add_customers_info_1c_api_v1_document_customers__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/Customer1cBase"
+                },
+                "type": "array",
+                "title": "Customers"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBasic": []
+          }
+        ]
+      }
+    },
+    "/api/v1/document/customers": {
+      "post": {
+        "tags": [
+          "Интеграции"
+        ],
+        "summary": "Add Customers Info 1C",
+        "operationId": "add_customers_info_1c_api_v1_document_customers_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/Customer1cBase"
+                },
+                "type": "array",
+                "title": "Customers"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBasic": []
+          }
+        ]
+      }
+    },
+    "/api/v1/document/counters/": {
+      "post": {
+        "tags": [
+          "Данные Счетчиков"
+        ],
+        "summary": "Add Counter Info 1C",
+        "operationId": "add_counter_info_1c_api_v1_document_counters__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/Counter1cBase"
+                },
+                "type": "array",
+                "title": "Counters Data"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBasic": []
+          }
+        ]
+      }
+    },
+    "/api/v1/document/counters": {
+      "post": {
+        "tags": [
+          "Данные Счетчиков"
+        ],
+        "summary": "Add Counter Info 1C",
+        "operationId": "add_counter_info_1c_api_v1_document_counters_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/Counter1cBase"
+                },
+                "type": "array",
+                "title": "Counters Data"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBasic": []
+          }
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Главная страница, перенаправляет на Swagger UI",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClaimCallbackCreate": {
+        "properties": {
+          "claim_id": {
+            "type": "integer",
+            "title": "Claim Id",
+            "examples": [
+              123
+            ]
+          },
+          "rating": {
+            "type": "string",
+            "title": "Rating",
+            "examples": [
+              "like"
+            ]
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "examples": [
+              "Быстро и качественно!"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "claim_id",
+          "rating"
+        ],
+        "title": "ClaimCallbackCreate"
+      },
+      "ClaimData": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "examples": [
+              123
+            ]
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "examples": [
+              true
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "examples": [
+              "2024-04-12T03:56:24.380952Z"
+            ]
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At",
+            "examples": [
+              "2024-04-12T03:56:24.380952Z"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "text",
+          "is_active",
+          "created_at"
+        ],
+        "title": "ClaimData"
+      },
+      "ClaimInDBBase": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "examples": [
+              "Утечка воды"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "examples": [
+              "В ванной комнате постоянно капает вода из под раковины."
+            ]
+          },
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "examples": [
+              123
+            ]
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "examples": [
+              true
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "examples": [
+              "2023-01-02T15:00:00"
+            ]
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At",
+            "examples": [
+              "2023-01-02T15:00:00"
+            ]
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rating",
+            "examples": [
+              "Like"
+            ]
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "examples": [
+              "Все классно и быстро"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "text",
+          "id",
+          "is_active",
+          "created_at"
+        ],
+        "title": "ClaimInDBBase"
+      },
+      "ClaimMessageCreate": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "examples": [
+              "Спасибо за оперативность!"
+            ]
+          },
+          "claim_id": {
+            "type": "integer",
+            "title": "Claim Id",
+            "examples": [
+              123
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "claim_id"
+        ],
+        "title": "ClaimMessageCreate"
+      },
+      "ClaimUpdate": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "examples": [
+              "Электрика"
+            ]
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text",
+            "examples": [
+              "Перегорела лампочка в коридоре."
+            ]
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active",
+            "examples": [
+              true
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ClaimUpdate"
+      },
+      "ClintApartmentInfo": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Полное имя клиента",
+            "examples": [
+              "Иван Иванов"
+            ]
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "Электронная почта клиента",
+            "examples": [
+              "ivanov@example.com"
+            ]
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone",
+            "description": "Телефонный номер клиента",
+            "examples": [
+              "+71234567890"
+            ]
+          },
+          "apartments": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Apartments",
+            "examples": [
+              1,
+              2
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "apartments"
+        ],
+        "title": "ClintApartmentInfo"
+      },
+      "Counter1cBase": {
+        "properties": {
+          "ИдентификаторЛС": {
+            "type": "string",
+            "title": "Идентификаторлс",
+            "examples": [
+              "UKND3157"
+            ]
+          },
+          "Идентификатор": {
+            "type": "string",
+            "title": "Идентификатор",
+            "examples": [
+              "UKND00002567"
+            ]
+          },
+          "ПричинаОтключения": {
+            "type": "string",
+            "title": "Причинаотключения",
+            "examples": [
+              ""
+            ]
+          },
+          "НомерПломбы": {
+            "type": "string",
+            "title": "Номерпломбы",
+            "examples": [
+              ""
+            ]
+          },
+          "ДатаНачала": {
+            "type": "string",
+            "title": "Датаначала",
+            "examples": [
+              "25.03.2024 0:00:00"
+            ]
+          },
+          "ДатаПоверки": {
+            "type": "string",
+            "title": "Датаповерки",
+            "examples": [
+              "25.03.2024 19:03:31"
+            ]
+          },
+          "ДневноеПоказание": {
+            "type": "string",
+            "title": "Дневноепоказание",
+            "examples": [
+              ""
+            ]
+          },
+          "НочноеПоказание": {
+            "type": "string",
+            "title": "Ночноепоказание",
+            "examples": [
+              "7 632"
+            ]
+          },
+          "ПиковоеПоказание": {
+            "type": "string",
+            "title": "Пиковоепоказание",
+            "examples": [
+              "0"
+            ]
+          },
+          "ДатаПоказаний": {
+            "type": "string",
+            "title": "Датапоказаний",
+            "examples": [
+              "25.03.2024 0:00:00"
+            ]
+          },
+          "ВидУслуги": {
+            "type": "string",
+            "title": "Видуслуги",
+            "examples": [
+              "Электроэнергия"
+            ]
+          },
+          "ЗаводскойНомер": {
+            "type": "string",
+            "title": "Заводскойномер",
+            "examples": [
+              ""
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "ИдентификаторЛС",
+          "Идентификатор",
+          "ПричинаОтключения",
+          "НомерПломбы",
+          "ДатаНачала",
+          "ДатаПоверки",
+          "ДневноеПоказание",
+          "НочноеПоказание",
+          "ПиковоеПоказание",
+          "ДатаПоказаний",
+          "ВидУслуги",
+          "ЗаводскойНомер"
+        ],
+        "title": "Counter1cBase"
+      },
+      "CounterDataCreate": {
+        "properties": {
+          "number": {
+            "type": "string",
+            "title": "Number",
+            "description": "Номер счетчика",
+            "examples": [
+              "12345"
+            ]
+          },
+          "daily_consumption": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Consumption",
+            "description": "Дневное показание счетчика",
+            "examples": [
+              100
+            ]
+          },
+          "night_consumption": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Night Consumption",
+            "description": "Ночное показание счетчика",
+            "examples": [
+              95.3
+            ]
+          },
+          "peak_consumption": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Peak Consumption",
+            "description": "Пиковое показание счетчика",
+            "examples": [
+              0
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "number"
+        ],
+        "title": "CounterDataCreate"
+      },
+      "CounterHistoryBase": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "Идентификатор записи истории"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Название счетчика"
+          },
+          "number": {
+            "type": "string",
+            "title": "Number",
+            "description": "Номер счетчика",
+            "examples": [
+              "12345"
+            ]
+          },
+          "daily_consumption": {
+            "type": "number",
+            "title": "Daily Consumption",
+            "description": "Дневное показание счетчика",
+            "examples": [
+              100
+            ]
+          },
+          "night_consumption": {
+            "type": "number",
+            "title": "Night Consumption",
+            "description": "Ночное показание счетчика",
+            "examples": [
+              100
+            ]
+          },
+          "peak_consumption": {
+            "type": "number",
+            "title": "Peak Consumption",
+            "description": "Пиковое показание счетчика",
+            "examples": [
+              100
+            ]
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "Дата создания записи"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "number",
+          "daily_consumption",
+          "night_consumption",
+          "peak_consumption",
+          "created_at"
+        ],
+        "title": "CounterHistoryBase"
+      },
+      "CounterNameData": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "Идентификатор записи истории"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Название счетчика"
+          },
+          "number": {
+            "type": "string",
+            "title": "Number",
+            "description": "Номер счетчика",
+            "examples": [
+              "12345"
+            ]
+          },
+          "verification_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verification To",
+            "description": "Дата окончания поверки"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "number"
+        ],
+        "title": "CounterNameData"
+      },
+      "Customer1cBase": {
+        "properties": {
+          "Город": {
+            "type": "string",
+            "title": "Город",
+            "examples": [
+              "Первоуральск г"
+            ]
+          },
+          "Улица": {
+            "type": "string",
+            "title": "Улица",
+            "examples": [
+              "Береговая ул"
+            ]
+          },
+          "Дом": {
+            "type": "string",
+            "title": "Дом",
+            "examples": [
+              "80"
+            ]
+          },
+          "Корпус": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Корпус",
+            "examples": [
+              "1k"
+            ]
+          },
+          "Задолженность": {
+            "type": "string",
+            "title": "Задолженность",
+            "examples": [
+              "5 341,49"
+            ]
+          },
+          "Помещение": {
+            "type": "string",
+            "title": "Помещение",
+            "examples": [
+              "Кв. 2"
+            ]
+          },
+          "АдресЭлектроннойПочты": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Адресэлектроннойпочты",
+            "examples": [
+              ""
+            ]
+          },
+          "Телефон": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Телефон",
+            "examples": [
+              ""
+            ]
+          },
+          "Идентификатор": {
+            "type": "string",
+            "title": "Идентификатор",
+            "examples": [
+              "UKND3157"
+            ]
+          },
+          "ИдентификаторЖКУ": {
+            "type": "string",
+            "title": "Идентификаторжку",
+            "examples": [
+              "00МА661622-07"
+            ]
+          },
+          "ЕдиныйЛицевойСчет": {
+            "type": "string",
+            "title": "Единыйлицевойсчет",
+            "examples": [
+              "00МА661622"
+            ]
+          },
+          "ОтветственныйВладелец": {
+            "type": "string",
+            "title": "Ответственныйвладелец",
+            "examples": [
+              "Наталья Романовна Еременко"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "Город",
+          "Улица",
+          "Дом",
+          "Задолженность",
+          "Помещение",
+          "Идентификатор",
+          "ИдентификаторЖКУ",
+          "ЕдиныйЛицевойСчет",
+          "ОтветственныйВладелец"
+        ],
+        "title": "Customer1cBase"
+      },
+      "GetNewNotificationsCounterResponse": {
+        "properties": {
+          "new_notifications_count": {
+            "type": "integer",
+            "title": "New Notifications Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "new_notifications_count"
+        ],
+        "title": "GetNewNotificationsCounterResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HouseDate": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "examples": [
+              1
+            ]
+          },
+          "city": {
+            "type": "string",
+            "title": "City",
+            "examples": [
+              "Первоуральск"
+            ]
+          },
+          "street": {
+            "type": "string",
+            "title": "Street",
+            "examples": [
+              "Гоголя"
+            ]
+          },
+          "number": {
+            "type": "string",
+            "title": "Number",
+            "examples": [
+              "16 к.2"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "city",
+          "street",
+          "number"
+        ],
+        "title": "HouseDate"
+      },
+      "InternalError": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": -32603,
+            "example": -32603
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Internal error",
+            "example": "Internal error"
+          }
+        },
+        "type": "object",
+        "title": "InternalError"
+      },
+      "InvalidParams": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": -32602,
+            "example": -32602
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Invalid params",
+            "example": "Invalid params"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/_ErrorData[_Error]"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "InvalidParams"
+      },
+      "InvalidRequest": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": -32600,
+            "example": -32600
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Invalid Request",
+            "example": "Invalid Request"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/_ErrorData[_Error]"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "InvalidRequest"
+      },
+      "MethodNotFound": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": -32601,
+            "example": -32601
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Method not found",
+            "example": "Method not found"
+          }
+        },
+        "type": "object",
+        "title": "MethodNotFound"
+      },
+      "NotificationBase": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Заголовок уведомления",
+            "examples": [
+              "Новое уведомление"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Текст уведомления",
+            "examples": [
+              "Вы получили новое уведомление."
+            ]
+          },
+          "is_read": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Read",
+            "description": "Статус прочтения уведомления",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "message"
+        ],
+        "title": "NotificationBase"
+      },
+      "ParseError": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": -32700,
+            "example": -32700
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Parse error",
+            "example": "Parse error"
+          }
+        },
+        "type": "object",
+        "title": "ParseError"
+      },
+      "SuccessResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "SuccessResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "_Error": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Loc"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Msg"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "ctx": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ctx"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "_Error"
+      },
+      "_ErrorData[_Error]": {
+        "properties": {
+          "errors": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/_Error"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errors"
+          }
+        },
+        "type": "object",
+        "title": "_ErrorData[_Error]"
+      },
+      "_ErrorResponse[InternalError]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "error": {
+            "$ref": "#/components/schemas/InternalError"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "_ErrorResponse[InternalError]"
+      },
+      "_ErrorResponse[InvalidParams]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "error": {
+            "$ref": "#/components/schemas/InvalidParams"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "_ErrorResponse[InvalidParams]"
+      },
+      "_ErrorResponse[InvalidRequest]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "error": {
+            "$ref": "#/components/schemas/InvalidRequest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "_ErrorResponse[InvalidRequest]"
+      },
+      "_ErrorResponse[MethodNotFound]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "error": {
+            "$ref": "#/components/schemas/MethodNotFound"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "_ErrorResponse[MethodNotFound]"
+      },
+      "_ErrorResponse[ParseError]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "error": {
+            "$ref": "#/components/schemas/ParseError"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "_ErrorResponse[ParseError]"
+      },
+      "_Params[change_password]": {
+        "properties": {
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "new_password": {
+            "type": "string",
+            "title": "New Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "password",
+          "new_password"
+        ],
+        "title": "_Params[change_password]"
+      },
+      "_Params[create_claim]": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "text"
+        ],
+        "title": "_Params[create_claim]"
+      },
+      "_Params[get_active_claims]": {
+        "properties": {},
+        "type": "object",
+        "title": "_Params[get_active_claims]"
+      },
+      "_Params[get_claim_data]": {
+        "properties": {
+          "claim_id": {
+            "type": "integer",
+            "title": "Claim Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "claim_id"
+        ],
+        "title": "_Params[get_claim_data]"
+      },
+      "_Params[get_counters]": {
+        "properties": {
+          "apartment_id": {
+            "type": "integer",
+            "title": "Apartment Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "apartment_id"
+        ],
+        "title": "_Params[get_counters]"
+      },
+      "_Params[get_counters_history]": {
+        "properties": {},
+        "type": "object",
+        "title": "_Params[get_counters_history]"
+      },
+      "_Params[get_finished_claims]": {
+        "properties": {},
+        "type": "object",
+        "title": "_Params[get_finished_claims]"
+      },
+      "_Params[get_house_data]": {
+        "properties": {
+          "house_id": {
+            "type": "integer",
+            "title": "House Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "house_id"
+        ],
+        "title": "_Params[get_house_data]"
+      },
+      "_Params[get_new_notifications_counter]": {
+        "properties": {},
+        "type": "object",
+        "title": "_Params[get_new_notifications_counter]"
+      },
+      "_Params[get_notifications_list]": {
+        "properties": {},
+        "type": "object",
+        "title": "_Params[get_notifications_list]"
+      },
+      "_Params[get_user_data]": {
+        "properties": {},
+        "type": "object",
+        "title": "_Params[get_user_data]"
+      },
+      "_Params[login]": {
+        "properties": {
+          "phone": {
+            "type": "string",
+            "title": "Phone"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "phone",
+          "password"
+        ],
+        "title": "_Params[login]"
+      },
+      "_Params[ping]": {
+        "properties": {},
+        "type": "object",
+        "title": "_Params[ping]"
+      },
+      "_Params[send_claim_callback]": {
+        "properties": {
+          "claim_callback": {
+            "$ref": "#/components/schemas/ClaimCallbackCreate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "claim_callback"
+        ],
+        "title": "_Params[send_claim_callback]"
+      },
+      "_Params[send_claim_chat_message]": {
+        "properties": {
+          "claim_message": {
+            "$ref": "#/components/schemas/ClaimMessageCreate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "claim_message"
+        ],
+        "title": "_Params[send_claim_chat_message]"
+      },
+      "_Params[send_counters_data]": {
+        "properties": {
+          "counters_data": {
+            "items": {
+              "$ref": "#/components/schemas/CounterDataCreate"
+            },
+            "type": "array",
+            "title": "Counters Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "counters_data"
+        ],
+        "title": "_Params[send_counters_data]"
+      },
+      "_Params[set_notification_is_read]": {
+        "properties": {
+          "notification_id": {
+            "type": "integer",
+            "title": "Notification Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "notification_id"
+        ],
+        "title": "_Params[set_notification_is_read]"
+      },
+      "_Params[set_notifications_is_read]": {
+        "properties": {},
+        "type": "object",
+        "title": "_Params[set_notifications_is_read]"
+      },
+      "_Request": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method"
+          },
+          "params": {
+            "type": "object",
+            "title": "Params"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "method"
+        ],
+        "title": "_Request"
+      },
+      "_Request[change_password]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "change_password",
+            "example": "change_password"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[change_password]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[change_password]"
+      },
+      "_Request[create_claim]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "create_claim",
+            "example": "create_claim"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[create_claim]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[create_claim]"
+      },
+      "_Request[get_active_claims]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "get_active_claims",
+            "example": "get_active_claims"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[get_active_claims]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[get_active_claims]"
+      },
+      "_Request[get_claim_data]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "get_claim_data",
+            "example": "get_claim_data"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[get_claim_data]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[get_claim_data]"
+      },
+      "_Request[get_counters]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "get_counters",
+            "example": "get_counters"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[get_counters]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[get_counters]"
+      },
+      "_Request[get_counters_history]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "get_counters_history",
+            "example": "get_counters_history"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[get_counters_history]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[get_counters_history]"
+      },
+      "_Request[get_finished_claims]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "get_finished_claims",
+            "example": "get_finished_claims"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[get_finished_claims]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[get_finished_claims]"
+      },
+      "_Request[get_house_data]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "get_house_data",
+            "example": "get_house_data"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[get_house_data]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[get_house_data]"
+      },
+      "_Request[get_new_notifications_counter]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "get_new_notifications_counter",
+            "example": "get_new_notifications_counter"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[get_new_notifications_counter]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[get_new_notifications_counter]"
+      },
+      "_Request[get_notifications_list]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "get_notifications_list",
+            "example": "get_notifications_list"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[get_notifications_list]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[get_notifications_list]"
+      },
+      "_Request[get_user_data]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "get_user_data",
+            "example": "get_user_data"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[get_user_data]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[get_user_data]"
+      },
+      "_Request[login]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "login",
+            "example": "login"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[login]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[login]"
+      },
+      "_Request[ping]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "ping",
+            "example": "ping"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[ping]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[ping]"
+      },
+      "_Request[send_claim_callback]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "send_claim_callback",
+            "example": "send_claim_callback"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[send_claim_callback]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[send_claim_callback]"
+      },
+      "_Request[send_claim_chat_message]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "send_claim_chat_message",
+            "example": "send_claim_chat_message"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[send_claim_chat_message]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[send_claim_chat_message]"
+      },
+      "_Request[send_counters_data]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "send_counters_data",
+            "example": "send_counters_data"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[send_counters_data]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[send_counters_data]"
+      },
+      "_Request[set_notification_is_read]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "set_notification_is_read",
+            "example": "set_notification_is_read"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[set_notification_is_read]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[set_notification_is_read]"
+      },
+      "_Request[set_notifications_is_read]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "set_notifications_is_read",
+            "example": "set_notifications_is_read"
+          },
+          "params": {
+            "$ref": "#/components/schemas/_Params[set_notifications_is_read]"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "params"
+        ],
+        "title": "_Request[set_notifications_is_read]"
+      },
+      "_Response": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "type": "object",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response"
+      },
+      "_Response[change_password]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "type": "null",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[change_password]"
+      },
+      "_Response[create_claim]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "$ref": "#/components/schemas/ClaimInDBBase"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[create_claim]"
+      },
+      "_Response[get_active_claims]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimUpdate"
+            },
+            "type": "array",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[get_active_claims]"
+      },
+      "_Response[get_claim_data]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "$ref": "#/components/schemas/ClaimData"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[get_claim_data]"
+      },
+      "_Response[get_counters]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/CounterNameData"
+            },
+            "type": "array",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[get_counters]"
+      },
+      "_Response[get_counters_history]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/CounterHistoryBase"
+            },
+            "type": "array",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[get_counters_history]"
+      },
+      "_Response[get_finished_claims]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimUpdate"
+            },
+            "type": "array",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[get_finished_claims]"
+      },
+      "_Response[get_house_data]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "$ref": "#/components/schemas/HouseDate"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[get_house_data]"
+      },
+      "_Response[get_new_notifications_counter]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "$ref": "#/components/schemas/GetNewNotificationsCounterResponse"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[get_new_notifications_counter]"
+      },
+      "_Response[get_notifications_list]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/NotificationBase"
+            },
+            "type": "array",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[get_notifications_list]"
+      },
+      "_Response[get_user_data]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/ClintApartmentInfo"
+            },
+            "type": "array",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[get_user_data]"
+      },
+      "_Response[login]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "type": "string",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[login]"
+      },
+      "_Response[ping]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "type": "boolean",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[ping]"
+      },
+      "_Response[send_claim_callback]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "type": "object",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[send_claim_callback]"
+      },
+      "_Response[send_claim_chat_message]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "type": "object",
+            "title": "Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[send_claim_chat_message]"
+      },
+      "_Response[send_counters_data]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "$ref": "#/components/schemas/SuccessResponse"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[send_counters_data]"
+      },
+      "_Response[set_notification_is_read]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "$ref": "#/components/schemas/SuccessResponse"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[set_notification_is_read]"
+      },
+      "_Response[set_notifications_is_read]": {
+        "properties": {
+          "jsonrpc": {
+            "const": "2.0",
+            "title": "Jsonrpc",
+            "default": "2.0",
+            "example": "2.0"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id",
+            "example": 0
+          },
+          "result": {
+            "$ref": "#/components/schemas/SuccessResponse"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "title": "_Response[set_notifications_is_read]"
+      }
+    },
+    "securitySchemes": {
+      "APIKeyCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "session"
+      },
+      "HTTPBasic": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}
