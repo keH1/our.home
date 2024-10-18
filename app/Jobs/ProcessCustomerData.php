@@ -15,6 +15,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
 use LaravelIdea\Helper\App\Models\_IH_Apartment_QB;
+use Illuminate\Support\Facades\Log;
 
 
 class ProcessCustomerData implements ShouldQueue
@@ -39,7 +40,13 @@ class ProcessCustomerData implements ShouldQueue
     public function handle(): void
     {
         $customer = $this->customer;
-        file_put_contents('/var/www/html/1c_log_customers.txt',json_encode($customer).PHP_EOL,FILE_APPEND);
+        $channel = Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/1c_customer.log'),
+        ]);
+
+        Log::stack(['slack', $channel])->info(json_encode($customer));
+
         $customer['Задолженность'] == null ? $debt = 0 : $debt = $this->parseFloat($customer['Задолженность']);
         $email = $customer['АдресЭлектроннойПочты'] ?? str()->random(5) . sha1(time()) . '@asdasdasd.rrrr';
         $phone = '123' . rand(1, 99999999);
