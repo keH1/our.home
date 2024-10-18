@@ -55,6 +55,7 @@ services:
     restart: always
     volumes:
         - "storage:/var/www/html/storage"
+        - "public:/var/www/html/public"
 
   app-scheduler:
     build:
@@ -124,6 +125,7 @@ services:
     restart: always
     volumes:
         - "storage:/var/www/html/storage"
+        - "public:/var/www/html/public"
 
   web:
     build:
@@ -148,4 +150,7 @@ volumes:
     external: true
   db:
     name: ${DOCKER_DB_VOLUME_NAME_STORAGE}
+    external: true
+  public:
+    name: ${DOCKER_VOLUME_NAME_PUBLIC}
     external: true

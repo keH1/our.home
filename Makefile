@@ -46,6 +46,15 @@ login: ## Login to GitLab registry
 build: ## Build images for local development
 	${DOCKER_COMPOSE} build
 
+.PHONY: release
+release: ## Release new features
+	make down
+	git pull
+	make build
+	make up
+	make artisan-migrate
+	make artisan-storage-link
+
 .PHONY: pull
 pull: ## Pull images for local development from GitLab registry
 	${DOCKER_COMPOSE} pull
@@ -58,6 +67,10 @@ copy-envs:
 .PHONY: shell
 shell: ## Runs sh within php container
 	${DOCKER_COMPOSE} exec app sh
+
+.PHONY: nginx
+nginx: ## Runs sh within php container
+	${DOCKER_COMPOSE} exec nginx sh
 
 .PHONY: logs
 logs: ## Shows logs of a service
