@@ -16,6 +16,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
 use App\Repositories\AccountRepository;
+use Illuminate\Support\Facades\Log;
 
 
 class ProcessCounterData implements ShouldQueue
@@ -42,7 +43,13 @@ class ProcessCounterData implements ShouldQueue
     public function handle(): void
     {
         $counter = $this->counter;
-        file_put_contents('/var/www/html/1c_log_counters.txt',json_encode($counter).PHP_EOL,FILE_APPEND);
+        $channel = Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/1c_counter.log'),
+        ]);
+
+        Log::stack(['slack', $channel])->info(json_encode($counter));
+
         $counter['ВидУслуги'] = trim($counter['ВидУслуги']);
         if (!$this->counterRepository->checkCounterType($counter['ВидУслуги'])) {
             throw new \Exception('Данный вид счетчика не найден');
