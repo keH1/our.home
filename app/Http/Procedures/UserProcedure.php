@@ -81,8 +81,8 @@ class UserProcedure extends Procedure
             "name" => $userData->name,
             "email" => $userData->email,
             "phone" => $userData->phone,
+            "apartments" => $apartments ? $apartments->pluck('id') : []
         ];
-        $response['apartments'] = $apartments->pluck('id');
 
         return $responseBuilder->setData($response)->build();
     }
