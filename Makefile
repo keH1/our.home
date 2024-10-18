@@ -53,7 +53,6 @@ release: ## Release new features
 	make build
 	make up
 	make artisan-migrate
-	make artisan-storage-link
 
 .PHONY: pull
 pull: ## Pull images for local development from GitLab registry
