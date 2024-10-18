@@ -12,6 +12,7 @@ use Sajya\Server\Exceptions\InvalidParams;
 class FileRepository
 {
     private string $uploadSubDir = '/';
+    private string $storageType = 'public';
 
     /**
      * @param string $originalFileName
@@ -51,9 +52,11 @@ class FileRepository
         $saveFilePath = $fileParams['storage_path'];
         $fileName = $fileParams['origin_file_name'];
         $encodedFileName = $fileParams['encoded_file_name'];
-
         $fileObj = new File();
         $savedFileUrl = Storage::url($saveFilePath);
+        if ($this->storageType == 'public') {
+            $saveFilePath = 'public/'.$saveFilePath;
+        }
         $mimeType = Storage::mimeType($saveFilePath);
         $fileSize = Storage::size($saveFilePath);
         $fileObj->original_name = $fileName;
@@ -93,7 +96,7 @@ class FileRepository
     private function uploadBase64ToStorage(string $base64_string, string $storagePath): bool
     {
         $data = explode(',', $base64_string);
-        return Storage::disk('local')->put($storagePath, base64_decode($data[1]));
+        return Storage::disk($this->storageType)->put($storagePath, base64_decode($data[1]));
     }
 
     /**
@@ -110,5 +113,21 @@ class FileRepository
     public function setUploadSubDir(string $uploadSubDir): void
     {
         $this->uploadSubDir = $uploadSubDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStorageType(): string
+    {
+        return $this->storageType;
+    }
+
+    /**
+     * @param string $storageType
+     */
+    public function setStorageType(string $storageType): void
+    {
+        $this->storageType = $storageType;
     }
 }
