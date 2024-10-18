@@ -77,7 +77,6 @@ class UserProcedure extends Procedure
     {
         $userData = auth('sanctum')->user();
         $apartments = $userData->client?->apartments()->get();
-        if ($apartments == null) return ['warning' => "The client doesn't have an apartment yet"];
         $response = [
             "name" => $userData->name,
             "email" => $userData->email,

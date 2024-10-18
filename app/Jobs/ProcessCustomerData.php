@@ -16,6 +16,7 @@ use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
 use LaravelIdea\Helper\App\Models\_IH_Apartment_QB;
 use Illuminate\Support\Facades\Log;
+use \App\Services\StreetNormalizer;
 
 
 class ProcessCustomerData implements ShouldQueue
@@ -134,7 +135,7 @@ class ProcessCustomerData implements ShouldQueue
     {
         $house = new House();
         $house->city = $customer['Город'];
-        $house->street = $customer['Улица'];
+        $house->street = StreetNormalizer::normalizeStreetName($customer['Улица']);
         $house->number = $customer['Дом'];
         $house->building = $customer['Корпус'];
         $house->save();
