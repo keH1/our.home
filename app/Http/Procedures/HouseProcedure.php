@@ -157,37 +157,33 @@ class HouseProcedure extends Procedure
      */
     public function getApartmentDataById(Request $request, ApiResponseBuilder $responseBuilder, ApartmentRepository $apartmentRepository): array
     {
-        $apartmentId = (int) $request->input('id');
-        $apartment = $apartmentRepository->findApartmentById($apartmentId);
+        $params = collect(json_decode($request->getContent(), true)['params']);
+        $apartment = $apartmentRepository->findApartmentById($params['id']);
 
         if (!$apartment) {
             return $responseBuilder->setMessage('Apartment not found.')->build();
         }
 
-        $house = [
-            'id' => $apartment->house->id,
-            'street' => $apartment->house->street,
-            'number' => $apartment->house->number,
-            'building' => $apartment->house->building ?? null,
-            'city' => $apartment->house->city,
-        ];
-
-        $accounts = [];
-        if ($apartment->account) {
-            $accounts[] = [
-                'id' => $apartment->account->id,
-                'number' => $apartment->account->number,
-                'apartment_id' => $apartment->account->apartment_id,
-                'client_id' => $apartment->account->clients->pluck('id')->toArray(),
-                'user_id' => $apartment->account->clients->pluck('user_id')->first()
-            ];
-        }
-
         $response = [
-            'id' => $apartment->id,
-            'number' => $apartment->number,
-            'house' => $house,
-            'account' => $accounts,
+            'id'=>$apartment->id,
+            'number'=>$apartment->number,
+            'house'=>[
+                'id' => $apartment->house->id,
+                'street' => $apartment->house->street,
+                'number' => $apartment->house->number,
+                'building' => $apartment->house->building ?? null,
+                'city' => $apartment->house->city,
+            ],
+            'clients'=>$apartment->clients?->map(function ($client){return [
+                'id'=>$client->id,
+                'user_id'=>$client->user_id,
+                'accounts'=>$client->accounts?->map(function ($account){
+                    return [
+                        'id' =>$account->id,
+                        'number' =>$account->number,
+                    ];
+                })->toArray()
+            ];})->toArray()
         ];
 
         return $responseBuilder->setData($response)->build();
