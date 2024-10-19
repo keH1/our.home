@@ -6,6 +6,7 @@ namespace App\Http\Procedures;
 
 use App\Models\Apartment;
 use App\Models\House;
+use App\Repositories\ApartmentRepository;
 use App\Services\ApiResponseBuilder;
 use App\Services\PaginationBuilder;
 use Illuminate\Http\Request;
@@ -145,6 +146,53 @@ class HouseProcedure extends Procedure
 
         return $responseBuilder->setData($this->buildApartments($apartments))->build();
     }
+
+    /**
+     * Метод для получения информации о апартаментах по их идентификатору.
+     *
+     * @param Request $request
+     * @param ApiResponseBuilder $responseBuilder
+     * @param ApartmentRepository $apartmentRepository
+     * @return array
+     */
+    public function getApartmentDataById(Request $request, ApiResponseBuilder $responseBuilder, ApartmentRepository $apartmentRepository): array
+    {
+        $apartmentId = (int) $request->input('id');
+        $apartment = $apartmentRepository->findApartmentById($apartmentId);
+
+        if (!$apartment) {
+            return $responseBuilder->setMessage('Apartment not found.')->build();
+        }
+
+        $house = [
+            'id' => $apartment->house->id,
+            'street' => $apartment->house->street,
+            'number' => $apartment->house->number,
+            'building' => $apartment->house->building ?? null,
+            'city' => $apartment->house->city,
+        ];
+
+        $accounts = [];
+        if ($apartment->account) {
+            $accounts[] = [
+                'id' => $apartment->account->id,
+                'number' => $apartment->account->number,
+                'apartment_id' => $apartment->account->apartment_id,
+                'client_id' => $apartment->account->clients->pluck('id')->toArray(),
+                'user_id' => $apartment->account->clients->pluck('user_id')->first()
+            ];
+        }
+
+        $response = [
+            'id' => $apartment->id,
+            'number' => $apartment->number,
+            'house' => $house,
+            'account' => $accounts,
+        ];
+
+        return $responseBuilder->setData($response)->build();
+    }
+
 
     private function buildApartments($apartments)
     {
