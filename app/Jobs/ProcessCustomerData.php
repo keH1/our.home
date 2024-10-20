@@ -45,10 +45,9 @@ class ProcessCustomerData implements ShouldQueue
             'driver' => 'single',
             'path' => storage_path('logs/1c_customer.log'),
         ]);
-
         Log::stack(['slack', $channel])->info(json_encode($customer));
-
         $customer['Задолженность'] == null ? $debt = 0 : $debt = $this->parseFloat($customer['Задолженность']);
+        $customer['Улица'] = StreetNormalizer::normalizeStreetName($customer['Улица']);
         $email = $customer['АдресЭлектроннойПочты'] ?? str()->random(5) . sha1(time()) . '@asdasdasd.rrrr';
         $phone = '123' . rand(1, 99999999);
         if($customer['Телефон'] !== null){
@@ -57,6 +56,7 @@ class ProcessCustomerData implements ShouldQueue
             preg_match('/9[0-9]{1,9}/',$tel,$matches);
             $phone = $matches[0];
         }
+        $customer['Телефон'] = $phone;
 
         if (($house = $this->houseExistence($customer)) !== null) {
 
@@ -135,7 +135,7 @@ class ProcessCustomerData implements ShouldQueue
     {
         $house = new House();
         $house->city = $customer['Город'];
-        $house->street = StreetNormalizer::normalizeStreetName($customer['Улица']);
+        $house->street = $customer['Улица'];
         $house->number = $customer['Дом'];
         $house->building = $customer['Корпус'];
         $house->save();

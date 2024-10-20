@@ -33,7 +33,7 @@ class StreetNormalizer
             }
         }
 
-        if (!str_ends_with($streetName,' ул')){
+        if (!str_ends_with($streetName,' ул') && !str_ends_with($streetName,' пер')){
             $streetName .= ' ул';
         }
 
