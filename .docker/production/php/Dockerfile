@@ -75,7 +75,11 @@ COPY . /var/www/html
 
 COPY --from=builder /app/vendor /var/www/html/vendor
 
-RUN chown -R www-data:www-data /var/www/html/storage \
+RUN chown -R www-data:www-data /var/www/html \
+  && chmod -R u=rwX,go=rX /var/www/html \
+  && chown -R www-data:www-data /var/www/html/storage \
   && chown -R www-data:www-data /var/www/html/bootstrap/cache \
   && chmod -R u=rwX,go=rX /var/www/html/storage \
   && cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
+
+USER www-data
