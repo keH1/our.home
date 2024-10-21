@@ -17,23 +17,6 @@ class UserRepository
     }
 
     /**
-     * @param $BIO
-     * @return User
-     */
-    public function checkUserByBIO($BIO)
-    {
-        return User::where('name', $BIO)->first();
-    }
-    /**
-     * @param $BIO
-     * @return User
-     */
-    public function checkUserByAccountNumber($accountNumber)
-    {
-        return User::where('name', $BIO)->first();
-    }
-
-    /**
      * @param $email
      * @return User
      */

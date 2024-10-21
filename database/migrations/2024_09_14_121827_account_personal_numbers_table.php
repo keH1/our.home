@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('account_personal_numbers', function (Blueprint $table) {
             $table->id();
             $table->string('number');
+            $table->string('gku_id');
+            $table->string('union_number');
             $table->foreignId('apartment_id')->nullable()->constrained('apartments')->onDelete('set null');
             $table->timestamps();
         });

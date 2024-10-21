@@ -15,9 +15,9 @@ class AccountPersonalNumber extends Model
     public $timestamps;
     protected $fillable = ['number', 'apartment_id'];
 
-    public function apartment(): BelongsTo
+    public function apartment(): hasMany
     {
-        return $this->belongsTo(Apartment::class);
+        return $this->hasMany(Apartment::class);
     }
 
     public function clients(): BelongsToMany

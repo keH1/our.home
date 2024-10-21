@@ -23,8 +23,8 @@ class ProcessCustomerData implements ShouldQueue
 {
     use Queueable;
 
-    private $accountRepository;
-    private $userRepository;
+    private AccountRepository $accountRepository;
+    private UserRepository $userRepository;
 
     /**
      * Create a new job instance.
@@ -45,48 +45,45 @@ class ProcessCustomerData implements ShouldQueue
             'driver' => 'single',
             'path' => storage_path('logs/1c_customer.log'),
         ]);
-        Log::stack(['slack', $channel])->info(json_encode($customer));
+        //Log::stack(['slack', $channel])->info(json_encode($customer));
         $customer['Задолженность'] == null ? $debt = 0 : $debt = $this->parseFloat($customer['Задолженность']);
         $customer['Улица'] = StreetNormalizer::normalizeStreetName($customer['Улица']);
         $email = $customer['АдресЭлектроннойПочты'] ?? str()->random(5) . sha1(time()) . '@asdasdasd.rrrr';
         $phone = '123' . rand(1, 99999999);
-        if($customer['Телефон'] !== null){
+        if ($customer['Телефон'] !== null) {
             $tel = trim($customer['Телефон']);
             $tel = preg_replace('/[^0-9]/', '', $tel);
-            preg_match('/9[0-9]{1,9}/',$tel,$matches);
+            preg_match('/9[0-9]{1,9}/', $tel, $matches);
             $phone = $matches[0];
         }
         $customer['Телефон'] = $phone;
-
         if (($house = $this->houseExistence($customer)) !== null) {
 
         } else {
             $house = $this->createHouse($customer);
         }
-
         $apartment = $this->findApartment($house, $customer['Помещение']) ?? new Apartment();
         $apartment->house_id = $house->id;
         $this->setApartmentData($apartment, $customer);
-        $user = $this->userRepository->checkUserByPhone($customer['Телефон']) ?? $this->userRepository->checkUserByBIO($customer['ОтветственныйВладелец']);
+        $user = $this->userRepository->checkUserByPhone($customer['Телефон']);
         if ($user == null) {
             $user = $this->createNewUser($email, $phone, $customer);
-            $client = $this->createNewClientObj($user, $phone, $customer);
-        } else {
-            $client = $user->client()->first();
-            if ($client == null) {
-                $client = $this->createNewClientObj($user, $phone, $customer);
-            }
         }
-        $client->debt = $debt;
-        $client->save();
-
+        $clients = $user->clients;
+        if (!$clients->contains('name', $customer['ОтветственныйВладелец'])) {
+            $currentClient = $this->createNewClientObj($user, $phone, $customer);
+        } else {
+            $clientCollection = $clients->where('name', $customer['ОтветственныйВладелец'])->first();
+            $currentClient = Client::find($clientCollection->id);
+        }
+        $currentClient->debt = $debt;
+        $currentClient->save();
         if (($account = $this->accountRepository->checkAccountByNumber($customer['Идентификатор'])) == null) {
             $account = $this->createPersonalAccount($customer);
         }
-        $this->attachApartmentToAccount($apartment, $account);
-        $this->syncClientWithAccountWithoutDetaching($client, $account);
-        $this->isApartmentAlreadyAttachedToClient($client, $apartment) ?: $client->apartments()->sync($apartment, false);
-
+        $this->attachApartmentToAccount($apartment,$account);
+        $this->syncClientWithAccountWithoutDetaching($currentClient, $account);
+        $this->isApartmentAlreadyAttachedToClient($currentClient, $apartment) ?: $currentClient->apartments()->sync($apartment, false);
     }
 
 
@@ -123,8 +120,7 @@ class ProcessCustomerData implements ShouldQueue
         if ($string == '') {
             return null;
         }
-        $string = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', ($string));
-        return str_replace(',', '.', $string);
+        return preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', ($string));
     }
 
     /**
@@ -150,9 +146,6 @@ class ProcessCustomerData implements ShouldQueue
     private function setApartmentData($apartment, $customer): void
     {
         $apartment->number = $customer['Помещение'];
-        $apartment->gku_id = $customer['ИдентификаторЖКУ'];
-        $apartment->account_number = $customer['ЕдиныйЛицевойСчет'];
-        $apartment->account_owner = $customer['ОтветственныйВладелец'];
         $apartment->save();
     }
 
@@ -167,7 +160,6 @@ class ProcessCustomerData implements ShouldQueue
         $user = new User();
         $user->email = $email;
         $user->phone = $phone;
-        $user->name = $customer['ОтветственныйВладелец'];
         $user->password = Hash::make(Hash::make($email));
         $user->save();
 
@@ -208,6 +200,9 @@ class ProcessCustomerData implements ShouldQueue
     {
         $account = new AccountPersonalNumber();
         $account->number = $customer['Идентификатор'];
+        $account->gku_id = $customer['ИдентификаторЖКУ'];
+        $account->union_number = $customer['ЕдиныйЛицевойСчет'];
+
         $account->save();
         return $account;
     }
@@ -220,9 +215,7 @@ class ProcessCustomerData implements ShouldQueue
     private function attachApartmentToAccount($apartment, $account): void
     {
         $account->apartment_id = $apartment->id;
-        $apartment->personal_number = $account->id;
         $account->save();
-        $apartment->save();
     }
 
     /**
