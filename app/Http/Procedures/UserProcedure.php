@@ -76,24 +76,25 @@ class UserProcedure extends Procedure
     public function getUserData(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $userData = auth('sanctum')->user();
-        $accounts = $userData->client?->accounts()->get()->sortBy('id')->values();
-        $client = $userData->client;
+        $clients = $userData->clients;
 
         $response = [
             'id' => $userData->id,
             'name' => $userData->name,
             'email' => $userData->email,
             'phone' => $userData->phone,
-            'client' => $client ?[
-                'id' => $client->id,
-                'accounts' => $accounts->map(function($account) {
-                    return [
-                        'id' => $account->id,
-                        'number' => $account->number,
-                        'apartment_id' => $account->apartment_id,
-                    ];
-                })
-            ] : []
+            'clients' => $clients->map(function ($client) {
+                return [
+                    'id'=>$client->id,
+                    'accounts' => $client->accounts->map(function ($account) {
+                        return [
+                            'id' => $account->id,
+                            'number' => $account->number,
+                            'apartment_id' => $account->apartment_id,
+                        ];
+                    })
+                ];
+            })
         ];
 
         return $responseBuilder->setData($response)->build();

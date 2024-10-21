@@ -47,9 +47,7 @@ class ProcessCounterData implements ShouldQueue
             'driver' => 'single',
             'path' => storage_path('logs/1c_counter.log'),
         ]);
-
-        Log::stack(['slack', $channel])->info(json_encode($counter));
-
+        //Log::stack(['slack', $channel])->info(json_encode($counter));
         $counter['ВидУслуги'] = trim($counter['ВидУслуги']);
         if (!$this->counterRepository->checkCounterType($counter['ВидУслуги'])) {
             throw new \Exception('Данный вид счетчика не найден');
