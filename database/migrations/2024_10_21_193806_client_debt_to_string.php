@@ -6,10 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
+    /**
+     * Run the migrations.
+     */
+    public function up()
     {
-        Schema::table('apartments', function (Blueprint $table) {
-            $table->string('account_owner')->after('gku_id')->nullable();
+        Schema::table('clients', function (Blueprint $table) {
+            $table->string('debt')->nullable()->change();
         });
     }
 };
