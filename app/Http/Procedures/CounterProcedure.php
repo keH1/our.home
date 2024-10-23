@@ -44,7 +44,7 @@ class CounterProcedure extends Procedure
         if (!isset($params['from_crm'])){
             throw new InvalidParams(['message'=>"field 'from_crm' is empty"]);
         }
-        $this->fromCRM = (bool) $params['from_crm'];
+        $this->fromCRM = $params['from_crm'];
         $counterIDs = $countersData->map(function ($counter) {
             $this->mapArr[$counter['counter_id']] = $counter;
             return $counter['counter_id'];
