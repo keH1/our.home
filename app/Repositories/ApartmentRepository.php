@@ -2,19 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Models\AccountPersonalNumber;
 use App\Models\Apartment;
 
-class ApartmentRepository {
-    /**
-     * @param $accountID
-     * @return Apartment|null
-     */
-    public function findApartmentByAccountID($accountID): Apartment|null
-    {
-        return Apartment::where('personal_number', $accountID)->first();
-    }
 
-    /**
+class ApartmentRepository
+{
+        /**
      * @param int $apartmentId
      * @return Apartment|null
      */
@@ -23,4 +17,14 @@ class ApartmentRepository {
         return Apartment::with(['house', 'account.clients'])->find($apartmentId);
     }
 
+
+    /**
+     * @param mixed $accountNumber
+     * @return Apartment|null
+     */
+    public function findApartmentByAccountNumber(mixed $accountNumber): ?Apartment
+    {
+        $account = AccountPersonalNumber::where('number', $accountNumber)->first();
+        return Apartment::find($account->apartment_id);
+    }
 }
