@@ -40,11 +40,11 @@ class CounterProcedure extends Procedure
     public function acceptHouseCounters(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $params = collect(json_decode($request->getContent(), true)['params']);
-        $countersData = $params['counters_data'];
+        $countersData = collect($params['counters_data']);
         if (!isset($params['from_crm'])){
             throw new InvalidParams(['message'=>"field 'from_crm' is empty"]);
         }
-        count($params['from_crm']) > 0 && $params['from_crm'] === true ? $this->fromCRM = true:  $this->fromCRM = false;
+        $this->fromCRM = $params['from_crm'];
         $counterIDs = $countersData->map(function ($counter) {
             $this->mapArr[$counter['counter_id']] = $counter;
             return $counter['counter_id'];

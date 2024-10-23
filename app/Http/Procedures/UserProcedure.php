@@ -31,7 +31,6 @@ class UserProcedure extends Procedure
     {
         $params = json_decode($request->getContent(), true)['params'];
         $validatorRules = [
-            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
             'phone' => ['required', 'string']
@@ -80,12 +79,12 @@ class UserProcedure extends Procedure
 
         $response = [
             'id' => $userData->id,
-            'name' => $userData->name,
             'email' => $userData->email,
             'phone' => $userData->phone,
             'clients' => $clients->map(function ($client) {
                 return [
                     'id'=>$client->id,
+                    'debt' => $client->debt,
                     'accounts' => $client->accounts->map(function ($account) {
                         return [
                             'id' => $account->id,
