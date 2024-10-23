@@ -60,11 +60,8 @@ class ProcessCounterData implements ShouldQueue
         $this->setCounterParams($counterData, $counter);
         $counterData->save();
         $this->createCounterHistory($counterData, $counter);
-        if (($account = $this->accountRepository->checkAccountByNumber($counter['ИдентификаторЛС'])) !== null) {
-            $this->attachCounterToAccount($counterData, $account);
-            if (($apartment = $this->apartmentRepository->findApartmentByAccountID($account->id)) !== null) {
-                $this->attachCounterToApartment($counterData, $apartment);
-            }
+        if (($apartment = $this->apartmentRepository->findApartmentByAccountNumber($counter['ИдентификаторЛС'])) !== null) {
+            $this->attachCounterToApartment($counterData, $apartment);
         }
     }
 
