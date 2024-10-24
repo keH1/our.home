@@ -77,7 +77,7 @@ class PaidServiceProcedure extends Procedure
     public function deletePaidService(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $data = json_decode($request->getContent(), true)['params'];
-        if (!isset($data['id']) || !is_int($data['id']) || $data['id'] <= 0) {
+        if ($data['id'] <= 0) {
             throw new InvalidParams(['message' => "Invalid value in 'id' field"]);
         } else {
             $paidService = PaidService::find($data['id']);
