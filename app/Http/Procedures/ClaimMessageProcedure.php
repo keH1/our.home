@@ -37,9 +37,12 @@ class ClaimMessageProcedure extends Procedure
             $message = $this->createMessageObj($data);
             $message->save();
             if (count($data['files']) > 0) {
+                $filesArr = [];
                 foreach ($data['files'] as $fileToUpload) {
-                    $uploadedFile = $fileRepository->uploadFileToStorage($fileToUpload['file_original_name'], $fileToUpload['file']);
-                    $message->files()->save($uploadedFile);
+                    $filesArr[] = $fileRepository->uploadFileToStorage($fileToUpload['file_original_name'], $fileToUpload['file']);
+                }
+                if(count($filesArr)>0){
+                    $message->files()->saveMany($filesArr);
                 }
             }
             return $responseBuilder->setData([])->setMessage("Chat message was create successfully")->build();
