@@ -9,7 +9,8 @@ use \App\Http\Procedures\CounterProcedure;
 use \App\Http\Procedures\PaidServiceProcedure;
 use \App\Http\Procedures\PaidServiceCategoryProcedure;
 use App\Http\Procedures\ClaimProcedure;
-
+use \App\Http\Procedures\ClaimMessageProcedure;
+use \App\Http\Procedures\ClaimCategoryProcedure;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -23,6 +24,8 @@ Route::prefix('v1')->as('v1:')->group(function () {
             CounterProcedure::class,
             PaidServiceProcedure::class,
             PaidServiceCategoryProcedure::class,
+            ClaimMessageProcedure::class,
+            ClaimCategoryProcedure::class,
             ClaimProcedure::class
         ]);
     });

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ClaimMessage extends Model
 {
@@ -12,5 +13,9 @@ class ClaimMessage extends Model
     public function claim(): BelongsTo
     {
         return $this->belongsTo(Claim::class);
+    }
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 }
