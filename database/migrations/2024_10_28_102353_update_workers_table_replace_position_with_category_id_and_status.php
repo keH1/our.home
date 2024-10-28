@@ -12,8 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('workers', function (Blueprint $table) {
-            $table->dropColumn('position');
-
             $table->foreignId('category_id')
                 ->nullable()
                 ->constrained('worker_categories')
@@ -28,7 +26,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('workers', function (Blueprint $table) {
-            $table->string('position')->nullable();
             $table->dropForeign(['category_id']);
             $table->dropColumn(['category_id', 'status']);
         });
