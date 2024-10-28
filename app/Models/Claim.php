@@ -56,4 +56,9 @@ class Claim extends Model
     {
         return $this->belongsTo(PaidService::class, 'paid_service_id');
     }
+
+    public function worker(): BelongsTo
+    {
+        return $this->belongsTo(Worker::class, 'worker_id');
+    }
 }
