@@ -9,6 +9,8 @@ use \App\Http\Procedures\CounterProcedure;
 use \App\Http\Procedures\PaidServiceProcedure;
 use \App\Http\Procedures\PaidServiceCategoryProcedure;
 use App\Http\Procedures\ClaimProcedure;
+use App\Http\Procedures\WorkerProcedure;
+use App\Http\Procedures\WorkerCategoryProcedure;
 
 
 Route::get('/user', function (Request $request) {
@@ -23,7 +25,9 @@ Route::prefix('v1')->as('v1:')->group(function () {
             CounterProcedure::class,
             PaidServiceProcedure::class,
             PaidServiceCategoryProcedure::class,
-            ClaimProcedure::class
+            ClaimProcedure::class,
+            WorkerProcedure::class,
+            WorkerCategoryProcedure::class,
         ]);
     });
 
