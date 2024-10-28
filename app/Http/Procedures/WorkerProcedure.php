@@ -7,8 +7,10 @@ namespace App\Http\Procedures;
 use App\Models\Worker;
 use App\Services\ApiResponseBuilder;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
+use Illuminate\Support\Facades\Validator;
 
 class WorkerProcedure extends Procedure
 {
@@ -18,10 +20,18 @@ class WorkerProcedure extends Procedure
      * @param Request $request
      * @param ApiResponseBuilder $responseBuilder
      * @return array
+     * @throws ValidationException
      */
     public function createWorker(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $data = json_decode($request->getContent(), true)['params'];
+
+        Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:worker_categories,id',
+            'status' => 'sometimes|in:active,disabled',
+        ])->validate();
+
         $worker = Worker::create([
             'name' => $data['name'],
             'category_id' => $data['category_id'],
@@ -35,10 +45,19 @@ class WorkerProcedure extends Procedure
      * @param Request $request
      * @param ApiResponseBuilder $responseBuilder
      * @return array
+     * @throws ValidationException
      */
     public function editWorker(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $data = json_decode($request->getContent(), true)['params'];
+
+        Validator::make($data, [
+            'id' => 'required|exists:workers,id',
+            'name' => 'sometimes|string|max:255',
+            'category_id' => 'sometimes|exists:worker_categories,id',
+            'status' => 'sometimes|in:active,disabled',
+        ])->validate();
+
         $worker = Worker::find($data['id']);
 
         if (!$worker) {
