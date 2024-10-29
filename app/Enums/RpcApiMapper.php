@@ -27,4 +27,5 @@ enum RpcApiMapper: string
     case SEND_CLAIM_CHAT_MESSAGE = 'claim_message@createMessage';
     case GET_CLAIM_CHAT_MESSAGES = 'claim_message@getClaimChat';
     case GET_CLAIM_CATEGORIES = 'claim_category@getCategories';
+    case SEND_CLAIM_FEEDBACK = 'claim_review@createReview';
 }

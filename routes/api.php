@@ -13,6 +13,7 @@ use App\Http\Procedures\WorkerProcedure;
 use App\Http\Procedures\WorkerCategoryProcedure;
 use \App\Http\Procedures\ClaimMessageProcedure;
 use \App\Http\Procedures\ClaimCategoryProcedure;
+use App\Http\Procedures\ClaimReviewProcedure;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -31,6 +32,7 @@ Route::prefix('v1')->as('v1:')->group(function () {
             WorkerCategoryProcedure::class,
             ClaimMessageProcedure::class,
             ClaimCategoryProcedure::class,
+            ClaimReviewProcedure::class
         ]);
     });
 

@@ -61,4 +61,10 @@ class Claim extends Model
     {
         return $this->belongsTo(Worker::class, 'worker_id');
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ClaimReview::class);
+    }
+
 }
