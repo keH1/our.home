@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Claim extends Model
 {
@@ -62,9 +63,9 @@ class Claim extends Model
         return $this->belongsTo(Worker::class, 'worker_id');
     }
 
-    public function reviews(): HasMany
+    public function reviews(): HasOne
     {
-        return $this->hasMany(ClaimReview::class);
+        return $this->hasOne(ClaimReview::class);
     }
 
 }
