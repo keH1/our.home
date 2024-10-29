@@ -24,4 +24,7 @@ enum RpcApiMapper: string
     case CREATE_WORKER = 'worker@createWorker';
     case EDIT_WORKER = 'worker@editWorker';
     case CREATE_WORKER_CATEGORY = 'worker_category@createWorkerCategory';
+    case SEND_CLAIM_CHAT_MESSAGE = 'claim_message@createMessage';
+    case GET_CLAIM_CHAT_MESSAGES = 'claim_message@getClaimChat';
+    case GET_CLAIM_CATEGORIES = 'claim_category@getCategories';
 }

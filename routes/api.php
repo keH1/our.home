@@ -11,7 +11,8 @@ use \App\Http\Procedures\PaidServiceCategoryProcedure;
 use App\Http\Procedures\ClaimProcedure;
 use App\Http\Procedures\WorkerProcedure;
 use App\Http\Procedures\WorkerCategoryProcedure;
-
+use \App\Http\Procedures\ClaimMessageProcedure;
+use \App\Http\Procedures\ClaimCategoryProcedure;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -28,6 +29,8 @@ Route::prefix('v1')->as('v1:')->group(function () {
             ClaimProcedure::class,
             WorkerProcedure::class,
             WorkerCategoryProcedure::class,
+            ClaimMessageProcedure::class,
+            ClaimCategoryProcedure::class,
         ]);
     });
 
