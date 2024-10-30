@@ -18,6 +18,16 @@ enum RpcApiMapper: string
     case GET_PAID_SERVICE_CATEGORIES = 'paid_service_category@getPaidServiceCategories';
     case CREATE_PAID_SERVICE = 'paid_service@createPaidService';
     case UPDATE_PAID_SERVICE = 'paid_service@updatePaidService';
+    case DELETE_PAID_SERVICE = 'paid_service@deletePaidService';
     case GET_PAID_SERVICES = 'paid_service@getPaidServices';
-    case CREATE_PAID_CLAIM = 'claim@createPaidClaim';
+    case CREATE_CLAIM = 'claim@createClaim';
+    case UPDATE_CLAIM = 'claim@updateClaim';
+    case GET_CLAIMS = 'claim@getClaims';
+    case CREATE_WORKER = 'worker@createWorker';
+    case EDIT_WORKER = 'worker@editWorker';
+    case CREATE_WORKER_CATEGORY = 'worker_category@createWorkerCategory';
+    case SEND_CLAIM_CHAT_MESSAGE = 'claim_message@createMessage';
+    case GET_CLAIM_CHAT_MESSAGES = 'claim_message@getClaimChat';
+    case GET_CLAIM_CATEGORIES = 'claim_category@getCategories';
+    case SEND_CLAIM_FEEDBACK = 'claim_review@createReview';
 }

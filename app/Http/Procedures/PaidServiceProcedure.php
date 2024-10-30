@@ -68,4 +68,25 @@ class PaidServiceProcedure extends Procedure
         return $responseBuilder->setData(['paid_services' => $paidServices->toArray()])->build();
     }
 
+
+    /**
+     * @param Request $request
+     * @param ApiResponseBuilder $responseBuilder
+     * @return array
+     */
+    public function deletePaidService(Request $request, ApiResponseBuilder $responseBuilder): array
+    {
+        $data = json_decode($request->getContent(), true)['params'];
+        if ($data['id'] > 0) {
+            $paidService = PaidService::find($data['id']);
+            if ($paidService !== null) {
+                $paidService->delete();
+                return $responseBuilder->setMessage("Paid service with ID {$data['id']} was deleted successfully")->build();
+            }
+            return $responseBuilder->setMessage("Paid service with ID {$data['id']} not found")->build();
+        }
+
+        return $responseBuilder->setMessage("Invalid value in 'id' field")->build();
+    }
+
 }

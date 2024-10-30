@@ -2,44 +2,71 @@
 
 namespace App\Models;
 
+use App\Enums\ClaimPriority;
 use App\Enums\ClaimStatus;
 use App\Enums\ClaimType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Searchable;
 
 class Claim extends Model
 {
+    use Searchable;
+
     protected $fillable = [
+        'title',
+        'type',
+        'status',
+        'client_id',
         'category_id',
+        'paid_service_id',
+        'is_paid',
+        'expectation_date',
         'text',
         'is_active',
         'finished_at',
-        'is_positive',
+        'rating',
         'comment',
-        'user_id',
-        'type',
-        'status',
-        'paid_service_id',
+        'priority',
+        'worker_id',
     ];
 
     protected $casts = [
         'type' => ClaimType::class,
         'status' => ClaimStatus::class,
+        'priority' => ClaimPriority::class,
         'is_active' => 'boolean',
-        'is_positive' => 'boolean',
+        'is_paid' => 'boolean',
         'finished_at' => 'datetime',
+        'expectation_date' => 'date',
     ];
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    #[SearchUsingFullText(['title', 'text'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'text' => $this->text,
+        ];
+    }
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(ClaimCategory::class, 'category_id');
     }
 
-    public function user(): BelongsTo
+    public function client(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Client::class);
     }
 
     public function messages(): HasMany
@@ -56,4 +83,15 @@ class Claim extends Model
     {
         return $this->belongsTo(PaidService::class, 'paid_service_id');
     }
+
+    public function worker(): BelongsTo
+    {
+        return $this->belongsTo(Worker::class, 'worker_id');
+    }
+
+    public function reviews(): HasOne
+    {
+        return $this->hasOne(ClaimReview::class);
+    }
+
 }
