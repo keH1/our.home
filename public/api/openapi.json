@@ -114,6 +114,214 @@
                 "summary": "change_password"
             }
         },
+        "/v1/jsonrpc/create_claim": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "create_claim",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "category_id": {
+                                            "example": 3,
+                                            "type": "number"
+                                        },
+                                        "client_id": {
+                                            "example": 1,
+                                            "type": "number"
+                                        },
+                                        "files": {
+                                            "example": [
+                                                {
+                                                    "file": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+                                                    "original_file_name": "photo.jpg"
+                                                }
+                                            ],
+                                            "items": {
+                                                "properties": {
+                                                    "file": {
+                                                        "example": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+                                                        "type": "string"
+                                                    },
+                                                    "original_file_name": {
+                                                        "example": "photo.jpg",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "priority": {
+                                            "example": "high",
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "example": "pending",
+                                            "type": "string"
+                                        },
+                                        "text": {
+                                            "example": "В квартире холодно, батареи не греют.",
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "example": "Проблема с отоплением",
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "example": "base",
+                                            "type": "string"
+                                        },
+                                        "worker": {
+                                            "properties": {
+                                                "id": {
+                                                    "example": 2,
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "create_claim",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "claim": {
+                                                    "properties": {
+                                                        "category_id": {
+                                                            "example": 1,
+                                                            "type": "number"
+                                                        },
+                                                        "client_id": {
+                                                            "example": 1,
+                                                            "type": "number"
+                                                        },
+                                                        "created_at": {
+                                                            "example": "2024-10-31T11:37:27.000000Z",
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "example": 7,
+                                                            "type": "number"
+                                                        },
+                                                        "is_active": {
+                                                            "example": true,
+                                                            "type": "boolean"
+                                                        },
+                                                        "priority": {
+                                                            "example": "high",
+                                                            "type": "string"
+                                                        },
+                                                        "status": {
+                                                            "example": "pending",
+                                                            "type": "string"
+                                                        },
+                                                        "text": {
+                                                            "example": "В квартире холодно, батареи не греют.",
+                                                            "type": "string"
+                                                        },
+                                                        "title": {
+                                                            "example": "Проблема с отоплением",
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "example": "base",
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "example": "2024-10-31T11:37:27.000000Z",
+                                                            "type": "string"
+                                                        },
+                                                        "worker_id": {
+                                                            "example": 2,
+                                                            "type": "number"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Заявка успешно создана",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Claims"
+                ],
+                "description": "create_claim",
+                "operationId": "createClaim",
+                "summary": "create_claim"
+            }
+        },
         "/v1/jsonrpc/create_paid_claim": {
             "post": {
                 "consumes": [
@@ -544,6 +752,501 @@
                 "description": "create_paid_service_category",
                 "operationId": "createPaidServiceCategory",
                 "summary": "create_paid_service_category"
+            }
+        },
+        "/v1/jsonrpc/create_worker": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "create_worker",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "category_id": {
+                                            "example": 1,
+                                            "type": "number"
+                                        },
+                                        "name": {
+                                            "example": "Иван Тестиванов",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "create_worker",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "worker": {
+                                                    "properties": {
+                                                        "category_id": {
+                                                            "example": 1,
+                                                            "type": "number"
+                                                        },
+                                                        "created_at": {
+                                                            "example": "2024-10-31T09:51:49.000000Z",
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "example": 5,
+                                                            "type": "number"
+                                                        },
+                                                        "name": {
+                                                            "example": "Иван Тестиванов",
+                                                            "type": "string"
+                                                        },
+                                                        "status": {
+                                                            "example": "active",
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "example": "2024-10-31T09:51:49.000000Z",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Worker created successfully.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workers"
+                ],
+                "description": "create_worker",
+                "operationId": "createWorker",
+                "summary": "create_worker"
+            }
+        },
+        "/v1/jsonrpc/create_worker_category": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "create_worker_category",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "name": {
+                                            "example": "Электрик",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "create_worker_category",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "category": {
+                                                    "properties": {
+                                                        "created_at": {
+                                                            "example": "2024-10-31T09:57:02.000000Z",
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "example": 3,
+                                                            "type": "number"
+                                                        },
+                                                        "name": {
+                                                            "example": "Электрик",
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "example": "2024-10-31T09:57:02.000000Z",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Worker category created successfully.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workers"
+                ],
+                "description": "create_worker_category",
+                "operationId": "createWorkerCategory",
+                "summary": "create_worker_category"
+            }
+        },
+        "/v1/jsonrpc/delete_paid_service": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "delete_paid_service",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "id": {
+                                            "example": "9",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete_paid_service",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [],
+                                            "items": {},
+                                            "type": "array"
+                                        },
+                                        "message": {
+                                            "example": "Paid service with ID 9 was deleted successfully",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "PaidClaim"
+                ],
+                "description": "delete_paid_service",
+                "operationId": "deletePaidService",
+                "summary": "delete_paid_service"
+            }
+        },
+        "/v1/jsonrpc/edit_worker": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "edit_worker",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "category_id": {
+                                            "example": 2,
+                                            "type": "number"
+                                        },
+                                        "id": {
+                                            "example": 2,
+                                            "type": "number"
+                                        },
+                                        "name": {
+                                            "example": "Иван Петров",
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "example": "disabled",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "edit_worker",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "worker": {
+                                                    "properties": {
+                                                        "category_id": {
+                                                            "example": 2,
+                                                            "type": "number"
+                                                        },
+                                                        "created_at": {
+                                                            "example": "2024-10-28T16:14:09.000000Z",
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "example": 2,
+                                                            "type": "number"
+                                                        },
+                                                        "name": {
+                                                            "example": "Иван Петров",
+                                                            "type": "string"
+                                                        },
+                                                        "status": {
+                                                            "example": "disabled",
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "example": "2024-10-31T09:55:04.000000Z",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Worker updated successfully.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workers"
+                ],
+                "description": "edit_worker",
+                "operationId": "editWorker",
+                "summary": "edit_worker"
             }
         },
         "/v1/jsonrpc/get_all_streets": {
@@ -1081,6 +1784,585 @@
                 "description": "get_apartments_with_counters",
                 "operationId": "getApartmentsWithCounters",
                 "summary": "get_apartments_with_counters"
+            }
+        },
+        "/v1/jsonrpc/get_claim_categories": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "get_claim_categories",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {},
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_claim_categories",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [
+                                                {
+                                                    "created_at": "2024-10-29T13:27:10.000000Z",
+                                                    "id": 1,
+                                                    "name": "Тест",
+                                                    "updated_at": "2024-10-29T13:27:10.000000Z"
+                                                }
+                                            ],
+                                            "items": {
+                                                "properties": {
+                                                    "created_at": {
+                                                        "example": "2024-10-29T13:27:10.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "example": 1,
+                                                        "type": "number"
+                                                    },
+                                                    "name": {
+                                                        "example": "Тест",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "example": "2024-10-29T13:27:10.000000Z",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Claims"
+                ],
+                "description": "get_claim_categories",
+                "operationId": "getClaimCategories",
+                "summary": "get_claim_categories"
+            }
+        },
+        "/v1/jsonrpc/get_claim_chat_messages": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "get_claim_chat_messages",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "claim_id": {
+                                            "example": 6,
+                                            "type": "number"
+                                        },
+                                        "limit": {
+                                            "example": 2,
+                                            "type": "number"
+                                        },
+                                        "offset": {
+                                            "example": 16,
+                                            "type": "number"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_claim_chat_messages",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [
+                                                {
+                                                    "claim_id": 6,
+                                                    "created_at": "2024-10-31T10:57:33.000000Z",
+                                                    "files": [
+                                                        {
+                                                            "created_at": "2024-10-31T10:57:34.000000Z",
+                                                            "encoded_name": "855f8abd6e2382526fc60dac064d1a3f.test",
+                                                            "id": 3,
+                                                            "mime_type": "0",
+                                                            "original_name": "file_test",
+                                                            "path": "/storage/claims_chat/6/855f8abd6e2382526fc60dac064d1a3f.test",
+                                                            "size": 24,
+                                                            "updated_at": "2024-10-31T10:57:34.000000Z"
+                                                        }
+                                                    ],
+                                                    "id": 17,
+                                                    "sender_type": "client",
+                                                    "text": "Текст сообщения",
+                                                    "updated_at": "2024-10-31T10:57:33.000000Z"
+                                                },
+                                                {
+                                                    "claim_id": 6,
+                                                    "created_at": "2024-10-31T11:03:27.000000Z",
+                                                    "files": [
+                                                        {
+                                                            "created_at": "2024-10-31T11:03:29.000000Z",
+                                                            "encoded_name": "c128a6fb19e1fdebfafc5a133221c9e7.test",
+                                                            "id": 4,
+                                                            "mime_type": "0",
+                                                            "original_name": "file_test",
+                                                            "path": "/storage/claims_chat/6/c128a6fb19e1fdebfafc5a133221c9e7.test",
+                                                            "size": 5,
+                                                            "updated_at": "2024-10-31T11:03:29.000000Z"
+                                                        }
+                                                    ],
+                                                    "id": 18,
+                                                    "sender_type": "client",
+                                                    "text": "Текст сообщения2",
+                                                    "updated_at": "2024-10-31T11:03:27.000000Z"
+                                                }
+                                            ],
+                                            "items": {
+                                                "properties": {
+                                                    "claim_id": {
+                                                        "example": 6,
+                                                        "type": "number"
+                                                    },
+                                                    "created_at": {
+                                                        "example": "2024-10-31T10:57:33.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "files": {
+                                                        "example": [
+                                                            {
+                                                                "created_at": "2024-10-31T10:57:34.000000Z",
+                                                                "encoded_name": "855f8abd6e2382526fc60dac064d1a3f.test",
+                                                                "id": 3,
+                                                                "mime_type": "0",
+                                                                "original_name": "file_test",
+                                                                "path": "/storage/claims_chat/6/855f8abd6e2382526fc60dac064d1a3f.test",
+                                                                "size": 24,
+                                                                "updated_at": "2024-10-31T10:57:34.000000Z"
+                                                            }
+                                                        ],
+                                                        "items": {
+                                                            "properties": {
+                                                                "created_at": {
+                                                                    "example": "2024-10-31T10:57:34.000000Z",
+                                                                    "type": "string"
+                                                                },
+                                                                "encoded_name": {
+                                                                    "example": "855f8abd6e2382526fc60dac064d1a3f.test",
+                                                                    "type": "string"
+                                                                },
+                                                                "id": {
+                                                                    "example": 3,
+                                                                    "type": "number"
+                                                                },
+                                                                "mime_type": {
+                                                                    "example": "0",
+                                                                    "type": "string"
+                                                                },
+                                                                "original_name": {
+                                                                    "example": "file_test",
+                                                                    "type": "string"
+                                                                },
+                                                                "path": {
+                                                                    "example": "/storage/claims_chat/6/855f8abd6e2382526fc60dac064d1a3f.test",
+                                                                    "type": "string"
+                                                                },
+                                                                "size": {
+                                                                    "example": 24,
+                                                                    "type": "number"
+                                                                },
+                                                                "updated_at": {
+                                                                    "example": "2024-10-31T10:57:34.000000Z",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "id": {
+                                                        "example": 17,
+                                                        "type": "number"
+                                                    },
+                                                    "sender_type": {
+                                                        "example": "client",
+                                                        "type": "string"
+                                                    },
+                                                    "text": {
+                                                        "example": "Текст сообщения",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "example": "2024-10-31T10:57:33.000000Z",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Claims"
+                ],
+                "description": "get_claim_chat_messages",
+                "operationId": "getClaimChatMessages",
+                "summary": "get_claim_chat_messages"
+            }
+        },
+        "/v1/jsonrpc/get_claims": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "jsonrpc": {
+                                    "type": "string",
+                                    "example": "2.0"
+                                },
+                                "id": {
+                                    "type": "string",
+                                    "example": "1"
+                                },
+                                "method": {
+                                    "type": "string",
+                                    "example": "get_claims"
+                                },
+                                "params": {
+                                    "type": "object",
+                                    "properties": {
+                                        "client_id": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "number"
+                                            },
+                                            "example": [1, 2]
+                                        },
+                                        "search_text": {
+                                            "type": "string",
+                                            "example": "Батареи"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "example": "season"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "pending"
+                                        },
+                                        "worker_id": {
+                                            "type": "number",
+                                            "example": 2
+                                        },
+                                        "priority": {
+                                            "type": "string",
+                                            "example": "standard"
+                                        },
+                                        "category_id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "is_paid": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "expectation_date": {
+                                            "type": "string",
+                                            "example": "2024-10-31"
+                                        },
+                                        "limit": {
+                                            "type": "number",
+                                            "example": 10
+                                        },
+                                        "offset": {
+                                            "type": "number",
+                                            "example": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_claims",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [
+                                                {
+                                                    "category_id": 1,
+                                                    "client_id": 2,
+                                                    "comment": null,
+                                                    "created_at": "2024-10-31T11:37:27.000000Z",
+                                                    "expectation_date": "2024-10-31T00:00:00.000000Z",
+                                                    "finished_at": null,
+                                                    "id": 7,
+                                                    "is_active": true,
+                                                    "is_paid": true,
+                                                    "paid_service_id": 12,
+                                                    "priority": "standard",
+                                                    "rating": null,
+                                                    "status": "pending",
+                                                    "text": "Батареи не греют уже вторую неделю.",
+                                                    "title": "Проблема с отоплением (обновлено)",
+                                                    "type": "season",
+                                                    "updated_at": "2024-10-31T11:40:29.000000Z",
+                                                    "worker_id": 2
+                                                }
+                                            ],
+                                            "items": {
+                                                "properties": {
+                                                    "category_id": {
+                                                        "example": 1,
+                                                        "type": "number"
+                                                    },
+                                                    "client_id": {
+                                                        "example": 2,
+                                                        "type": "number"
+                                                    },
+                                                    "comment": {
+                                                        "example": null,
+                                                        "x-nullable": true
+                                                    },
+                                                    "created_at": {
+                                                        "example": "2024-10-31T11:37:27.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "expectation_date": {
+                                                        "example": "2024-10-31T00:00:00.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "finished_at": {
+                                                        "example": null,
+                                                        "x-nullable": true
+                                                    },
+                                                    "id": {
+                                                        "example": 7,
+                                                        "type": "number"
+                                                    },
+                                                    "is_active": {
+                                                        "example": true,
+                                                        "type": "boolean"
+                                                    },
+                                                    "is_paid": {
+                                                        "example": true,
+                                                        "type": "boolean"
+                                                    },
+                                                    "paid_service_id": {
+                                                        "example": 12,
+                                                        "type": "number"
+                                                    },
+                                                    "priority": {
+                                                        "example": "standard",
+                                                        "type": "string"
+                                                    },
+                                                    "rating": {
+                                                        "example": null,
+                                                        "x-nullable": true
+                                                    },
+                                                    "status": {
+                                                        "example": "pending",
+                                                        "type": "string"
+                                                    },
+                                                    "text": {
+                                                        "example": "Батареи не греют уже вторую неделю.",
+                                                        "type": "string"
+                                                    },
+                                                    "title": {
+                                                        "example": "Проблема с отоплением (обновлено)",
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "example": "season",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "example": "2024-10-31T11:40:29.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "worker_id": {
+                                                        "example": 2,
+                                                        "type": "number"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Claims"
+                ],
+                "description": "get_claims",
+                "operationId": "getClaims",
+                "summary": "get_claims"
             }
         },
         "/v1/jsonrpc/get_house_by_street": {
@@ -2067,6 +3349,273 @@
                 "summary": "register"
             }
         },
+        "/v1/jsonrpc/send_claim_chat_message": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "send_claim_chat_message",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "claim_id": {
+                                            "example": 6,
+                                            "type": "number"
+                                        },
+                                        "files": {
+                                            "example": [
+                                                {
+                                                    "file": "data:image/jpeg;base64,/base64",
+                                                    "file_original_name": "file_test"
+                                                }
+                                            ],
+                                            "items": {
+                                                "properties": {
+                                                    "file": {
+                                                        "example": "data:image/jpeg;base64,/base64",
+                                                        "type": "string"
+                                                    },
+                                                    "file_original_name": {
+                                                        "example": "file_test",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "from": {
+                                            "example": "client",
+                                            "type": "string"
+                                        },
+                                        "text": {
+                                            "example": "Текст сообщения",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "send_claim_chat_message",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [],
+                                            "items": {},
+                                            "type": "array"
+                                        },
+                                        "message": {
+                                            "example": "Chat message was created successfully",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Claims"
+                ],
+                "description": "send_claim_chat_message",
+                "operationId": "sendClaimChatMessage",
+                "summary": "send_claim_chat_message"
+            }
+        },
+        "/v1/jsonrpc/send_claim_feedback": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "send_claim_feedback",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "claim_id": {
+                                            "example": 3,
+                                            "type": "number"
+                                        },
+                                        "rating": {
+                                            "example": "dislike",
+                                            "type": "string"
+                                        },
+                                        "text": {
+                                            "example": "Test2",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "send_claim_feedback",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "review": {
+                                                    "properties": {
+                                                        "claim_id": {
+                                                            "example": 3,
+                                                            "type": "number"
+                                                        },
+                                                        "created_at": {
+                                                            "example": "2024-10-29T13:27:10.000000Z",
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "example": 2,
+                                                            "type": "number"
+                                                        },
+                                                        "rating": {
+                                                            "example": "dislike",
+                                                            "type": "string"
+                                                        },
+                                                        "text": {
+                                                            "example": "Test2",
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "example": "2024-10-29T13:27:10.000000Z",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Review created successfully.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Claims"
+                ],
+                "description": "send_claim_feedback",
+                "operationId": "sendClaimFeedback",
+                "summary": "send_claim_feedback"
+            }
+        },
         "/v1/jsonrpc/send_counters_data": {
             "post": {
                 "consumes": [
@@ -2205,6 +3754,212 @@
                 "summary": "send_counters_data"
             }
         },
+        "/v1/jsonrpc/update_claim": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "jsonrpc": {
+                                    "type": "string",
+                                    "example": "2.0"
+                                },
+                                "id": {
+                                    "type": "string",
+                                    "example": "1"
+                                },
+                                "method": {
+                                    "type": "string",
+                                    "example": "update_claim"
+                                },
+                                "params": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 7
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "Проблема с отоплением (обновлено)"
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "example": "Батареи не греют уже вторую неделю."
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "in_progress"
+                                        },
+                                        "priority": {
+                                            "type": "string",
+                                            "example": "urgent"
+                                        },
+                                        "worker": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                }
+                                            }
+                                        },
+                                        "category_id": {
+                                            "type": "number",
+                                            "example": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update_claim",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "claim": {
+                                                    "properties": {
+                                                        "category_id": {
+                                                            "example": 1,
+                                                            "type": "number"
+                                                        },
+                                                        "client_id": {
+                                                            "example": 1,
+                                                            "type": "number"
+                                                        },
+                                                        "comment": {
+                                                            "example": null,
+                                                            "x-nullable": true
+                                                        },
+                                                        "created_at": {
+                                                            "example": "2024-10-31T11:37:27.000000Z",
+                                                            "type": "string"
+                                                        },
+                                                        "expectation_date": {
+                                                            "example": null,
+                                                            "x-nullable": true
+                                                        },
+                                                        "finished_at": {
+                                                            "example": null,
+                                                            "x-nullable": true
+                                                        },
+                                                        "id": {
+                                                            "example": 7,
+                                                            "type": "number"
+                                                        },
+                                                        "is_active": {
+                                                            "example": true,
+                                                            "type": "boolean"
+                                                        },
+                                                        "is_paid": {
+                                                            "example": null,
+                                                            "x-nullable": true
+                                                        },
+                                                        "paid_service_id": {
+                                                            "example": null,
+                                                            "x-nullable": true
+                                                        },
+                                                        "priority": {
+                                                            "example": "urgent",
+                                                            "type": "string"
+                                                        },
+                                                        "rating": {
+                                                            "example": null,
+                                                            "x-nullable": true
+                                                        },
+                                                        "status": {
+                                                            "example": "in_progress",
+                                                            "type": "string"
+                                                        },
+                                                        "text": {
+                                                            "example": "Батареи не греют уже вторую неделю.",
+                                                            "type": "string"
+                                                        },
+                                                        "title": {
+                                                            "example": "Проблема с отоплением (обновлено)",
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "example": "base",
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "example": "2024-10-31T11:40:29.000000Z",
+                                                            "type": "string"
+                                                        },
+                                                        "worker_id": {
+                                                            "example": 2,
+                                                            "type": "number"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Заявка успешно обновлена",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Claims"
+                ],
+                "description": "update_claim",
+                "operationId": "updateClaim",
+                "summary": "update_claim"
+            }
+        },
         "/v1/jsonrpc/update_paid_service": {
             "post": {
                 "consumes": [
@@ -2334,6 +4089,12 @@
         },
         {
             "name": "CounterData"
+        },
+        {
+            "name": "Claims"
+        },
+        {
+            "name": "Workers"
         }
     ]
 }

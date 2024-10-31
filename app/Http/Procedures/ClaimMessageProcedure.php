@@ -45,7 +45,7 @@ class ClaimMessageProcedure extends Procedure
                     $message->files()->saveMany($filesArr);
                 }
             }
-            return $responseBuilder->setData([])->setMessage("Chat message was create successfully")->build();
+            return $responseBuilder->setData([])->setMessage("Chat message was created successfully")->build();
         }
         throw new InvalidParams(['message' => "claim with id {$data['claim_id']} does not exist"]);
     }

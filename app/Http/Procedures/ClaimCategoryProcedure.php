@@ -20,8 +20,7 @@ class ClaimCategoryProcedure extends Procedure
      */
     public function getCategories(ApiResponseBuilder $responseBuilder): array
     {
-        return $responseBuilder->setData(ClaimCategory::all())->setMessage("Chat message was create successfully")->build();
+        return $responseBuilder->setData(ClaimCategory::all())->build();
     }
-
 
 }
