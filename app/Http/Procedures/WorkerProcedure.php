@@ -73,4 +73,13 @@ class WorkerProcedure extends Procedure
         return $responseBuilder->setData(['worker' => $worker->toArray()])->setMessage("Worker updated successfully.")->build();
     }
 
+    /**
+     * @param ApiResponseBuilder $responseBuilder
+     * @return array
+     */
+    public function getWorkers(ApiResponseBuilder $responseBuilder): array
+    {
+        return $responseBuilder->setData(Worker::all())->build();
+    }
+
 }
