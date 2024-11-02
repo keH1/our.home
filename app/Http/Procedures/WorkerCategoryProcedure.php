@@ -34,4 +34,13 @@ class WorkerCategoryProcedure extends Procedure
         return $responseBuilder->setData(['category' => $category->toArray()])->setMessage("Worker category created successfully.")->build();
     }
 
+    /**
+     * @param ApiResponseBuilder $responseBuilder
+     * @return array
+     */
+    public function getWorkerCategories(ApiResponseBuilder $responseBuilder): array
+    {
+        return $responseBuilder->setData(WorkerCategory::all())->build();
+    }
+
 }
