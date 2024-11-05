@@ -2142,73 +2142,81 @@
                         "in": "body",
                         "name": "body",
                         "schema": {
-                            "type": "object",
                             "properties": {
-                                "jsonrpc": {
-                                    "type": "string",
-                                    "example": "2.0"
-                                },
                                 "id": {
-                                    "type": "string",
-                                    "example": "1"
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
                                 },
                                 "method": {
-                                    "type": "string",
-                                    "example": "get_claims"
+                                    "example": "get_claims",
+                                    "type": "string"
                                 },
                                 "params": {
-                                    "type": "object",
                                     "properties": {
+                                        "category_id": {
+                                            "example": null,
+                                            "x-nullable": true
+                                        },
                                         "client_id": {
-                                            "type": "array",
+                                            "example": [
+                                                1,
+                                                2
+                                            ],
                                             "items": {
+                                                "example": 1,
                                                 "type": "number"
                                             },
-                                            "example": [1, 2]
-                                        },
-                                        "search_text": {
-                                            "type": "string",
-                                            "example": "Батареи"
-                                        },
-                                        "type": {
-                                            "type": "string",
-                                            "example": "season"
-                                        },
-                                        "status": {
-                                            "type": "string",
-                                            "example": "pending"
-                                        },
-                                        "worker_id": {
-                                            "type": "number",
-                                            "example": 2
-                                        },
-                                        "priority": {
-                                            "type": "string",
-                                            "example": "standard"
-                                        },
-                                        "category_id": {
-                                            "type": "number",
-                                            "example": 1
-                                        },
-                                        "is_paid": {
-                                            "type": "boolean",
-                                            "example": true
+                                            "type": "array"
                                         },
                                         "expectation_date": {
-                                            "type": "string",
-                                            "example": "2024-10-31"
+                                            "example": "2024-05-01",
+                                            "type": "string"
+                                        },
+                                        "is_paid": {
+                                            "example": null,
+                                            "x-nullable": true
                                         },
                                         "limit": {
-                                            "type": "number",
-                                            "example": 10
+                                            "example": 10,
+                                            "type": "number"
                                         },
                                         "offset": {
-                                            "type": "number",
-                                            "example": 0
+                                            "example": 0,
+                                            "type": "number"
+                                        },
+                                        "priority": {
+                                            "example": "standard",
+                                            "type": "string"
+                                        },
+                                        "search_text": {
+                                            "example": "кондиционер",
+                                            "type": "string"
+                                        },
+                                        "service_id": {
+                                            "example": null,
+                                            "x-nullable": true
+                                        },
+                                        "status": {
+                                            "example": "pending",
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "example": "season",
+                                            "type": "string"
+                                        },
+                                        "worker_id": {
+                                            "example": 4,
+                                            "type": "number"
                                         }
-                                    }
+                                    },
+                                    "type": "object"
                                 }
-                            }
+                            },
+                            "type": "object"
                         }
                     }
                 ],
@@ -3048,6 +3056,280 @@
                 "summary": "get_user_data"
             }
         },
+        "/v1/jsonrpc/get_worker_categories": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "get_worker_categories",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {},
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_worker_categories",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [
+                                                {
+                                                    "created_at": "2024-10-28T16:13:51.000000Z",
+                                                    "id": 1,
+                                                    "name": "Сантехник",
+                                                    "updated_at": "2024-10-28T16:13:51.000000Z"
+                                                },
+                                                {
+                                                    "created_at": "2024-10-28T16:16:01.000000Z",
+                                                    "id": 2,
+                                                    "name": "Электрик",
+                                                    "updated_at": "2024-10-28T16:16:01.000000Z"
+                                                },
+                                                {
+                                                    "created_at": "2024-10-31T09:57:02.000000Z",
+                                                    "id": 3,
+                                                    "name": "Уборщик",
+                                                    "updated_at": "2024-10-31T09:57:02.000000Z"
+                                                }
+                                            ],
+                                            "items": {
+                                                "properties": {
+                                                    "created_at": {
+                                                        "example": "2024-10-28T16:13:51.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "example": 1,
+                                                        "type": "number"
+                                                    },
+                                                    "name": {
+                                                        "example": "Сантехник",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "example": "2024-10-28T16:13:51.000000Z",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workers"
+                ],
+                "description": "get_worker_categories",
+                "operationId": "getWorkerCategories",
+                "summary": "get_worker_categories"
+            }
+        },
+        "/v1/jsonrpc/get_workers": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "get_workers",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {},
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_workers",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [
+                                                {
+                                                    "category_id": 1,
+                                                    "created_at": "2024-10-28T18:19:30.000000Z",
+                                                    "id": 4,
+                                                    "name": "Иван Тестиванов",
+                                                    "status": "active",
+                                                    "updated_at": "2024-10-28T18:19:30.000000Z"
+                                                },
+                                                {
+                                                    "category_id": 1,
+                                                    "created_at": "2024-10-31T09:51:49.000000Z",
+                                                    "id": 5,
+                                                    "name": "Иван Иванов",
+                                                    "status": "active",
+                                                    "updated_at": "2024-10-31T09:51:49.000000Z"
+                                                },
+                                                {
+                                                    "category_id": 2,
+                                                    "created_at": "2024-10-28T16:14:09.000000Z",
+                                                    "id": 2,
+                                                    "name": "Иван Петров",
+                                                    "status": "active",
+                                                    "updated_at": "2024-10-31T09:55:04.000000Z"
+                                                }
+                                            ],
+                                            "items": {
+                                                "properties": {
+                                                    "category_id": {
+                                                        "example": 1,
+                                                        "type": "number"
+                                                    },
+                                                    "created_at": {
+                                                        "example": "2024-10-28T18:19:30.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "example": 4,
+                                                        "type": "number"
+                                                    },
+                                                    "name": {
+                                                        "example": "Иван Тестиванов",
+                                                        "type": "string"
+                                                    },
+                                                    "status": {
+                                                        "example": "active",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "example": "2024-10-28T18:19:30.000000Z",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workers"
+                ],
+                "description": "get_workers",
+                "operationId": "getWorkers",
+                "summary": "get_workers"
+            }
+        },
         "/v1/jsonrpc/login": {
             "post": {
                 "consumes": [
@@ -3767,59 +4049,59 @@
                         "in": "body",
                         "name": "body",
                         "schema": {
-                            "type": "object",
                             "properties": {
-                                "jsonrpc": {
-                                    "type": "string",
-                                    "example": "2.0"
-                                },
                                 "id": {
-                                    "type": "string",
-                                    "example": "1"
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
                                 },
                                 "method": {
-                                    "type": "string",
-                                    "example": "update_claim"
+                                    "example": "update_claim",
+                                    "type": "string"
                                 },
                                 "params": {
-                                    "type": "object",
                                     "properties": {
+                                        "category_id": {
+                                            "example": 4,
+                                            "type": "number"
+                                        },
                                         "id": {
-                                            "type": "number",
-                                            "example": 7
-                                        },
-                                        "title": {
-                                            "type": "string",
-                                            "example": "Проблема с отоплением (обновлено)"
-                                        },
-                                        "text": {
-                                            "type": "string",
-                                            "example": "Батареи не греют уже вторую неделю."
-                                        },
-                                        "status": {
-                                            "type": "string",
-                                            "example": "in_progress"
+                                            "example": 1,
+                                            "type": "number"
                                         },
                                         "priority": {
-                                            "type": "string",
-                                            "example": "urgent"
+                                            "example": "urgent",
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "example": "in_progress",
+                                            "type": "string"
+                                        },
+                                        "text": {
+                                            "example": "Батареи не греют уже вторую неделю.",
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "example": "Проблема с отоплением (обновлено)",
+                                            "type": "string"
                                         },
                                         "worker": {
-                                            "type": "object",
                                             "properties": {
                                                 "id": {
-                                                    "type": "number",
-                                                    "example": 2
+                                                    "example": 3,
+                                                    "type": "number"
                                                 }
-                                            }
-                                        },
-                                        "category_id": {
-                                            "type": "number",
-                                            "example": 1
+                                            },
+                                            "type": "object"
                                         }
-                                    }
+                                    },
+                                    "type": "object"
                                 }
-                            }
+                            },
+                            "type": "object"
                         }
                     }
                 ],
