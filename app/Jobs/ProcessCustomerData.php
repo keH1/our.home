@@ -45,7 +45,7 @@ class ProcessCustomerData implements ShouldQueue
             'driver' => 'single',
             'path' => storage_path('logs/1c_customer.log'),
         ]);
-        //Log::stack(['slack', $channel])->info(json_encode($customer));
+        Log::stack(['slack', $channel])->info(json_encode($customer));
         $customer['Задолженность'] == null ? $debt = 0 : $debt = $this->parseFloat($customer['Задолженность']);
         $customer['Улица'] = StreetNormalizer::normalizeStreetName($customer['Улица']);
         $email = $customer['АдресЭлектроннойПочты'] ?? str()->random(5) . sha1(time()) . '@asdasdasd.rrrr';
