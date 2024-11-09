@@ -137,6 +137,7 @@ class ClaimProcedure extends Procedure
         $validator->validate();
 
         $query = Claim::query();
+        $query->with(['files']);
         if ($data->has('client_id')) {
             $query->whereIn('client_id', $data['client_id']);
         }
