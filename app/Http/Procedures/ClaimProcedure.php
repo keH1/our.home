@@ -133,11 +133,24 @@ class ClaimProcedure extends Procedure
             'service_id' => 'nullable|integer|exists:paid_services,id',
             'is_paid' => 'nullable|boolean',
             'expectation_date' => 'nullable|date',
+            'sort_by' => 'nullable|array',
+            'sort_by.*.field' => 'required|string',
+            'sort_by.*.sort_type' => 'required|string|in:asc,desc',
         ]);
         $validator->validate();
 
         $query = Claim::query();
+        $query->leftJoin('client_apartment', 'claims.client_id', '=', 'client_apartment.client_id')
+              ->leftJoin('apartments', 'client_apartment.apartment_id', '=', 'apartments.id')
+              ->leftJoin('houses', 'apartments.house_id', '=', 'houses.id');
         $query->with(['files']);
+        $query->select(
+            'claims.*',
+            'apartments.id as apartment_id',
+            'houses.id as house_id',
+            'houses.street'
+        );
+
         if ($data->has('client_id')) {
             $query->whereIn('client_id', $data['client_id']);
         }
@@ -186,6 +199,14 @@ class ClaimProcedure extends Procedure
 
             $searchResults = Claim::search($searchText)->keys();
             $query->whereIn('id', $searchResults);
+        }
+
+        if ($data->has('sort_by') && is_array($data['sort_by'])) {
+            foreach ($data['sort_by'] as $sort) {
+                $field = $sort['field'];
+                $sortType = $sort['sort_type'];
+                $query->orderBy($field, $sortType);
+            }
         }
 
         $totalQuery = clone $query;
