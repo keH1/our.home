@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\OneC;
 use App\Http\Procedures\HouseProcedure;
+use App\Http\Procedures\NotificationProcedure;
 use App\Http\Procedures\UserProcedure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,8 @@ Route::prefix('v1')->as('v1:')->group(function () {
             WorkerCategoryProcedure::class,
             ClaimMessageProcedure::class,
             ClaimCategoryProcedure::class,
-            ClaimReviewProcedure::class
+            ClaimReviewProcedure::class,
+            NotificationProcedure::class
         ]);
     });
 
