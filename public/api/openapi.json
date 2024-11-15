@@ -114,6 +114,77 @@
                 "summary": "change_password"
             }
         },
+        "/v1/jsonrpc/create_address_notification": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": 1,
+                                    "type": "number"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "create_address_notification",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "category": {
+                                            "example": "important",
+                                            "type": "string",
+                                            "description": "Опционально: 'general', 'important', 'critical'. По умолчанию 'general'"
+                                        },
+                                        "date_to": {
+                                            "example": "2024-01-31 23:59:59",
+                                            "type": "string"
+                                        },
+                                        "house_ids": {
+                                            "example": [
+                                                1,
+                                                2,
+                                                3
+                                            ],
+                                            "items": {
+                                                "example": 1,
+                                                "type": "number"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "text": {
+                                            "example": "Уважаемые жители, завтра планируется отключение электричества с 10:00 до 15:00.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "Notifications"
+                ],
+                "description": "create_address_notification",
+                "operationId": "createAddressNotification",
+                "summary": "create_address_notification"
+            }
+        },
         "/v1/jsonrpc/create_claim": {
             "post": {
                 "consumes": [
@@ -1247,6 +1318,57 @@
                 "description": "edit_worker",
                 "operationId": "editWorker",
                 "summary": "edit_worker"
+            }
+        },
+        "/v1/jsonrpc/get_address_notifications": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": 4,
+                                    "type": "number"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "get_address_notifications",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "is_crm": {
+                                            "example": true,
+                                            "type": "boolean",
+                                            "description": "Можно убрать параметр тогда вернет только для текущего авторизованного юзера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "Notifications"
+                ],
+                "description": "get_address_notifications",
+                "operationId": "getAddressNotifications",
+                "summary": "get_address_notifications"
             }
         },
         "/v1/jsonrpc/get_all_streets": {
@@ -3631,6 +3753,56 @@
                 "summary": "register"
             }
         },
+        "/v1/jsonrpc/remove_address_notification": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": 2,
+                                    "type": "number"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "remove_address_notification",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "id": {
+                                            "example": 1,
+                                            "type": "number"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "Notifications"
+                ],
+                "description": "remove_address_notification",
+                "operationId": "removeAddressNotification",
+                "summary": "remove_address_notification"
+            }
+        },
         "/v1/jsonrpc/send_claim_chat_message": {
             "post": {
                 "consumes": [
@@ -4036,6 +4208,81 @@
                 "summary": "send_counters_data"
             }
         },
+        "/v1/jsonrpc/update_address_notification": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": 3,
+                                    "type": "number"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "update_address_notification",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "category": {
+                                            "example": "critical",
+                                            "type": "string",
+                                            "description": "Опционально"
+                                        },
+                                        "date_to": {
+                                            "example": "2024-02-15 23:59:59",
+                                            "type": "string"
+                                        },
+                                        "house_ids": {
+                                            "example": [
+                                                2,
+                                                3,
+                                                4
+                                            ],
+                                            "items": {
+                                                "example": 2,
+                                                "type": "number"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "id": {
+                                            "example": 1,
+                                            "type": "number"
+                                        },
+                                        "text": {
+                                            "example": "Обновление: отключение электричества перенесено на послезавтра.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "Notifications"
+                ],
+                "description": "update_address_notification",
+                "operationId": "updateAddressNotification",
+                "summary": "update_address_notification"
+            }
+        },
         "/v1/jsonrpc/update_claim": {
             "post": {
                 "consumes": [
@@ -4377,6 +4624,9 @@
         },
         {
             "name": "Workers"
+        },
+        {
+            "name": "Notifications"
         }
     ]
 }
