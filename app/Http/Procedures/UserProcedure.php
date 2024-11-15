@@ -84,6 +84,7 @@ class UserProcedure extends Procedure
             'clients' => $clients->map(function ($client) {
                 return [
                     'id'=>$client->id,
+                    'name'=>$client->name,
                     'debt' => $client->debt,
                     'accounts' => $client->accounts->map(function ($account) {
                         return [
