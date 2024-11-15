@@ -198,7 +198,15 @@ class ClaimProcedure extends Procedure
             $searchText = $data['search_text'];
 
             $searchResults = Claim::search($searchText)->keys();
-            $query->whereIn('id', $searchResults);
+            $query->where(function ($query) use ($searchText, $searchResults) {
+                if ($searchResults->isNotEmpty()) {
+                    $query->whereIn('claims.id', $searchResults);
+                }
+                $query->orWhere('claims.id', 'LIKE', "%{$searchText}%");
+                $query->orWhereHas('client', function ($q) use ($searchText) {
+                    $q->where('name', 'LIKE', "%{$searchText}%");
+                });
+            });
         }
 
         if ($data->has('sort_by') && is_array($data['sort_by'])) {
