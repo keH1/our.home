@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OneC;
+use App\Http\Procedures\ClientProcedure;
 use App\Http\Procedures\HouseProcedure;
 use App\Http\Procedures\NotificationProcedure;
 use App\Http\Procedures\UserProcedure;
@@ -34,7 +35,8 @@ Route::prefix('v1')->as('v1:')->group(function () {
             ClaimMessageProcedure::class,
             ClaimCategoryProcedure::class,
             ClaimReviewProcedure::class,
-            NotificationProcedure::class
+            NotificationProcedure::class,
+            ClientProcedure::class,
         ]);
     });
 
