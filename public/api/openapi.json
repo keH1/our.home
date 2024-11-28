@@ -11,6 +11,86 @@
         "https"
     ],
     "paths": {
+        "/get_user_data_by_phone": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "phone",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_user_data_by_phone",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "apartments": {
+                                    "example": [
+                                        "Первоуральск г, Teстовый пер., 39, Строение не указано, Кв. 2"
+                                    ],
+                                    "items": {
+                                        "example": "Первоуральск г, Teстовый пер., 39, Строение не указано, Кв. 2",
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                },
+                                "debt": {
+                                    "example": "955838.3",
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "example": "Email не указан",
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "example": 5,
+                                    "type": "number"
+                                },
+                                "name": {
+                                    "example": "Фамилия Имя Отчество",
+                                    "type": "string"
+                                },
+                                "phone": {
+                                    "example": "12365542885",
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "User"
+                ],
+                "description": "get_user_data_by_phone",
+                "operationId": "getUserDataByPhone",
+                "summary": "get_user_data_by_phone"
+            }
+        },
         "/v1/jsonrpc/change_password": {
             "post": {
                 "consumes": [
@@ -119,6 +199,9 @@
                 "consumes": [
                     "application/json"
                 ],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "in": "body",
@@ -141,8 +224,7 @@
                                     "properties": {
                                         "category": {
                                             "example": "important",
-                                            "type": "string",
-                                            "description": "Опционально: 'general', 'important', 'critical'. По умолчанию 'general'"
+                                            "type": "string"
                                         },
                                         "date_to": {
                                             "example": "2024-01-31 23:59:59",
@@ -174,7 +256,70 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "create_address_notification",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "category": {
+                                                    "example": "important",
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "example": "2024-11-15T16:03:20.000000Z",
+                                                    "type": "string"
+                                                },
+                                                "date_to": {
+                                                    "example": "2025-01-31T23:59:59.000000Z",
+                                                    "type": "string"
+                                                },
+                                                "id": {
+                                                    "example": 15,
+                                                    "type": "number"
+                                                },
+                                                "is_read": {
+                                                    "example": false,
+                                                    "type": "boolean"
+                                                },
+                                                "text": {
+                                                    "example": "Уважаемые жители, завтра планируется отключение электричества с 10:00 до 15:00.",
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "example": "Адресное уведомление",
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "example": "address",
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "example": "2024-11-15T16:03:20.000000Z",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Адресное уведомление успешно создано",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "tags": [
@@ -1325,6 +1470,9 @@
                 "consumes": [
                     "application/json"
                 ],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "in": "body",
@@ -1347,8 +1495,7 @@
                                     "properties": {
                                         "is_crm": {
                                             "example": true,
-                                            "type": "boolean",
-                                            "description": "Можно убрать параметр тогда вернет только для текущего авторизованного юзера"
+                                            "type": "boolean"
                                         }
                                     },
                                     "type": "object"
@@ -1360,7 +1507,101 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "get_address_notifications",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "4",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [
+                                                {
+                                                    "action_type": null,
+                                                    "action_value": null,
+                                                    "category": "critical",
+                                                    "created_at": "2024-11-15T16:03:20.000000Z",
+                                                    "date_to": "2025-02-15T23:59:59.000000Z",
+                                                    "id": 15,
+                                                    "is_read": false,
+                                                    "text": "Обновление: отключение электричества перенесено на послезавтра.",
+                                                    "title": "Адресное уведомление",
+                                                    "type": "address",
+                                                    "updated_at": "2024-11-15T16:05:27.000000Z",
+                                                    "user_id": null
+                                                }
+                                            ],
+                                            "items": {
+                                                "properties": {
+                                                    "action_type": {
+                                                        "example": null,
+                                                        "x-nullable": true
+                                                    },
+                                                    "action_value": {
+                                                        "example": null,
+                                                        "x-nullable": true
+                                                    },
+                                                    "category": {
+                                                        "example": "critical",
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "example": "2024-11-15T16:03:20.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "date_to": {
+                                                        "example": "2025-02-15T23:59:59.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "example": 15,
+                                                        "type": "number"
+                                                    },
+                                                    "is_read": {
+                                                        "example": false,
+                                                        "type": "boolean"
+                                                    },
+                                                    "text": {
+                                                        "example": "Обновление: отключение электричества перенесено на послезавтра.",
+                                                        "type": "string"
+                                                    },
+                                                    "title": {
+                                                        "example": "Адресное уведомление",
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "example": "address",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "example": "2024-11-15T16:05:27.000000Z",
+                                                        "type": "string"
+                                                    },
+                                                    "user_id": {
+                                                        "example": null,
+                                                        "x-nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "message": {
+                                            "example": "Все адресные уведомления",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "tags": [
@@ -3758,6 +3999,9 @@
                 "consumes": [
                     "application/json"
                 ],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "in": "body",
@@ -3792,7 +4036,34 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "remove_address_notification",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "2",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [],
+                                            "items": {},
+                                            "type": "array"
+                                        },
+                                        "message": {
+                                            "example": "Адресное уведомление успешно удалено",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "tags": [
@@ -4213,6 +4484,9 @@
                 "consumes": [
                     "application/json"
                 ],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "in": "body",
@@ -4235,8 +4509,7 @@
                                     "properties": {
                                         "category": {
                                             "example": "critical",
-                                            "type": "string",
-                                            "description": "Опционально"
+                                            "type": "string"
                                         },
                                         "date_to": {
                                             "example": "2024-02-15 23:59:59",
@@ -4272,7 +4545,82 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "update_address_notification",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "3",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "action_type": {
+                                                    "example": null,
+                                                    "x-nullable": true
+                                                },
+                                                "action_value": {
+                                                    "example": null,
+                                                    "x-nullable": true
+                                                },
+                                                "category": {
+                                                    "example": "critical",
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "example": "2024-11-15T16:03:20.000000Z",
+                                                    "type": "string"
+                                                },
+                                                "date_to": {
+                                                    "example": "2025-02-15T23:59:59.000000Z",
+                                                    "type": "string"
+                                                },
+                                                "id": {
+                                                    "example": 15,
+                                                    "type": "number"
+                                                },
+                                                "is_read": {
+                                                    "example": false,
+                                                    "type": "boolean"
+                                                },
+                                                "text": {
+                                                    "example": "Обновление: отключение электричества перенесено на послезавтра.",
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "example": "Адресное уведомление",
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "example": "address",
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "example": "2024-11-15T16:05:27.000000Z",
+                                                    "type": "string"
+                                                },
+                                                "user_id": {
+                                                    "example": null,
+                                                    "x-nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Адресное уведомление успешно обновлено",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "tags": [

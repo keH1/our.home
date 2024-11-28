@@ -124,4 +124,5 @@ return [
     ],
 
     'one_c_token' => env('ONE_C_TOKEN', false),
+    'user_data_token' => env('USER_DATA_TOKEN', false),
 ];
