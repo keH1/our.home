@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OneC;
+use App\Http\Controllers\UserDataController;
 use App\Http\Procedures\ClientProcedure;
 use App\Http\Procedures\HouseProcedure;
 use App\Http\Procedures\NotificationProcedure;
@@ -20,6 +21,8 @@ use App\Http\Procedures\ClaimReviewProcedure;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::get('/get_user_data_by_phone', [UserDataController::class, 'getUserDataByPhone'])->middleware('user_data.api')->name('get_user_data_by_phone');
 
 Route::prefix('v1')->as('v1:')->group(function () {
     Route::middleware(['rpc.api'])->group(function () {

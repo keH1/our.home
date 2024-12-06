@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\OneCMiddleware;
 use App\Http\Middleware\RpcApiMiddleware;
+use App\Http\Middleware\UserDataMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -26,7 +27,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'abilities' => CheckAbilities::class,
             'ability' => CheckForAnyAbility::class,
             'rpc.api'=>RpcApiMiddleware::class,
-            'one.c.api'=> OneCMiddleware::class
+            'one.c.api'=> OneCMiddleware::class,
+            'user_data.api' => UserDataMiddleware::class
         ]);
         $middleware->trustProxies(at: [
             '172.18.0.0/8',

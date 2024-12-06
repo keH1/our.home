@@ -36,5 +36,5 @@ enum RpcApiMapper: string
     case REMOVE_ADDRESS_NOTIFICATION = 'notification@removeAddressNotification';
     case UPDATE_ADDRESS_NOTIFICATION = 'notification@updateAddressNotification';
     case GET_ADDRESS_NOTIFICATIONS = 'notification@getAddressNotifications';
-    case GET_CLIENTS_LIST = 'client@getClients';
+    case GET_CLIENTS_LIST = 'client_procedure@getClients';
 }

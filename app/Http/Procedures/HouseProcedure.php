@@ -11,6 +11,7 @@ use App\Services\ApiResponseBuilder;
 use App\Services\PaginationBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 
@@ -100,21 +101,23 @@ class HouseProcedure extends Procedure
     /**
      * Метод для получения квартир и счетчиков по идентификатору дома.
      *
-     * @param  Request  $request
-     * @param  ApiResponseBuilder  $responseBuilder
+     * @param Request $request
+     * @param ApiResponseBuilder $responseBuilder
      * @return array
+     * @throws ValidationException
      */
     public function getApartmentsWithCounters(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $validator = Validator::make($request->all(), [
-            'house_id' => 'required|integer|exists:houses,id',
+            'house_id' => 'nullable|integer|exists:houses,id',
+            'apartment_id' => 'nullable|integer|exists:apartments,id',
         ]);
 
         if ($validator->fails()) {
             throw new InvalidParams($validator->errors()->toArray());
         }
 
-        $houseId = $validator->validated()['house_id'];
+        $validated = $validator->validated();
         $paginationBuilder = PaginationBuilder::fromRequest($request);
 
         $query = Apartment::with([
@@ -123,7 +126,15 @@ class HouseProcedure extends Procedure
                     'latestConfirmedHistory', 'latestUnconfirmedHistory',
                 ]);
             }
-        ])->where('house_id', $houseId)->orderBy('number');
+        ])->orderBy('number');
+
+        if (isset($validated['house_id'])) {
+            $query->where('house_id', $validated['house_id']);
+        }
+
+        if (isset($validated['apartment_id'])) {
+            $query->where('id', $validated['apartment_id']);
+        }
 
         if ($paginationBuilder->isPaginationEnabled()) {
             $limit = $paginationBuilder->getLimit();
