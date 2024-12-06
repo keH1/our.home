@@ -2736,6 +2736,178 @@
                 "summary": "get_claims"
             }
         },
+        "/v1/jsonrpc/get_clients_list": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": 1,
+                                    "type": "number"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "get_clients_list",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "apartment_id": {
+                                            "example": 1,
+                                            "type": "number"
+                                        },
+                                        "house_id": {
+                                            "example": 1,
+                                            "type": "number"
+                                        },
+                                        "id": {
+                                            "example": [
+                                                1,
+                                                2,
+                                                3
+                                            ],
+                                            "items": {
+                                                "example": 1,
+                                                "type": "number"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "search_text": {
+                                            "example": "",
+                                            "type": "string"
+                                        },
+                                        "street": {
+                                            "example": "Ленина",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get_clients_list",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": [
+                                                {
+                                                    "apartment_number": "Кв. 2",
+                                                    "building_number": null,
+                                                    "debt": "955838.3",
+                                                    "email": "test@test.com",
+                                                    "house_number": "39",
+                                                    "id": 1,
+                                                    "name": "Фамилия Имя Отчество",
+                                                    "phone": "12315992104",
+                                                    "street": "Ленина ул."
+                                                }
+                                            ],
+                                            "items": {
+                                                "properties": {
+                                                    "apartment_number": {
+                                                        "example": "Кв. 2",
+                                                        "type": "string"
+                                                    },
+                                                    "building_number": {
+                                                        "example": null,
+                                                        "x-nullable": true
+                                                    },
+                                                    "debt": {
+                                                        "example": "955838.3",
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "example": "test@test.com",
+                                                        "type": "string"
+                                                    },
+                                                    "house_number": {
+                                                        "example": "39",
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "example": 1,
+                                                        "type": "number"
+                                                    },
+                                                    "name": {
+                                                        "example": "Фамилия Имя Отчество",
+                                                        "type": "string"
+                                                    },
+                                                    "phone": {
+                                                        "example": "12315992104",
+                                                        "type": "string"
+                                                    },
+                                                    "street": {
+                                                        "example": "Ленина ул.",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "User"
+                ],
+                "description": "get_clients_list",
+                "operationId": "getClientsList",
+                "summary": "get_clients_list"
+            }
+        },
         "/v1/jsonrpc/get_house_by_street": {
             "post": {
                 "consumes": [
