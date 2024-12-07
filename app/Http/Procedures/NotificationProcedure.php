@@ -174,7 +174,7 @@ class NotificationProcedure extends Procedure
                 );
         }
 
-        $user = Auth::user();
+        $user = auth('sanctum')->user();
         if (!$user) {
             throw new InvalidParams('Пользователь не авторизован');
         }
