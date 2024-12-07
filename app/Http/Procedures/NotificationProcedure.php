@@ -168,13 +168,28 @@ class NotificationProcedure extends Procedure
 
         $isCrm = $data->get('is_crm', false);
         if ($isCrm) {
-            $notifications = Notification::where('type', NotificationType::ADDRESS)->get();
+            $notifications = Notification::where('type', NotificationType::ADDRESS)->with('houses')->get();
 
-            return $responseBuilder->setData($notifications->toArray())->setMessage('Все адресные уведомления')->build(
-                );
+            $notificationsData = $notifications->map(function ($notification) {
+                $addresses = $notification->houses->map(function ($house) {
+                    return [
+                        'house_id' => $house->id,
+                        'city' => $house->city,
+                        'street' => $house->street,
+                        'number' => $house->number,
+                        'building' => $house->building,
+                    ];
+                });
+
+                return array_merge($notification->toArray(), ['addresses' => $addresses]);
+            });
+
+            return $responseBuilder->setData($notificationsData->toArray())
+                                   ->setMessage('Все адресные уведомления')
+                                   ->build();
         }
 
-        $user = Auth::user();
+        $user = auth('sanctum')->user();
         if (!$user) {
             throw new InvalidParams('Пользователь не авторизован');
         }
@@ -203,8 +218,25 @@ class NotificationProcedure extends Procedure
                 function ($query) use ($houseIds) {
                     $query->whereIn('houses.id', $houseIds);
                 }
-            )->get();
+            )->with('houses')->get();
 
-        return $responseBuilder->setData($notifications)->setMessage('Адресные уведомления для пользователя')->build();
+        $notificationsData = $notifications->map(function ($notification) {
+            $addresses = $notification->houses->map(function ($house) {
+                return [
+                    'house_id' => $house->id,
+                    'city' => $house->city,
+                    'street' => $house->street,
+                    'number' => $house->number,
+                    'building' => $house->building,
+                ];
+            });
+
+            return array_merge($notification->toArray(), ['addresses' => $addresses]);
+        });
+
+        return $responseBuilder->setData($notificationsData->toArray())->setMessage(
+                'Адресные уведомления для пользователя'
+            )->build();
     }
+
 }
