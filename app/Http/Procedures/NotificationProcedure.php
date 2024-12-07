@@ -36,6 +36,7 @@ class NotificationProcedure extends Procedure
 
         $validator = Validator::make($data->toArray(), [
             'text' => 'required|string',
+            'title' => 'required|string',
             'date_to' => 'required|date|after:now',
             'house_ids' => 'required|array|min:1',
             'house_ids.*' => 'integer|exists:houses,id',
@@ -48,7 +49,7 @@ class NotificationProcedure extends Procedure
 
         $notification = new Notification();
         $notification->type = NotificationType::ADDRESS;
-        $notification->title = 'Адресное уведомление';
+        $notification->title = $data['title'];
         $notification->text = $data['text'];
         $notification->category = $data->get('category', NotificationCategory::GENERAL);
         $notification->is_read = false; // Значение по умолчанию
