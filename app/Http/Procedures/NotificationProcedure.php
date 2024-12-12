@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\NotificationCategory;
 use App\Enums\NotificationType;
+use App\Enums\Permissions;
 use App\Models\Apartment;
 use App\Models\Notification;
 use App\Services\ApiResponseBuilder;
@@ -17,9 +19,19 @@ use Illuminate\Validation\Rule;
 use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 
-class NotificationProcedure extends Procedure
+class NotificationProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'notification';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'createAddressNotification' => [Permissions::NORMAL],
+            'removeAddressNotification' => [Permissions::NORMAL],
+            'updateAddressNotification' => [Permissions::NORMAL],
+            'getAddressNotifications' => [Permissions::NORMAL],
+        ];
+    }
 
     /**
      * Создать адресное уведомление.

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\ClaimPriority;
 use App\Enums\ClaimStatus;
 use App\Enums\ClaimType;
+use App\Enums\Permissions;
 use App\Models\Claim;
 use App\Repositories\ClaimRepository;
 use App\Repositories\FileRepository;
@@ -19,9 +21,18 @@ use Sajya\Server\Procedure;
 use Illuminate\Support\Facades\Validator;
 
 
-class ClaimProcedure extends Procedure
+class ClaimProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'claim';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'createClaim' => [Permissions::NORMAL],
+            'updateClaim' => [Permissions::NORMAL],
+            'getClaims' => [Permissions::NORMAL],
+        ];
+    }
 
     public function createClaim(
         Request $request,

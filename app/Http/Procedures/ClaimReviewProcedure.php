@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Contracts\ProcedurePermissionsInterface;
+use App\Enums\Permissions;
 use App\Models\ClaimReview;
 use App\Services\ApiResponseBuilder;
 use Illuminate\Http\Request;
@@ -11,9 +13,16 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Sajya\Server\Procedure;
 
-class ClaimReviewProcedure extends Procedure
+class ClaimReviewProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'claim_review';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'createReview' => [Permissions::NORMAL],
+        ];
+    }
 
     /**
      * @param Request $request

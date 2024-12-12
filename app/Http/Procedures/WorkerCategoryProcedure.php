@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Contracts\ProcedurePermissionsInterface;
+use App\Enums\Permissions;
 use App\Models\WorkerCategory;
 use App\Services\ApiResponseBuilder;
 use Illuminate\Http\Request;
@@ -11,9 +13,17 @@ use Illuminate\Validation\ValidationException;
 use Sajya\Server\Procedure;
 use Illuminate\Support\Facades\Validator;
 
-class WorkerCategoryProcedure extends Procedure
+class WorkerCategoryProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'worker_category';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'createWorkerCategory' => [Permissions::NORMAL],
+            'getWorkerCategories' => [Permissions::NORMAL],
+        ];
+    }
 
     /**
      * @param Request $request
