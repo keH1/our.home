@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Procedures;
 
 
+use App\Contracts\ProcedurePermissionsInterface;
+use App\Enums\Permissions;
 use App\Models\Client;
 use App\Services\ApiResponseBuilder;
 use App\Services\PaginationBuilder;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Sajya\Server\Procedure;
 
 
-class ClientProcedure extends Procedure
+class ClientProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     /**
      * The name of the procedure that is used for referencing.
@@ -21,6 +23,13 @@ class ClientProcedure extends Procedure
      * @var string
      */
     public static string $name = 'client_procedure';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'getClients' => [Permissions::NORMAL],
+        ];
+    }
 
     public function getClients(Request $request, ApiResponseBuilder $responseBuilder): array
     {

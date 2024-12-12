@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Contracts\ProcedurePermissionsInterface;
+use App\Enums\Permissions;
 use App\Models\PaidService;
 use App\Services\ApiResponseBuilder;
 use Illuminate\Http\Request;
@@ -11,9 +13,19 @@ use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 use \App\Repositories\PaidServiceRepository;
 
-class PaidServiceProcedure extends Procedure
+class PaidServiceProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'paid_service';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'createPaidService' => [Permissions::NORMAL],
+            'updatePaidService' => [Permissions::NORMAL],
+            'getPaidServices' => [Permissions::NORMAL],
+            'deletePaidService' => [Permissions::NORMAL],
+        ];
+    }
 
     /**
      * @param Request $request

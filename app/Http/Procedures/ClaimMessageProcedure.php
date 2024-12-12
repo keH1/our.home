@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\ClaimMessageSenderType;
+use App\Enums\Permissions;
 use App\Models\Claim;
 use App\Models\ClaimMessage;
 use App\Services\ApiResponseBuilder;
@@ -14,9 +16,18 @@ use Sajya\Server\Procedure;
 use \Illuminate\Support\Collection;
 use \App\Repositories\FileRepository;
 
-class ClaimMessageProcedure extends Procedure
+class ClaimMessageProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'claim_message';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'createMessage' => [Permissions::NORMAL],
+            'getClaimChat' => [Permissions::NORMAL],
+            'createMessageObj' => [Permissions::NORMAL],
+        ];
+    }
 
     /**
      * @param Request $request
