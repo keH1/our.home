@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Contracts\ProcedurePermissionsInterface;
+use App\Enums\Permissions;
 use App\Models\Apartment;
 use App\Models\House;
 use App\Repositories\ApartmentRepository;
@@ -15,9 +17,19 @@ use Illuminate\Validation\ValidationException;
 use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 
-class HouseProcedure extends Procedure
+class HouseProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'house_procedure';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'getApartmentDataById' => [Permissions::NORMAL],
+            'getApartmentsWithCounters' => [Permissions::NORMAL],
+            'getHousesByStreet' => [Permissions::NORMAL],
+            'getAllStreets' => [Permissions::NORMAL],
+        ];
+    }
 
     /**
      * Метод для получения всех улиц.

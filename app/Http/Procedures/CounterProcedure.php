@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Procedures;
 
 
+use App\Contracts\ProcedurePermissionsInterface;
+use App\Enums\Permissions;
 use App\Models\CounterData;
 use App\Models\CounterHistory;
 use App\Services\ApiResponseBuilder;
@@ -14,7 +16,7 @@ use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 
 
-class CounterProcedure extends Procedure
+class CounterProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     private array $mapArr;
     protected array $nullValueCounters;
@@ -30,6 +32,14 @@ class CounterProcedure extends Procedure
      * @var bool
      */
     private bool $fromCRM;
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'acceptHouseCounters' => [Permissions::NORMAL],
+            'createCounterHistory' => [Permissions::NORMAL],
+        ];
+    }
 
     /**
      * todo лог на $nullValueCounters

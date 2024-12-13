@@ -4,15 +4,25 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Contracts\ProcedurePermissionsInterface;
+use App\Enums\Permissions;
 use App\Repositories\FileRepository;
 use App\Services\ApiResponseBuilder;
 use Illuminate\Http\Request;
 use Sajya\Server\Procedure;
 use \App\Repositories\PaidServiceRepository;
 
-class PaidServiceCategoryProcedure extends Procedure
+class PaidServiceCategoryProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'paid_service_category';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'createPaidServiceCategory' => [Permissions::NORMAL],
+            'getPaidServiceCategories' => [Permissions::NORMAL],
+        ];
+    }
 
     /**
      * @param Request $request

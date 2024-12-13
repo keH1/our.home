@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Contracts\ProcedurePermissionsInterface;
+use App\Enums\Permissions;
 use App\Models\Worker;
 use App\Services\ApiResponseBuilder;
 use Illuminate\Http\Request;
@@ -12,9 +14,18 @@ use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 use Illuminate\Support\Facades\Validator;
 
-class WorkerProcedure extends Procedure
+class WorkerProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'worker';
+
+    public function getMethodsPermissions(): array
+    {
+        return [
+            'createWorker' => [Permissions::NORMAL],
+            'editWorker' => [Permissions::NORMAL],
+            'getWorkers' => [Permissions::NORMAL],
+        ];
+    }
 
     /**
      * @param Request $request
