@@ -60,7 +60,16 @@ class ProcessCounterData implements ShouldQueue
         $this->setCounterParams($counterData, $counter);
         $counterData->save();
         $this->createCounterHistory($counterData, $counter);
-        if (($apartment = $this->apartmentRepository->findApartmentByAccountNumber($counter['ИдентификаторЛС'])) !== null) {
+
+        $apartment = null;
+        if (isset($counter['ИдентификаторЛС'])) {
+            $apartment = $this->apartmentRepository->findApartmentByAccountNumber($counter['ИдентификаторЛС']);
+        }
+        if (!$apartment && isset($counter['ИдентификаторВГИСЖКХ'])) {
+            $apartment = $this->apartmentRepository->findApartmentByAccountNumber($counter['ИдентификаторВГИСЖКХ']);
+        }
+
+        if ($apartment) {
             $this->attachCounterToApartment($counterData, $apartment);
         }
     }
@@ -137,7 +146,17 @@ class ProcessCounterData implements ShouldQueue
      */
     private function attachCounterToApartment(CounterData $counterData, Apartment $apartment): void
     {
-        $apartment->counterData()->save($counterData);
+        $counterData->apartment_id = $apartment->id;
+        if ($apartment->gis_id) {
+            $counterData->gis_id = $apartment->gis_id;
+        }
+
+        $account = AccountPersonalNumber::where('apartment_id', $apartment->id)->first();
+        if ($account) {
+            $counterData->union_number = $account->union_number;
+        }
+
+        $counterData->save();
     }
 
     /**

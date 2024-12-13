@@ -24,7 +24,11 @@ class ApartmentRepository
      */
     public function findApartmentByAccountNumber(mixed $accountNumber): ?Apartment
     {
-        $account = AccountPersonalNumber::where('number', $accountNumber)->first();
-        return Apartment::find($account->apartment_id);
+        $account = AccountPersonalNumber::where('union_number', $accountNumber)->first();
+        if ($account) {
+            return Apartment::find($account->apartment_id);
+        }
+
+        return Apartment::where('gis_id', $accountNumber)->first();
     }
 }
