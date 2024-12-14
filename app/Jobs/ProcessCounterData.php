@@ -147,15 +147,6 @@ class ProcessCounterData implements ShouldQueue
     private function attachCounterToApartment(CounterData $counterData, Apartment $apartment): void
     {
         $counterData->apartment_id = $apartment->id;
-        if ($apartment->gis_id) {
-            $counterData->gis_id = $apartment->gis_id;
-        }
-
-        $account = AccountPersonalNumber::where('apartment_id', $apartment->id)->first();
-        if ($account) {
-            $counterData->union_number = $account->union_number;
-        }
-
         $counterData->save();
     }
 

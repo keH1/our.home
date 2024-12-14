@@ -229,7 +229,7 @@ class HouseProcedure extends Procedure implements ProcedurePermissionsInterface
                         'counter_type' => $counter->counter_type,
                         'verification_to' => $counter->verification_to,
                         'apartment_id' => $counter->apartment_id,
-                        'union_number' => $counter->union_number,
+                        'personal_number' => $counter->personal_number,
                         'confirmed_history' => $counter->latestConfirmedHistory ? [
                             'daily_consumption' => $counter->latestConfirmedHistory->daily_consumption,
                             'night_consumption' => $counter->latestConfirmedHistory->night_consumption,
