@@ -13,7 +13,7 @@ class AccountPersonalNumber extends Model
     use HasFactory;
 
     public $timestamps;
-    protected $fillable = ['number', 'apartment_id'];
+    protected $fillable = ['number', 'apartment_id', 'union_number', 'gku_id'];
 
     public function apartment(): hasMany
     {
@@ -27,6 +27,6 @@ class AccountPersonalNumber extends Model
 
     public function counters(): HasMany
     {
-        return $this->hasMany(CounterData::class,'personal_number');
+        return $this->hasMany(CounterData::class,'union_number');
     }
 }

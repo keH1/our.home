@@ -62,9 +62,10 @@ class ProcessCustomerData implements ShouldQueue
         } else {
             $house = $this->createHouse($customer);
         }
-        $apartment = $this->findApartment($house, $customer['Помещение']) ?? new Apartment();
-        $apartment->house_id = $house->id;
-        $this->setApartmentData($apartment, $customer);
+        $apartment = $this->findApartment($house, $customer);
+        if (!$apartment) {
+            $apartment = $this->createApartment($house, $customer);
+        }
         $user = $this->userRepository->checkUserByPhone($customer['Телефон']);
         if ($user == null) {
             $user = $this->createNewUser($email, $phone, $customer);
@@ -78,10 +79,11 @@ class ProcessCustomerData implements ShouldQueue
         }
         $currentClient->debt = $debt;
         $currentClient->save();
-        if (($account = $this->accountRepository->checkAccountByNumber($customer['Идентификатор'])) == null) {
+        $accountNumber = $customer['ЕдиныйЛицевойСчет'] ?? null;
+        if (($account = $this->accountRepository->checkAccountByNumber($accountNumber)) == null) {
             $account = $this->createPersonalAccount($customer);
         }
-        $this->attachApartmentToAccount($apartment,$account);
+        $this->attachApartmentToAccount($apartment, $account);
         $this->syncClientWithAccountWithoutDetaching($currentClient, $account);
         $this->isApartmentAlreadyAttachedToClient($currentClient, $apartment) ?: $currentClient->apartments()->sync($apartment, false);
     }
@@ -106,11 +108,64 @@ class ProcessCustomerData implements ShouldQueue
      * @param $apartmentNumber
      * @return HasMany|_IH_Apartment_QB|null
      */
-    public function findApartment(House $house, $apartmentNumber)
+    public function findApartment(House $house, array $customer): ?Apartment
     {
-        return $house->apartments()->where('number', $apartmentNumber)->first();
+        return Apartment::where('house_id', $house->id)
+            ->where('number', $customer['Помещение'])
+            ->where('gis_id', $customer['ИдентификаторВГИСЖКХ'] ?? null)
+            ->first();
     }
 
+    private function createApartment(House $house, array $customer): ?Apartment
+    {
+        $apartment = $this->accountRepository->checkAccountByNumber($customer['ИдентификаторВГИСЖКХ'] ?? null);
+        if ($apartment) {
+            return $this->handleExistingApartment($apartment, $customer);
+        } else {
+            return $this->createNewApartment($house, $customer);
+        }
+    }
+
+    /**
+     * Обработка существующей квартиры: связывание аккаунта с квартирой.
+     *
+     * @param Apartment $apartment
+     * @param array $customer
+     * @return Apartment|null
+     */
+    private function handleExistingApartment(Apartment $apartment, array $customer): ?Apartment
+    {
+        $account = $this->accountRepository->checkAccountByNumber($customer['ИдентификаторВГИСЖКХ']);
+        if ($account) {
+            $this->attachApartmentToAccount($apartment, $account);
+            return null;
+        } else {
+            $account = $this->createPersonalAccount($customer);
+            $this->attachApartmentToAccount($apartment, $account);
+            return $apartment;
+        }
+    }
+
+    /**
+     *
+     *
+     * @param House $house
+     * @param array $customer
+     * @return Apartment
+     */
+    private function createNewApartment(House $house, array $customer): Apartment
+    {
+        $apartment = Apartment::create([
+            'house_id' => $house->id,
+            'number' => $customer['Помещение'],
+            'gis_id' => $customer['ИдентификаторВГИСЖКХ'] ?? null,
+        ]);
+
+        $account = $this->createPersonalAccount($customer);
+        $this->attachApartmentToAccount($apartment, $account);
+
+        return $apartment;
+    }
     /**
      * @param $string
      * @return array|string|string[]
@@ -136,17 +191,6 @@ class ProcessCustomerData implements ShouldQueue
         $house->building = $customer['Корпус'];
         $house->save();
         return $house;
-    }
-
-    /**
-     * @param $apartment
-     * @param $customer
-     * @return void
-     */
-    private function setApartmentData($apartment, $customer): void
-    {
-        $apartment->number = $customer['Помещение'];
-        $apartment->save();
     }
 
     /**
@@ -198,12 +242,17 @@ class ProcessCustomerData implements ShouldQueue
      */
     private function createPersonalAccount($customer): AccountPersonalNumber
     {
-        $account = new AccountPersonalNumber();
-        $account->number = $customer['Идентификатор'];
-        $account->gku_id = $customer['ИдентификаторЖКУ'];
-        $account->union_number = $customer['ЕдиныйЛицевойСчет'];
+        $account = AccountPersonalNumber::where('number', $customer['Идентификатор'])->first();
 
-        $account->save();
+        if (!$account) {
+            $account = new AccountPersonalNumber();
+            $account->number = $customer['Идентификатор'];
+            $account->union_number = $customer['ЕдиныйЛицевойСчет'] ?? null;
+            $account->gku_id = $customer['ИдентификаторЖКУ'];
+
+            $account->save();
+        }
+
         return $account;
     }
 

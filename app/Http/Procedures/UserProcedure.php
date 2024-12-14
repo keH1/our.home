@@ -90,6 +90,7 @@ class UserProcedure extends Procedure
                         return [
                             'id' => $account->id,
                             'number' => $account->number,
+                            'union_number' => $account->union_number,
                             'apartment_id' => $account->apartment_id,
                         ];
                     })
