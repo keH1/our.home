@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\Roles;
-use App\Models\Filial;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

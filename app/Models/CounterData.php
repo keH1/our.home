@@ -15,7 +15,15 @@ class CounterData extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'number', 'apartment_id', 'verification_to', 'counter_type', 'counter_seal', 'factory_number', 'personal_number'
+        'name',
+        'number',
+        'gis_id',
+        'union_number',
+        'apartment_id',
+        'verification_to',
+        'counter_type',
+        'counter_seal',
+        'factory_number',
     ];
 
     protected $casts = [
@@ -39,7 +47,7 @@ class CounterData extends Model
 
     public function accounts(): BelongsTo
     {
-        return $this->belongsTo(AccountPersonalNumber::class);
+        return $this->belongsTo(AccountPersonalNumber::class, 'union_number');
     }
 
     public function latestConfirmedHistory(): HasOne

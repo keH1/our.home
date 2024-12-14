@@ -190,6 +190,7 @@ class HouseProcedure extends Procedure implements ProcedurePermissionsInterface
         $response = [
             'id'=>$apartment->id,
             'number'=>$apartment->number,
+            'gis_id'=>$apartment->gis_id,
             'house'=>[
                 'id' => $apartment->house->id,
                 'street' => $apartment->house->street,
@@ -204,6 +205,7 @@ class HouseProcedure extends Procedure implements ProcedurePermissionsInterface
                     return [
                         'id' =>$account->id,
                         'number' =>$account->number,
+                        'union_number' =>$account->union_number,
                     ];
                 })->toArray()
             ];})->toArray()
@@ -219,6 +221,7 @@ class HouseProcedure extends Procedure implements ProcedurePermissionsInterface
             return [
                 'id' => $apartment->id,
                 'number' => $apartment->number,
+                'gis_id' => $apartment->gis_id,
                 'counters' => $apartment->counterData->map(function ($counter) {
                     return [
                         'counter_id' => $counter->id,
