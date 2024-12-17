@@ -105,6 +105,8 @@ class ProcessCounterData implements ShouldQueue
         $counterData->calibration_interval = $counter['МежпроверочныйИнтервал'];
         $counterData->commissioning_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаВводаВЭксплуатацию']);
         $counterData->first_calibration_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПервойПоверки']);
+        $counterData->gis_number = $counter['НомерВГИСЖКХ'];
+        $counterData->info = $counter['Инфо'];
     }
 
     /**
