@@ -24,6 +24,8 @@ class CounterData extends Model
         'counter_type',
         'counter_seal',
         'factory_number',
+        'info',
+        'gis_number'
     ];
 
     protected $casts = [
