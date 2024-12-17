@@ -118,7 +118,7 @@ class ProcessCustomerData implements ShouldQueue
 
     private function createApartment(House $house, array $customer): ?Apartment
     {
-        $apartment = $this->accountRepository->checkAccountByNumber($customer['ИдентификаторВГИСЖКХ'] ?? null);
+        $apartment =  $this->findApartment($house, $customer);
         if ($apartment) {
             return $this->handleExistingApartment($apartment, $customer);
         } else {
@@ -159,6 +159,8 @@ class ProcessCustomerData implements ShouldQueue
             'house_id' => $house->id,
             'number' => $customer['Помещение'],
             'gis_id' => $customer['ИдентификаторВГИСЖКХ'] ?? null,
+            'address' => $customer['Адрес'] ?? null,
+            'apartment_code' => $customer['КодПомещения'] ?? null
         ]);
 
         $account = $this->createPersonalAccount($customer);

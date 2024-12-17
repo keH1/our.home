@@ -13,7 +13,7 @@ class Apartment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['number', 'house_id', 'gku_id', 'gis_id'];
+    protected $fillable = ['number', 'house_id', 'gku_id', 'gis_id', 'apartment_code', 'address'];
 
     public function house(): BelongsTo
     {
