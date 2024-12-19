@@ -10,7 +10,7 @@ use \Illuminate\Auth\Middleware\Authenticate;
 
 class RpcApiMiddleware
 {
-    protected $routesWithoutSanctum = [
+    private $routesWithoutSanctum = [
         'login',
         'register',
         'ping'
@@ -37,5 +37,13 @@ class RpcApiMiddleware
         $sanctum = new Authenticate(auth());
 
         return $sanctum->handle($request, $next, 'sanctum');
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRoutesWithoutSanctum(): array
+    {
+        return $this->routesWithoutSanctum;
     }
 }

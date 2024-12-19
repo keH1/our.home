@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Sajya\Server\App;
 use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Http\Response;
+use \App\Http\Middleware\RpcApiMiddleware;
 
 class JsonRpcController extends Controller
 {
@@ -43,12 +44,17 @@ class JsonRpcController extends Controller
                     $request->merge($json);
                 }
             }
+        }else{
+            throw new InvalidParams('Method not found');
         }
 
         $rpcRequest = \Sajya\Server\Http\Request::loadArray($request->toArray());
         try {
+            $excludeMethods = (new RpcApiMiddleware())->getRoutesWithoutSanctum();
             $procedure = $guide->findProcedure($rpcRequest);
-            $this->checkPermissions($procedure);
+            if(!in_array($method,$excludeMethods)){
+                $this->checkPermissions($procedure);
+            }
         } catch (\Exception $e) {
             return Response::makeFromResult([], $rpcRequest)->setError($e);
         }
