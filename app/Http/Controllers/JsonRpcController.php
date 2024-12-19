@@ -50,11 +50,8 @@ class JsonRpcController extends Controller
 
         $rpcRequest = \Sajya\Server\Http\Request::loadArray($request->toArray());
         try {
-            $excludeMethods = (new RpcApiMiddleware())->getRoutesWithoutSanctum();
             $procedure = $guide->findProcedure($rpcRequest);
-            if(!in_array($method,$excludeMethods)){
-                $this->checkPermissions($procedure);
-            }
+            $this->checkPermissions($procedure);
         } catch (\Exception $e) {
             return Response::makeFromResult([], $rpcRequest)->setError($e);
         }
@@ -66,11 +63,6 @@ class JsonRpcController extends Controller
 
     private function checkPermissions(string $procedureName)
     {
-        $user = auth('sanctum')->user();
-        if (!$user) {
-            throw new InvalidParams('Пользователь не авторизован');
-        }
-
         [$procedureClass, $methodName] = explode('@', $procedureName);
         $procedure = app($procedureClass);
 
@@ -80,6 +72,10 @@ class JsonRpcController extends Controller
 
             if (empty($requiredPermissions)) {
                 return;
+            }
+            $user = auth('sanctum')->user();
+            if (!$user) {
+                throw new InvalidParams('Пользователь не авторизован');
             }
 
             if (!$user->hasAnyPermission($requiredPermissions)) {
