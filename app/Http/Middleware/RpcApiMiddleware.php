@@ -38,12 +38,4 @@ class RpcApiMiddleware
 
         return $sanctum->handle($request, $next, 'sanctum');
     }
-
-    /**
-     * @return string[]
-     */
-    public function getRoutesWithoutSanctum(): array
-    {
-        return $this->routesWithoutSanctum;
-    }
 }
