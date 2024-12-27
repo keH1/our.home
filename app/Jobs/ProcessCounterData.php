@@ -96,17 +96,17 @@ class ProcessCounterData implements ShouldQueue
     private function setCounterParams(CounterData &$counterData, $counter): void
     {
         $counterData->number = $counter['Идентификатор'];
-        $counterData->shutdown_reason = $counter['ПричинаОтключения'];
-        $counterData->counter_seal = $counter['НомерПломбы'];
-        $counterData->created_at = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаНачала']);
+        $counterData->shutdown_reason = $counter['ПричинаОтключения'] ?? null;
+        $counterData->counter_seal = $counter['НомерПломбы'] ?? null;
+        $counterData->created_at = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаНачала']) ?? null;
         $counterData->verification_to = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПоверки']);
         $counterData->counter_type = $counter['ВидУслуги'];
-        $counterData->factory_number = $counter['ЗаводскойНомер'];
-        $counterData->calibration_interval = $counter['МежпроверочныйИнтервал'];
-        $counterData->commissioning_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаВводаВЭксплуатацию']);
+        $counterData->factory_number = $counter['ЗаводскойНомер'] ?? null;
+        $counterData->calibration_interval = $counter['МежпроверочныйИнтервал'] ?? null;
+        $counterData->commissioning_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаВводаВЭксплуатацию']) ;
         $counterData->first_calibration_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПервойПоверки']);
-        $counterData->gis_number = $counter['НомерВГИСЖКХ'];
-        $counterData->info = $counter['Инфо'];
+        $counterData->gis_number = $counter['НомерВГИСЖКХ'] ?? null;
+        $counterData->info = $counter['Инфо'] ?? null;
     }
 
     /**
