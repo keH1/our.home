@@ -250,7 +250,7 @@ class ProcessCustomerData implements ShouldQueue
             $account = new AccountPersonalNumber();
             $account->number = $customer['Идентификатор'];
             $account->union_number = $customer['ЕдиныйЛицевойСчет'] ?? null;
-            $account->gku_id = $customer['ИдентификаторЖКУ'];
+            $account->gku_id = $customer['ИдентификаторЖКУ'] ?? null;
 
             $account->save();
         }
