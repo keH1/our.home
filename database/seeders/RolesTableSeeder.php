@@ -18,7 +18,7 @@ class RolesTableSeeder extends Seeder
         ];
 
         foreach ($roles as $roleName => $perms) {
-            $role = Role::create(['name' => $roleName]);
+            $role = Role::firstOrCreate(['name' => $roleName]);
 
             foreach ($perms as $permName) {
                 $permission = Permission::firstOrCreate(['name' => $permName->value]);
