@@ -2,20 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Enums\CounterType;
 use App\Models\AccountPersonalNumber;
 use App\Models\Apartment;
 use App\Models\CounterData;
 use App\Models\CounterHistory;
+use App\Repositories\AccountRepository;
 use App\Repositories\ApartmentRepository;
 use App\Repositories\CounterRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
-use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Log;
 
 
@@ -23,9 +19,9 @@ class ProcessCounterData implements ShouldQueue
 {
     use Queueable;
 
+    public CounterRepository $counterRepository;
     private AccountRepository $accountRepository;
     private ApartmentRepository $apartmentRepository;
-    public CounterRepository $counterRepository;
 
     /**
      * Create a new job instance.
@@ -98,13 +94,25 @@ class ProcessCounterData implements ShouldQueue
         $counterData->number = $counter['Идентификатор'];
         $counterData->shutdown_reason = $counter['ПричинаОтключения'] ?? null;
         $counterData->counter_seal = $counter['НомерПломбы'] ?? null;
-        $counterData->created_at = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаНачала']) ?? null;
-        $counterData->verification_to = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПоверки']);
+        $counterData->created_at = null;
+        $counterData->verification_to = null;
+        $counterData->commissioning_date = null;
+        $counterData->first_calibration_date = null;
+        if (isset($counter['ДатаНачала']) && $counter['ДатаНачала'] !== null){
+            $counterData->created_at = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаНачала']);
+        }
+        if (isset($counter['ДатаПоверки']) && $counter['ДатаПоверки'] !== null){
+            $counterData->verification_to = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПоверки']);
+        }
+        if (isset($counter['ДатаВводаВЭксплуатацию']) && $counter['ДатаВводаВЭксплуатацию'] !== null){
+            $counterData->commissioning_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаВводаВЭксплуатацию']);
+        }
+        if (isset($counter['ДатаПервойПоверки']) && $counter['ДатаПервойПоверки'] !== null){
+            $counterData->first_calibration_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПервойПоверки']);
+        }
         $counterData->counter_type = $counter['ВидУслуги'];
         $counterData->factory_number = $counter['ЗаводскойНомер'] ?? null;
         $counterData->calibration_interval = $counter['МежпроверочныйИнтервал'] ?? null;
-        $counterData->commissioning_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаВводаВЭксплуатацию']) ;
-        $counterData->first_calibration_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПервойПоверки']);
         $counterData->gis_number = $counter['НомерВГИСЖКХ'] ?? null;
         $counterData->info = $counter['Инфо'] ?? null;
     }
@@ -132,13 +140,16 @@ class ProcessCounterData implements ShouldQueue
     }
 
     /**
-     * @param CounterData $counter
-     * @param AccountPersonalNumber $account
-     * @return void
+     * @param $string
+     * @return array|string|string[]
      */
-    private function attachCounterToAccount(CounterData $counter, AccountPersonalNumber $account): void
+    public function parseFloat($string)
     {
-        $account->counters()->save($counter);
+        if ($string == '') {
+            return null;
+        }
+        $string = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', ($string));
+        return str_replace(',', '.', $string);
     }
 
     /**
@@ -153,15 +164,12 @@ class ProcessCounterData implements ShouldQueue
     }
 
     /**
-     * @param $string
-     * @return array|string|string[]
+     * @param CounterData $counter
+     * @param AccountPersonalNumber $account
+     * @return void
      */
-    public function parseFloat($string)
+    private function attachCounterToAccount(CounterData $counter, AccountPersonalNumber $account): void
     {
-        if ($string == '') {
-            return null;
-        }
-        $string = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', ($string));
-        return str_replace(',', '.', $string);
+        $account->counters()->save($counter);
     }
 }
