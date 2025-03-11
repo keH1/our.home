@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\Permissions;
 use App\Repositories\FileRepository;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Sajya\Server\Procedure;
 use \App\Repositories\PaidServiceRepository;
 
+#[RpcProcedure(version: 'v1', group: 'services')]
 class PaidServiceCategoryProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'paid_service_category';

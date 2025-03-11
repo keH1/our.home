@@ -26,21 +26,7 @@ Route::get('/get_user_data_by_phone', [UserDataController::class, 'getUserDataBy
 
 Route::prefix('v1')->as('v1:')->group(function () {
     Route::middleware(['rpc.api'])->group(function () {
-        Route::rpc('/jsonrpc', [
-            UserProcedure::class,
-            HouseProcedure::class,
-            CounterProcedure::class,
-            PaidServiceProcedure::class,
-            PaidServiceCategoryProcedure::class,
-            ClaimProcedure::class,
-            WorkerProcedure::class,
-            WorkerCategoryProcedure::class,
-            ClaimMessageProcedure::class,
-            ClaimCategoryProcedure::class,
-            ClaimReviewProcedure::class,
-            NotificationProcedure::class,
-            ClientProcedure::class,
-        ]);
+        Route::rpc('/jsonrpc', app('rpc.procedures'));
     });
 
     //1C routes

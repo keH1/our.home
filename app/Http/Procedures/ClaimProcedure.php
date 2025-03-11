@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\ClaimPriority;
 use App\Enums\ClaimStatus;
@@ -20,7 +21,7 @@ use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 use Illuminate\Support\Facades\Validator;
 
-
+#[RpcProcedure(version: 'v1', group: 'claims')]
 class ClaimProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'claim';

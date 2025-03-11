@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Procedures;
 
 
+use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\Permissions;
 use App\Models\CounterData;
@@ -15,7 +16,7 @@ use Illuminate\Http\Request;
 use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 
-
+#[RpcProcedure(version: 'v1', group: 'counters')]
 class CounterProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     private array $mapArr;

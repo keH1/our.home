@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\Permissions;
 use App\Models\ClaimReview;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Sajya\Server\Procedure;
 
+#[RpcProcedure(version: 'v1', group: 'claims')]
 class ClaimReviewProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'claim_review';

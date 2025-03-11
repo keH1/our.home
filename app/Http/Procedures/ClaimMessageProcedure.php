@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\ClaimMessageSenderType;
 use App\Enums\Permissions;
@@ -16,6 +17,7 @@ use Sajya\Server\Procedure;
 use \Illuminate\Support\Collection;
 use \App\Repositories\FileRepository;
 
+#[RpcProcedure(version: 'v1', group: 'claims')]
 class ClaimMessageProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'claim_message';

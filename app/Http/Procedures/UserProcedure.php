@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Attributes\RpcProcedure;
 use App\Models\User;
 use App\Services\ApiResponseBuilder;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Sajya\Server\Procedure;
 
-
+#[RpcProcedure(version: 'v1', group: 'users')]
 class UserProcedure extends Procedure
 {
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\NotificationCategory;
 use App\Enums\NotificationType;
@@ -19,6 +20,7 @@ use Illuminate\Validation\Rule;
 use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 
+#[RpcProcedure(version: 'v1', group: 'notifications')]
 class NotificationProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'notification';

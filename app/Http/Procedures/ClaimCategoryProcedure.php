@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\Permissions;
 use App\Models\ClaimCategory;
 use App\Services\ApiResponseBuilder;
-use Illuminate\Http\Request;
 use Sajya\Server\Procedure;
 
-
+#[RpcProcedure(version: 'v1', group: 'claims')]
 class ClaimCategoryProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'claim_category';

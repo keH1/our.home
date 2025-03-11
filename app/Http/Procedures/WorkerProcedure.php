@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Procedures;
 
+use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\Permissions;
 use App\Models\Worker;
@@ -14,6 +15,7 @@ use Sajya\Server\Exceptions\InvalidParams;
 use Sajya\Server\Procedure;
 use Illuminate\Support\Facades\Validator;
 
+#[RpcProcedure(version: 'v1', group: 'workers')]
 class WorkerProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     public static string $name = 'worker';
