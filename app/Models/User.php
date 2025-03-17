@@ -51,9 +51,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function clients(): HasMany
     {
         return $this->hasMany(Client::class);
+    }
+
+    public function deviceTokens(): HasMany
+    {
+        return $this->hasMany(DeviceToken::class);
     }
 
     public static function booted(): void
@@ -61,5 +67,10 @@ class User extends Authenticatable
         static::creating(function ($model) {
             $model->assignRole(Roles::USER);
         });
+    }
+
+    public function routeNotificationForFcm(): array
+    {
+        return $this->deviceTokens()->where('is_active', true)->pluck('token')->toArray();
     }
 }

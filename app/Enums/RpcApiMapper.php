@@ -37,4 +37,7 @@ enum RpcApiMapper: string
     case UPDATE_ADDRESS_NOTIFICATION = 'notification@updateAddressNotification';
     case GET_ADDRESS_NOTIFICATIONS = 'notification@getAddressNotifications';
     case GET_CLIENTS_LIST = 'client_procedure@getClients';
+    case REGISTER_DEVICE_TOKEN = 'device_token@registerDeviceToken';
+    case UNREGISTER_DEVICE_TOKEN = 'device_token@unregisterDeviceToken';
+    case SEND_PUSH_TO_USER = 'push_notification@sendToUser';
 }

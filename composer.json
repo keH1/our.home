@@ -7,6 +7,8 @@
     "require": {
         "php": "^8.3",
         "composer/class-map-generator": "^1.6",
+        "kreait/laravel-firebase": "^6.0",
+        "laravel-notification-channels/fcm": "^5.1",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/scout": "^10.11",
