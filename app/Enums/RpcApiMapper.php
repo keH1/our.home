@@ -33,9 +33,13 @@ enum RpcApiMapper: string
     case GET_CLAIM_CATEGORIES = 'claim_category@getCategories';
     case SEND_CLAIM_FEEDBACK = 'claim_review@createReview';
     case CREATE_ADDRESS_NOTIFICATION = 'notification@createAddressNotification';
+    case CREATE_USER_NOTIFICATION = 'notification@createUserNotification';
+    case CREATE_SYSTEM_NOTIFICATION = 'notification@createSystemNotification';
     case REMOVE_ADDRESS_NOTIFICATION = 'notification@removeAddressNotification';
     case UPDATE_ADDRESS_NOTIFICATION = 'notification@updateAddressNotification';
     case GET_ADDRESS_NOTIFICATIONS = 'notification@getAddressNotifications';
+    case GET_NOTIFICATIONS = 'notification@getNotifications';
+    case MARK_ALL_NOTIFICATIONS_AS_READ = 'notification@markAllNotificationsAsRead';
     case GET_CLIENTS_LIST = 'client_procedure@getClients';
     case REGISTER_DEVICE_TOKEN = 'device_token@registerDeviceToken';
     case UNREGISTER_DEVICE_TOKEN = 'device_token@unregisterDeviceToken';
