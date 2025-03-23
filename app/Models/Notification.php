@@ -32,6 +32,10 @@ class Notification extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function notificationTemplate(): BelongsTo
+    {
+        return $this->belongsTo(NotificationTemplate::class);
+    }
 
     public function houses(): BelongsToMany
     {

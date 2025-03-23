@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,10 @@ class RpcApiMiddleware
             }
         }
         $sanctum = new Authenticate(auth());
+        if(auth('sanctum')->check()){
+            $expiresAt = Carbon::now()->addMinutes(1);
+            \Cache::put('user-is-online-'. auth('sanctum')->user()->id,true, $expiresAt);
+        }
 
         return $sanctum->handle($request, $next, 'sanctum');
     }
