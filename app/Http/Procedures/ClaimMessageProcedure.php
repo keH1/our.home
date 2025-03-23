@@ -55,7 +55,7 @@ class ClaimMessageProcedure extends Procedure implements ProcedurePermissionsInt
             $message = $this->createMessageObj($data);
             $message->save();
             $user = $claim->client->user;
-            if(!$user->isOnline()){
+            if(!$user->isOnline() ?? $data['from'] == 'crm'){
                 $notification = $notificationRepository->createNotificationByTemplate($user->id,NotificationType::USER);
                 $notificationRepository->putMessageIntoQueue($notification);
             }
