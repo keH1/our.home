@@ -2,6 +2,7 @@
     "swagger": "2.0",
     "info": {
         "contact": {},
+        "description": "- Method to generate documentation [https://www.postman.com/postman/postman-public-workspace/request/k9uuflp/generate-a-swagger-schema](https://www.postman.com/postman/postman-public-workspace/request/k9uuflp/generate-a-swagger-schema)\n    \n- Collection ID 39062188-6749e018-c74c-4be8-8a0f-e500ae7307f0",
         "title": "our.home",
         "version": "1.0.0"
     },
@@ -2844,7 +2845,7 @@
                                                     "email": "test@test.com",
                                                     "house_number": "39",
                                                     "id": 1,
-                                                    "name": "Фамилия Имя Отчество",
+                                                    "name": "Захарова Юлия Вольфовна",
                                                     "phone": "12315992104",
                                                     "street": "Ленина ул."
                                                 }
@@ -2876,7 +2877,7 @@
                                                         "type": "number"
                                                     },
                                                     "name": {
-                                                        "example": "Фамилия Имя Отчество",
+                                                        "example": "Захарова Юлия Вольфовна",
                                                         "type": "string"
                                                     },
                                                     "phone": {
@@ -3969,6 +3970,105 @@
                 "summary": "login"
             }
         },
+        "/v1/jsonrpc/mark_all_notifications_as_read": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "mark_all_notifications_as_read",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {},
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "mark_all_notifications_as_read",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "count": {
+                                                    "example": "int",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Отмечено {$count} уведомлений как прочитанные | Непрочитанных уведомлений не найдено",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "Notifications"
+                ],
+                "description": "mark_all_notifications_as_read",
+                "operationId": "markAllNotificationsAsRead",
+                "summary": "mark_all_notifications_as_read"
+            }
+        },
         "/v1/jsonrpc/ping": {
             "post": {
                 "consumes": [
@@ -4164,6 +4264,117 @@
                 "description": "register",
                 "operationId": "register",
                 "summary": "register"
+            }
+        },
+        "/v1/jsonrpc/register_device_token": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "register_device_token",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "device_name": {
+                                            "example": "string",
+                                            "type": "string"
+                                        },
+                                        "device_type": {
+                                            "example": "string",
+                                            "type": "string"
+                                        },
+                                        "token": {
+                                            "example": "string",
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "example": "current user who uses this method",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "send_push_to_user",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "example": "device token string",
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "example": "Токен устройства успешно зарегистрирован",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "PushNotification"
+                ],
+                "description": "register_device_token",
+                "operationId": "registerDeviceToken",
+                "summary": "register_device_token"
             }
         },
         "/v1/jsonrpc/remove_address_notification": {
@@ -4649,6 +4860,232 @@
                 "description": "send_counters_data",
                 "operationId": "sendCountersData",
                 "summary": "send_counters_data"
+            }
+        },
+        "/v1/jsonrpc/send_push_to_user": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "send_push_to_user",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "body": {
+                                            "example": true,
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "example": [
+                                                "array",
+                                                "with additional parameters"
+                                            ],
+                                            "items": {
+                                                "example": "array",
+                                                "type": "string"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "image_url": {
+                                            "example": "string",
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "example": "string",
+                                            "type": "string"
+                                        },
+                                        "user_id": {
+                                            "example": "int",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "send_push_to_user",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "success": {
+                                                    "example": true,
+                                                    "type": "boolean"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "example": "Уведомление отправлено успешно",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "PushNotification"
+                ],
+                "description": "send_push_to_user",
+                "operationId": "sendPushToUser",
+                "summary": "send_push_to_user"
+            }
+        },
+        "/v1/jsonrpc/unregister_device_token": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "method": {
+                                    "example": "unregister_device_token",
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "properties": {
+                                        "token": {
+                                            "example": "string",
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "example": "current user who uses this method",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "unregister_device_token",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Cache-Control": {
+                                "type": "string"
+                            },
+                            "Date": {
+                                "type": "string"
+                            },
+                            "Server": {
+                                "type": "string"
+                            },
+                            "Transfer-Encoding": {
+                                "type": "string"
+                            },
+                            "X-Powered-By": {
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "example": "1",
+                                    "type": "string"
+                                },
+                                "jsonrpc": {
+                                    "example": "2.0",
+                                    "type": "string"
+                                },
+                                "result": {
+                                    "properties": {
+                                        "message": {
+                                            "example": "Токен устройства деактивирован",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "tags": [
+                    "PushNotification"
+                ],
+                "description": "unregister_device_token",
+                "operationId": "unregisterDeviceToken",
+                "summary": "unregister_device_token"
             }
         },
         "/v1/jsonrpc/update_address_notification": {
@@ -5147,6 +5584,9 @@
         },
         {
             "name": "Notifications"
+        },
+        {
+            "name": "PushNotification"
         }
     ]
 }
