@@ -9,10 +9,12 @@ use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\ClaimPriority;
 use App\Enums\ClaimStatus;
 use App\Enums\ClaimType;
+use App\Enums\NotificationType;
 use App\Enums\Permissions;
 use App\Models\Claim;
 use App\Repositories\ClaimRepository;
 use App\Repositories\FileRepository;
+use App\Repositories\NotificationRepository;
 use App\Services\ApiResponseBuilder;
 use App\Services\PaginationBuilder;
 use Illuminate\Http\Request;
@@ -88,7 +90,8 @@ class ClaimProcedure extends Procedure implements ProcedurePermissionsInterface
     public function updateClaim(
         Request $request,
         ApiResponseBuilder $responseBuilder,
-        ClaimRepository $claimRepository
+        ClaimRepository $claimRepository,
+        NotificationRepository $notificationRepository,
     ): array {
         $data = collect(json_decode($request->getContent(), true)['params']);
 
@@ -115,7 +118,13 @@ class ClaimProcedure extends Procedure implements ProcedurePermissionsInterface
         $validator->validate();
 
         $updatedClaim = $claimRepository->updateClaim($claim, $data);
-
+        //Создание пуша если заявка поменяла статус с "в работе"
+        if($claim->status == ClaimStatus::IN_PROGRESS && $claim->status != $data['status']) {
+            $userID = $claim->user_id;
+            $type = NotificationType::USER;
+            $notification = $notificationRepository->createNotificationByTemplate($userID,$type);
+            $notificationRepository->putMessageIntoQueue($notification);
+        }
         return $responseBuilder->setData(['claim' => $updatedClaim->toArray()])
                                ->setMessage("Заявка успешно обновлена")
                                ->build();

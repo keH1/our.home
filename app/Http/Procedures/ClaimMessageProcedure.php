@@ -7,9 +7,11 @@ namespace App\Http\Procedures;
 use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\ClaimMessageSenderType;
+use App\Enums\NotificationType;
 use App\Enums\Permissions;
 use App\Models\Claim;
 use App\Models\ClaimMessage;
+use App\Repositories\NotificationRepository;
 use App\Services\ApiResponseBuilder;
 use Illuminate\Http\Request;
 use Sajya\Server\Exceptions\InvalidParams;
@@ -31,13 +33,16 @@ class ClaimMessageProcedure extends Procedure implements ProcedurePermissionsInt
         ];
     }
 
+
     /**
      * @param Request $request
      * @param ApiResponseBuilder $responseBuilder
      * @param FileRepository $fileRepository
+     * @param NotificationRepository $notificationRepository
      * @return array
+     * @throws \Exception
      */
-    public function createMessage(Request $request, ApiResponseBuilder $responseBuilder, FileRepository $fileRepository): array
+    public function createMessage(Request $request, ApiResponseBuilder $responseBuilder, FileRepository $fileRepository, NotificationRepository $notificationRepository): array
     {
         $data = collect(json_decode($request->getContent(), true)['params']);
 
@@ -49,6 +54,11 @@ class ClaimMessageProcedure extends Procedure implements ProcedurePermissionsInt
             $fileRepository->setUploadSubDir("claims_chat/{$data['claim_id']}/");
             $message = $this->createMessageObj($data);
             $message->save();
+            $user = $claim->client->user;
+            if(!$user->isOnline() ?? $data['from'] == 'crm'){
+                $notification = $notificationRepository->createNotificationByTemplate($user->id,NotificationType::USER);
+                $notificationRepository->putMessageIntoQueue($notification);
+            }
             if (count($data['files']) > 0) {
                 $filesArr = [];
                 foreach ($data['files'] as $fileToUpload) {

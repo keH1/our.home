@@ -8,4 +8,5 @@ enum NotificationType: string
     case ADDRESS = 'address';
     case SYSTEM = 'system';
     case USER = 'user';
+    case TESTIMONY_SUBMISSION = 'testimony_submission';
 }

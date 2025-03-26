@@ -73,4 +73,8 @@ class User extends Authenticatable
     {
         return $this->deviceTokens()->where('is_active', true)->pluck('token')->toArray();
     }
+    public function isOnline(): bool
+    {
+        return \Cache::has('user-is-online-'. $this->id);
+    }
 }
