@@ -15,12 +15,7 @@ return new class extends Migration {
                 $table->dropForeign(['user_id']);
                 $table->dropColumn('user_id');
             }
-
-            $table->unsignedBigInteger('client_id')->after('id');
-            $table->foreign('client_id')
-                  ->references('id')
-                  ->on('clients')
-                  ->onDelete('cascade');
+            $table->foreignId('account_id')->constrained('account_personal_numbers')->onDelete('set null');
 
             $table->unsignedBigInteger('paid_service_id')->nullable()->change();
             $table->unsignedBigInteger('category_id')->nullable()->change();

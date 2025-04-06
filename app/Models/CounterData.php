@@ -42,11 +42,6 @@ class CounterData extends Model
         return $this->hasMany(CounterHistory::class, 'counter_name_id');
     }
 
-    public function clients(): BelongsToMany
-    {
-        return $this->belongsToMany(AccountPersonalNumber::class, 'counter_data_account_id');
-    }
-
     public function accounts(): BelongsTo
     {
         return $this->belongsTo(AccountPersonalNumber::class, 'union_number');

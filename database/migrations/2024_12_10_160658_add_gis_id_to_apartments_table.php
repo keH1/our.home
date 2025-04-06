@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('apartments', function (Blueprint $table) {
-            $table->string('gis_id')->nullable()->unique();
-        });
+//        Schema::table('apartments', function (Blueprint $table) {
+//            $table->string('gis_id')->nullable()->unique();
+//        });
+
     }
 
     /**
@@ -21,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('apartments', function (Blueprint $table) {
-            $table->dropColumn('gis_id');
-        });
+//        Schema::table('apartments', function (Blueprint $table) {
+//            $table->dropColumn('gis_id');
+//        });
     }
 };

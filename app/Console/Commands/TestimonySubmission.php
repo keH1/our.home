@@ -44,15 +44,15 @@ class TestimonySubmission extends Command
             ->get()->map(function ($item) {
                 return $item->apartment;
             });
-        $clients = [];
-        $apartments->map(function ($item) use (&$clients) {
-            foreach ($item->clients as $client) {
-                $clients[$client->id] = $client;
+        $accounts = [];
+        $apartments->map(function ($item) use (&$accounts) {
+            foreach ($item->accounts as $account) {
+                $accounts[$account->id] = $account;
             }
         });
         // начинаем пихать в очередь сообщения чтобы джоба подхватила и начала отправлять
-        foreach ($clients as $client) {
-            $user = $client->user;
+        foreach ($accounts as $account) {
+            $user = $account->user;
             //тут нужно бы создать сообщение по темплейту
             $notification = $notificationRepository->createNotificationByTemplate($user->id,NotificationType::TESTIMONY_SUBMISSION);
             $notificationRepository->putMessageIntoQueue($notification);

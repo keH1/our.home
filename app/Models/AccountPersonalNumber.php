@@ -20,9 +20,9 @@ class AccountPersonalNumber extends Model
         return $this->hasMany(Apartment::class);
     }
 
-    public function clients(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(Client::class, 'client_account_personal_number');
+        return $this->BelongsTo(User::class);
     }
 
     public function counters(): HasMany

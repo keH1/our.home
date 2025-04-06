@@ -44,7 +44,7 @@ class Client extends Model
 
     public function accounts(): belongsToMany
     {
-        return $this->belongsToMany(AccountPersonalNumber::class,'client_account_personal_number');
+        return $this->belongsToMany(AccountPersonalNumber::class,'client_account_personal_numbers');
     }
 
     public function claims(): HasMany

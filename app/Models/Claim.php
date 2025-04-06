@@ -64,9 +64,9 @@ class Claim extends Model
         return $this->belongsTo(ClaimCategory::class, 'category_id');
     }
 
-    public function client(): BelongsTo
+    public function account(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(AccountPersonalNumber::class);
     }
 
     public function messages(): HasMany

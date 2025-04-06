@@ -54,7 +54,7 @@ class ClaimMessageProcedure extends Procedure implements ProcedurePermissionsInt
             $fileRepository->setUploadSubDir("claims_chat/{$data['claim_id']}/");
             $message = $this->createMessageObj($data);
             $message->save();
-            $user = $claim->client->user;
+            $user = $claim->account->user;
             if(!$user->isOnline() ?? $data['from'] == 'crm'){
                 $notification = $notificationRepository->createNotificationByTemplate($user->id,NotificationType::USER);
                 $notificationRepository->putMessageIntoQueue($notification);

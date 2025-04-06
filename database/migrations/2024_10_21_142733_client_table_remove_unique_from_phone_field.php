@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->dropUnique('clients_phone_unique');
-        });
+//        Schema::table('clients', function (Blueprint $table) {
+//            $table->dropUnique('clients_phone_unique');
+//        });
     }
 };

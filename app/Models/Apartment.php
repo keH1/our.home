@@ -20,18 +20,18 @@ class Apartment extends Model
         return $this->belongsTo(House::class);
     }
 
-    public function clients(): BelongsToMany
-    {
-        return $this->belongsToMany(Client::class, 'client_apartment');
-    }
+//    public function clients(): BelongsToMany
+//    {
+//        return $this->belongsToMany(Client::class, 'client_apartment');
+//    }
 
     public function counterData(): HasMany
     {
         return $this->hasMany(CounterData::class);
     }
 
-    public function account(): belongsTo
+    public function accounts(): BelongsToMany
     {
-        return $this->belongsTo(AccountPersonalNumber::class, 'union_number');
+        return $this->BelongsToMany(AccountPersonalNumber::class, 'account_personal_numbers');
     }
 }

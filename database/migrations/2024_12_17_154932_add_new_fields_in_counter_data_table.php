@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('counter_data', function (Blueprint $table) {
             $table->string('gis_number')->nullable();
             $table->string('info')->nullable();
+
         });
     }
 

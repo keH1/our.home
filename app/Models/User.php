@@ -52,14 +52,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function clients(): HasMany
-    {
-        return $this->hasMany(Client::class);
-    }
-
     public function deviceTokens(): HasMany
     {
         return $this->hasMany(DeviceToken::class);
+    }
+    public function accounts(): HasMany
+    {
+        return $this->hasMany(AccountPersonalNumber::class);
     }
 
     public static function booted(): void

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Client;
@@ -19,15 +20,13 @@ class UserDataController extends Controller
         $validated = $request->validate([
             'phone' => 'required|string',
         ]);
-
-        $client = Client::with(['apartments.house'])->where('phone', $validated['phone'])->first();
-
-        if (!$client) {
+        $user = User::with('accounts')->where('phone', $validated['phone'])->first();
+        if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
-        $apartments = $client->apartments->map(function ($apartment) {
-            $house = $apartment->house;
+        $apartments = $user->accounts->map(function ($account) {
+            $house = $account->apartment->house;
             return sprintf(
                 '%s, %s, %s, %s, %s',
                 $house->city ?? 'Город не указан',
@@ -39,11 +38,8 @@ class UserDataController extends Controller
         })->toArray();
 
         return response()->json([
-            'id' => $client->id,
-            'name' => $client->name,
-            'phone' => $client->phone,
-            'email' => $client->email ?? 'Email не указан',
-            'debt' => $client->debt ?? '0',
+            'user_id' => $user->id,
+            'accounts' => $user->accounts,
             'apartments' => $apartments,
         ]);
     }

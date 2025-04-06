@@ -10,11 +10,14 @@ return new class extends Migration {
         Schema::create('counter_data', function (Blueprint $table) {
             $table->id();
             $table->string('number')->unique();
-            $table->foreignId('apartment_id')->nullable()->constrained('apartments');
             $table->timestamp('verification_to');
             $table->string('counter_type');
             $table->string('counter_seal')->nullable();
             $table->string('factory_number')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_worked')->default(true);
+            $table->string('1c_id');
+
             $table->timestamps();
         });
     }

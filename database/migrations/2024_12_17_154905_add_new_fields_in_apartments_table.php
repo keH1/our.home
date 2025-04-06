@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('apartments', function (Blueprint $table) {
             $table->string('apartment_code')->nullable();
             $table->string('address')->nullable();
+
         });
     }
 
