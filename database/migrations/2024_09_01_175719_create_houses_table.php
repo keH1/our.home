@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('street');
             $table->string('number');
             $table->string('building')->nullable();
-            $table->string('1c_id')->nullable();
+            $table->string('one_c_id')->nullable();
             $table->timestamps();
             $table->unique(['city', 'street', 'number'], '_house_number_uc');
         });

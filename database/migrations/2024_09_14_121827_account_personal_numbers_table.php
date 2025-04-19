@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('account_personal_numbers', function (Blueprint $table) {
             $table->id();
             $table->string('number');  //account_id
-            $table->string('els_id');
-            $table->string('gis_id');
+            $table->string('els_id')->nullable();
+            $table->string('gis_id')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('phone')->nullable();
             $table->string('login')->nullable();
             $table->string('fio')->nullable();
+            $table->string('debt')->nullable();
 
             //$table->string('gku_id')->nullable();
 
@@ -27,7 +28,7 @@ return new class extends Migration
             $table->string('repair_gis_id')->nullable();
 
 
-            $table->string('1c_id')->nullable();
+            $table->string('one_c_id')->nullable();
             $table->boolean('is_active')->default(true);
 
             $table->foreignId('apartment_id')->nullable()->constrained('apartments')->onDelete('set null');

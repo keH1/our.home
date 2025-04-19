@@ -21,7 +21,7 @@ class Claim extends Model
         'title',
         'type',
         'status',
-        'client_id',
+        'account_id',
         'category_id',
         'paid_service_id',
         'is_paid',

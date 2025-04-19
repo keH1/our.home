@@ -9,16 +9,16 @@ class UserRepository
 
     /**
      * @param $customerPhone
-     * @return User
+     * @return User|null
      */
-    public function checkUserByPhone($customerPhone)
+    public function checkUserByPhone($customerPhone): User|null
     {
         return User::where('phone', $customerPhone)->first();
     }
 
     /**
      * @param $email
-     * @return User
+     * @return User|null
      */
     public function checkUserByEmail($email): User|null
     {

@@ -39,34 +39,25 @@ class ProcessCounterData implements ShouldQueue
     public function handle(): void
     {
         $counter = $this->counter;
-        $channel = Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/1c_counter.log'),
-        ]);
-        Log::stack(['slack', $channel])->info(json_encode($counter));
-        $counter['ВидУслуги'] = trim($counter['ВидУслуги']);
-        if (!$this->counterRepository->checkCounterType($counter['ВидУслуги'])) {
+//        $channel = Log::build([
+//            'driver' => 'single',
+//            'path' => storage_path('logs/1c_counter.log'),
+//        ]);
+//        Log::stack(['slack', $channel])->info(json_encode($counter));
+        $counter['counter_type'] = trim($counter['counter_type']);
+        if (!$this->counterRepository->checkCounterType($counter['counter_type'])) {
             throw new \Exception('Данный вид счетчика не найден');
         }
-        if (($counterData = $this->checkCounterExistence($counter)) !== null) {
-
-        } else {
+        if (!($counterData = $this->checkCounterExistence($counter))) {
             $counterData = new CounterData();
+        }
+        if(isset($counterData->created_at) && $counterData->created_at < $counter['date_check']) {
+             throw new \Exception('Старый счетчик № '.$counter['factory_number']);
         }
         $this->setCounterParams($counterData, $counter);
         $counterData->save();
-        $this->createCounterHistory($counterData, $counter);
-
-        $apartment = null;
-        if (isset($counter['ЕдиныйЛицевойСчет'])) {
-            $apartment = $this->apartmentRepository->findApartmentByAccountNumber($counter['ЕдиныйЛицевойСчет']);
-        }
-        if (!$apartment && isset($counter['ИдентификаторВГИСЖКХ'])) {
-            $apartment = $this->apartmentRepository->findApartmentByAccountNumber($counter['ИдентификаторВГИСЖКХ']);
-        }
-
-        if ($apartment) {
-            $this->attachCounterToApartment($counterData, $apartment);
+        if($account = AccountPersonalNumber::where('number', $counter['account_id'])->first()) {
+            $this->attachCounterToAccount($counterData,$account);
         }
     }
 
@@ -75,11 +66,11 @@ class ProcessCounterData implements ShouldQueue
      * @param array $counter
      * @return CounterData|null
      */
-    private function checkCounterExistence(array $counter): CounterData|null
+    public function checkCounterExistence(array $counter): CounterData|null
     {
         return CounterData::where([
-            ['number', '=', $counter['Идентификатор']],
-            ['counter_type', '=', $counter['ВидУслуги']],
+            ['one_c_id', '=', $counter['counter_id_1c']],
+            ['counter_type', '=', $counter['counter_type']],
         ])->first();
     }
 
@@ -89,32 +80,28 @@ class ProcessCounterData implements ShouldQueue
      * @param $apartmentID
      * @return void
      */
-    private function setCounterParams(CounterData &$counterData, $counter): void
+    public function setCounterParams(CounterData &$counterData, $counter): void
     {
-        $counterData->number = $counter['Идентификатор'];
-        $counterData->shutdown_reason = $counter['ПричинаОтключения'] ?? null;
-        $counterData->counter_seal = $counter['НомерПломбы'] ?? null;
+        $counterData->account_one_c_id = $counter['account_id_1c'];
+        $counterData->counter_seal = $counter['seal_number'] ?? null;
         $counterData->created_at = null;
         $counterData->verification_to = null;
-        $counterData->commissioning_date = null;
         $counterData->first_calibration_date = null;
-        if (isset($counter['ДатаНачала']) && $counter['ДатаНачала'] !== null){
-            $counterData->created_at = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаНачала']);
+        if (isset($counter['start_date']) && strlen($counter['start_date']) > 0) {
+            $counterData->created_at = Carbon::createFromFormat('d.m.Y H:i:s', $counter['start_date']);
         }
-        if (isset($counter['ДатаПоверки']) && $counter['ДатаПоверки'] !== null){
-            $counterData->verification_to = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПоверки']);
+        if (isset($counter['date_check']) && strlen($counter['date_check']) > 0) {
+            $counterData->verification_to = Carbon::createFromFormat('d.m.Y H:i:s', $counter['date_check']);
         }
-        if (isset($counter['ДатаВводаВЭксплуатацию']) && $counter['ДатаВводаВЭксплуатацию'] !== null){
-            $counterData->commissioning_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаВводаВЭксплуатацию']);
+        if (isset($counter['first_date_check']) && strlen($counter['first_date_check']) > 0) {
+            $counterData->first_calibration_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['first_date_check']);
         }
-        if (isset($counter['ДатаПервойПоверки']) && $counter['ДатаПервойПоверки'] !== null){
-            $counterData->first_calibration_date = Carbon::createFromFormat('d.m.Y H:i:s', $counter['ДатаПервойПоверки']);
-        }
-        $counterData->counter_type = $counter['ВидУслуги'];
-        $counterData->factory_number = $counter['ЗаводскойНомер'] ?? null;
-        $counterData->calibration_interval = $counter['МежпроверочныйИнтервал'] ?? null;
-        $counterData->gis_number = $counter['НомерВГИСЖКХ'] ?? null;
-        $counterData->info = $counter['Инфо'] ?? null;
+        $counterData->counter_type = $counter['counter_type'];
+        $counterData->factory_number = $counter['factory_number'] ?? null;
+        $counterData->gis_id = $counter['counter_gis_id'] ?? null;
+        $counterData->els_id = $counter['els_id'] ?? null;
+        $counterData->one_c_id = $counter['counter_id_1c'] ?? null;
+        $counterData->is_active = $counter['active'] == 'Да';
     }
 
     /**
@@ -122,7 +109,7 @@ class ProcessCounterData implements ShouldQueue
      * @param $counter
      * @return void
      */
-    private function createCounterHistory(CounterData $counterData, $counter): void
+    public function createCounterHistory(CounterData $counterData, $counter): void
     {
         $counterHistory = new CounterHistory();
         $counterHistory->counter_name_id = $counterData->id;
@@ -153,22 +140,11 @@ class ProcessCounterData implements ShouldQueue
     }
 
     /**
-     * @param CounterData $counterData
-     * @param Apartment $apartment
-     * @return void
-     */
-    private function attachCounterToApartment(CounterData $counterData, Apartment $apartment): void
-    {
-        $counterData->apartment_id = $apartment->id;
-        $counterData->save();
-    }
-
-    /**
      * @param CounterData $counter
      * @param AccountPersonalNumber $account
      * @return void
      */
-    private function attachCounterToAccount(CounterData $counter, AccountPersonalNumber $account): void
+    public function attachCounterToAccount(CounterData $counter, AccountPersonalNumber $account): void
     {
         $account->counters()->save($counter);
     }

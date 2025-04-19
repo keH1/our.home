@@ -13,11 +13,11 @@ class AccountPersonalNumber extends Model
     use HasFactory;
 
     public $timestamps;
-    protected $fillable = ['number', 'apartment_id', 'union_number', 'gku_id'];
+    protected $fillable = ['number', 'apartment_id', 'els_id', 'gis_id'];
 
-    public function apartment(): hasMany
+    public function apartment(): BelongsTo
     {
-        return $this->hasMany(Apartment::class);
+        return $this->BelongsTo(Apartment::class);
     }
 
     public function user(): BelongsTo
@@ -27,6 +27,6 @@ class AccountPersonalNumber extends Model
 
     public function counters(): HasMany
     {
-        return $this->hasMany(CounterData::class,'union_number');
+        return $this->hasMany(CounterData::class,'account_id');
     }
 }

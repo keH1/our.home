@@ -14,7 +14,7 @@ class ApartmentRepository
      */
     public function findApartmentById(int $apartmentId): ?Apartment
     {
-        return Apartment::with(['house', 'account.clients'])->find($apartmentId);
+        return Apartment::with(['house', 'accounts'])->find($apartmentId);
     }
 
 
@@ -24,11 +24,20 @@ class ApartmentRepository
      */
     public function findApartmentByAccountNumber(mixed $accountNumber): ?Apartment
     {
-        $account = AccountPersonalNumber::where('union_number', $accountNumber)->first();
+        $account = AccountPersonalNumber::where('number', $accountNumber)->first();
         if ($account) {
             return Apartment::find($account->apartment_id);
         }
 
-        return Apartment::where('gis_id', $accountNumber)->first();
+        return null;
+    }
+
+    /**
+     * @param mixed $apartment
+     * @return Apartment|null
+     */
+    public function checkByOneCID(mixed $apartment): Apartment|null
+    {
+        return Apartment::where('one_c_id',$apartment['id'])->first();
     }
 }

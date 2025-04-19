@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('counter_data', function (Blueprint $table) {
-            $table->string('gis_number')->nullable();
+            $table->string('gis_id')->nullable();
             $table->string('info')->nullable();
 
         });
@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('counter_data', function (Blueprint $table) {
-            $table->dropColumn(['gis_number', 'info']);
+            $table->dropColumn(['gis_id', 'info']);
         });
     }
 };

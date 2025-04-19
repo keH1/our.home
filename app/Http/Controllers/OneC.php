@@ -2,26 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessApartmentData;
 use App\Jobs\ProcessCounterData;
-use App\Jobs\ProcessCustomerData;
+use App\Jobs\ProcessCustomerNumberData;
+use App\Jobs\ProcessHouseData;
+use App\Models\Apartment;
+use App\Models\House;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 
 class OneC extends Controller
 {
+
     /**
-     * todo пользователь может быть помечен на удаление
      * @param Request $request
      * @return JsonResponse
      */
-    public function customers(Request $request)
+    public function houses(Request $request)
     {
-        $customers = $request->json()->all();
-        foreach ($customers as $customer) {
-            ProcessCustomerData::dispatch($customer);
+        $houses = $request->json()->all();
+        foreach ($houses as $houseData) {
+            ProcessHouseData::dispatch($houseData);
         }
-        return response()->json(['message' => 'Customers queued for processing']);
+        return response()->json(['message' => 'Houses queued for processing']);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function apartments(Request $request)
+    {
+        $apartments = $request->json()->all();
+        foreach ($apartments as $apartmentData) {
+            ProcessApartmentData::dispatch($apartmentData);
+        }
+        return response()->json(['message' => 'Apartments queued for processing']);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function customerNumbers(Request $request)
+    {
+        $customerNumbers = $request->json()->all();
+
+        foreach ($customerNumbers as $customerNumber) {
+            ProcessCustomerNumberData::dispatch($customerNumber);
+        }
+        return response()->json(['message' => 'Customer numbers queued for processing']);
     }
 
     /**
@@ -32,7 +63,7 @@ class OneC extends Controller
     {
         $counters = $request->json()->all();
         foreach ($counters as $counter) {
-             ProcessCounterData::dispatch($counter);
+            ProcessCounterData::dispatch($counter);
         }
         return response()->json(['message' => 'Counters queued for processing']);
     }

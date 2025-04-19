@@ -17,7 +17,7 @@ class ApartmentFactory extends Factory
         return [
             'number' => $this->faker->unique()->numerify('APT###'),
             'account_number' => $this->faker->unique()->numerify('AN####'),
-            'gku_id' => $this->faker->unique()->numerify('GKU####'),
+            'gis_id' => $this->faker->unique()->numerify('GKU####'),
             'account_owner' => $this->faker->name(),
             'house_id' => House::factory(),
         ];

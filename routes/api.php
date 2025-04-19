@@ -32,6 +32,9 @@ Route::prefix('v1')->as('v1:')->group(function () {
     //1C routes
     Route::middleware('one.c.api')->prefix('document')->as('oneC:')->group(function () {
         Route::post('counters', [OneC::class, 'counters'])->name('counters');
-        Route::post('customers', [OneC::class, 'customers'])->name('customers');
+//        Route::post('customers', [OneC::class, 'customers'])->name('customers');
+        Route::post('customerNumbers', [OneC::class, 'customerNumbers'])->name('customerNumbers');
+        Route::post('apartments', [OneC::class, 'apartments'])->name('apartments');
+        Route::post('houses', [OneC::class, 'houses'])->name('houses');
     });
 });

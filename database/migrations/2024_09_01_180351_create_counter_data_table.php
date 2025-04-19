@@ -9,14 +9,15 @@ return new class extends Migration {
     {
         Schema::create('counter_data', function (Blueprint $table) {
             $table->id();
-            $table->string('number')->unique();
-            $table->timestamp('verification_to');
-            $table->string('counter_type');
+            $table->string('account_one_c_id')->nullable();
+            $table->timestamp('verification_to')->nullable();
+            $table->string('counter_type')->nullable();
             $table->string('counter_seal')->nullable();
             $table->string('factory_number')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_worked')->default(true);
-            $table->string('1c_id');
+            $table->string('one_c_id')->unique();
+            $table->string('els_id')->nullable();
 
             $table->timestamps();
         });

@@ -18,7 +18,7 @@ class CounterData extends Model
         'name',
         'number',
         'gis_id',
-        'union_number',
+        'els_id',
         'apartment_id',
         'verification_to',
         'counter_type',
@@ -44,7 +44,7 @@ class CounterData extends Model
 
     public function accounts(): BelongsTo
     {
-        return $this->belongsTo(AccountPersonalNumber::class, 'union_number');
+        return $this->belongsTo(AccountPersonalNumber::class, 'id');
     }
 
     public function latestConfirmedHistory(): HasOne

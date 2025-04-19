@@ -13,7 +13,7 @@ class Apartment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['number', 'house_id', 'gku_id', 'gis_id', 'apartment_code', 'address'];
+    protected $fillable = ['number', 'house_id', 'gis_id', 'gis_id', 'apartment_code', 'address'];
 
     public function house(): BelongsTo
     {
@@ -30,8 +30,8 @@ class Apartment extends Model
         return $this->hasMany(CounterData::class);
     }
 
-    public function accounts(): BelongsToMany
+    public function accounts(): HasMany
     {
-        return $this->BelongsToMany(AccountPersonalNumber::class, 'account_personal_numbers');
+        return $this->HasMany(AccountPersonalNumber::class);
     }
 }

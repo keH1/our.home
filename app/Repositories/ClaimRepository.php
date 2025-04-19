@@ -19,13 +19,13 @@ class ClaimRepository
     public function createClaim(Collection $data, array $files = null): Claim
     {
         $type = ClaimType::from($data['type']);
-        $clientId = $data['client_id'];
+        $accountID = $data['account_id'];
 
         $claim = new Claim();
         $claim->type = $type;
         $claim->title = $data['title'];
         $claim->text = $data->get('text', null);
-        $claim->client_id = $clientId;
+        $claim->account_id = $accountID;
         $claim->status = ClaimStatus::from($data['status']);
         $claim->priority = ClaimPriority::from($data['priority']);
         $claim->is_active = true;

@@ -8,6 +8,7 @@ namespace App\Http\Procedures;
 use App\Attributes\RpcProcedure;
 use App\Contracts\ProcedurePermissionsInterface;
 use App\Enums\Permissions;
+use App\Models\AccountPersonalNumber;
 use App\Models\Client;
 use App\Services\ApiResponseBuilder;
 use App\Services\PaginationBuilder;
@@ -15,24 +16,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Sajya\Server\Procedure;
 
-#[RpcProcedure(version: 'v1', group: 'clients')]
-class ClientProcedure extends Procedure implements ProcedurePermissionsInterface
+#[RpcProcedure(version: 'v1', group: 'accounts')]
+class AccountProcedure extends Procedure implements ProcedurePermissionsInterface
 {
     /**
      * The name of the procedure that is used for referencing.
      *
      * @var string
      */
-    public static string $name = 'client_procedure';
+    public static string $name = 'account_procedure';
 
     public function getMethodsPermissions(): array
     {
         return [
-            'getClients' => [Permissions::NORMAL],
+            'getAccounts' => [Permissions::NORMAL],
         ];
     }
 
-    public function getClients(Request $request, ApiResponseBuilder $responseBuilder): array
+    public function getAccounts(Request $request, ApiResponseBuilder $responseBuilder): array
     {
         $data = collect(json_decode($request->getContent(), true)['params'] ?? []);
         $paginationBuilder = PaginationBuilder::fromRequest($request);
@@ -46,11 +47,11 @@ class ClientProcedure extends Procedure implements ProcedurePermissionsInterface
         ]);
         $validator->validate();
 
-        $query = Client::query();
+        $query = AccountPersonalNumber::query();
         if ($data->has('search_text') && !empty($data['search_text'])) {
             $searchText = $data['search_text'];
 
-            $searchResults = Client::search($searchText)->keys();
+            $searchResults = AccountPersonalNumber::search($searchText)->keys();
             if ($searchResults->isEmpty()) {
                 $paginationBuilder->setTotal(0);
                 return $responseBuilder
@@ -69,21 +70,21 @@ class ClientProcedure extends Procedure implements ProcedurePermissionsInterface
 
         if ($data->has('street')) {
             $street = $data['street'];
-            $query->whereHas('apartments.house', function ($q) use ($street) {
+            $query->whereHas('apartment.house', function ($q) use ($street) {
                 $q->where('street', 'LIKE', '%' . $street . '%');
             });
         }
 
         if ($data->has('house_id')) {
             $houseId = $data['house_id'];
-            $query->whereHas('apartments', function ($q) use ($houseId) {
+            $query->whereHas('apartment', function ($q) use ($houseId) {
                 $q->where('house_id', $houseId);
             });
         }
 
         if ($data->has('apartment_id')) {
             $apartmentId = $data['apartment_id'];
-            $query->whereHas('apartments', function ($q) use ($apartmentId) {
+            $query->whereHas('apartment', function ($q) use ($apartmentId) {
                 $q->where('id', $apartmentId);
             });
         }

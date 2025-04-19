@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->double('daily_consumption')->nullable();
             $table->double('night_consumption')->nullable();
             $table->double('peak_consumption')->nullable();
-            $table->string('1c_id')->nullable();
+            $table->string('one_c_id')->nullable();
             $table->timestamps();
         });
     }
