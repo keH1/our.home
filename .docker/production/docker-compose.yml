@@ -101,6 +101,28 @@ services:
     volumes:
       - "storage:/var/www/html/storage"
 
+  app-queue-push:
+    build:
+      context: .
+      dockerfile: .docker/production/php/Dockerfile
+    environment:
+      PHP_FPM_POOL_NAME: "app_queue"
+      APP_ENV: ${APP_ENV}
+      POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - app
+    image: ${CI_REGISTRY}/${CI_PROJECT_PATH}/${ENVIRONMENT_NAME}/app_queue
+    command: ["php", "artisan", "queue:work", "--queue=push_notifications"]
+    labels:
+      - "traefik.enable=false"
+    restart: always
+    volumes:
+      - "storage:/var/www/html/storage"
+
   nginx:
     build:
       context: .
